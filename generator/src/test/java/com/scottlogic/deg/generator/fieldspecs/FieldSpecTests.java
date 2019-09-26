@@ -16,7 +16,7 @@
 
 package com.scottlogic.deg.generator.fieldspecs;
 
-import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedSet;
+import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
 import com.scottlogic.deg.generator.generation.string.generators.StringGenerator;
 import com.scottlogic.deg.generator.restrictions.*;
 import com.scottlogic.deg.generator.restrictions.linear.*;
@@ -55,7 +55,7 @@ class FieldSpecTests {
     @Test
     void equals_fieldSpecHasSetRestrictionsAndOtherObjectSetRestrictionsNull_returnsFalse() {
         FieldSpec fieldSpec = FieldSpec.fromType(STRING)
-            .withWhitelist((DistributedSet.uniform(Collections.singleton("whitelist"))));
+            .withWhitelist((DistributedList.uniform(Collections.singleton("whitelist"))));
 
         boolean result = fieldSpec.equals(FieldSpec.fromType(STRING));
 
@@ -70,7 +70,7 @@ class FieldSpecTests {
         FieldSpec fieldSpec = FieldSpec.fromType(STRING);
 
         boolean result = fieldSpec.equals(
-            FieldSpec.fromType(STRING).withWhitelist(DistributedSet.uniform(Collections.singleton("whitelist")))
+            FieldSpec.fromType(STRING).withWhitelist(DistributedList.uniform(Collections.singleton("whitelist")))
         );
 
         assertFalse(
@@ -83,14 +83,14 @@ class FieldSpecTests {
     void equals_fieldSpecSetRestrictionsNotNullAndOtherObjectSetRestrictionsNotNullAndSetRestrictionsAreNotEqual_returnsFalse() {
         FieldSpec fieldSpec = FieldSpec.fromType(NUMERIC)
             .withWhitelist(
-                (DistributedSet.uniform(
+                (DistributedList.uniform(
                     new HashSet<>(
                         Arrays.asList(1, 2, 3)
                     ))));
 
         boolean result = fieldSpec.equals(
             FieldSpec.fromType(NUMERIC).withWhitelist(
-                (DistributedSet.uniform(
+                (DistributedList.uniform(
                     new HashSet<>(
                         Arrays.asList(1, 2, 3, 4)
                     ))))
@@ -125,7 +125,7 @@ class FieldSpecTests {
     @Test
     public void shouldCreateNewInstanceWithSetRestrictions() {
         FieldSpec original = FieldSpec.fromType(STRING);
-        DistributedSet<Object> restrictions = DistributedSet.uniform(Collections.singleton("whitelist"));
+        DistributedList<Object> restrictions = DistributedList.uniform(Collections.singleton("whitelist"));
         FieldSpec augmentedFieldSpec = original.withWhitelist(restrictions);
 
         Assert.assertNotSame(original, augmentedFieldSpec);
@@ -181,8 +181,8 @@ class FieldSpecTests {
 
     @Test
     public void fieldSpecsWithEqualSetRestrictionsShouldBeEqual() {
-        FieldSpec a = FieldSpec.fromType(STRING).withWhitelist(DistributedSet.uniform(Collections.singleton("same")));
-        FieldSpec b = FieldSpec.fromType(STRING).withWhitelist(DistributedSet.uniform(Collections.singleton("same")));
+        FieldSpec a = FieldSpec.fromType(STRING).withWhitelist(DistributedList.uniform(Collections.singleton("same")));
+        FieldSpec b = FieldSpec.fromType(STRING).withWhitelist(DistributedList.uniform(Collections.singleton("same")));
 
         Assert.assertThat(a, equalTo(b));
         Assert.assertThat(a.hashCode(), equalTo(b.hashCode()));
@@ -190,8 +190,8 @@ class FieldSpecTests {
 
     @Test
     public void fieldSpecsWithUnequalSetRestrictionsShouldBeUnequal() {
-        FieldSpec a = FieldSpec.fromType(STRING).withWhitelist(DistributedSet.uniform(Collections.singleton("not same")));
-        FieldSpec b = FieldSpec.fromType(STRING).withWhitelist(DistributedSet.uniform(Collections.singleton("different")));
+        FieldSpec a = FieldSpec.fromType(STRING).withWhitelist(DistributedList.uniform(Collections.singleton("not same")));
+        FieldSpec b = FieldSpec.fromType(STRING).withWhitelist(DistributedList.uniform(Collections.singleton("different")));
 
         Assert.assertThat(a, not(equalTo(b)));
     }

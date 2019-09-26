@@ -17,14 +17,13 @@
 package com.scottlogic.deg.generator.decisiontree.treepartitioning;
 
 import com.scottlogic.deg.common.profile.Field;
+import com.scottlogic.deg.common.profile.constraints.atomic.IsInMapConstraint;
 import com.scottlogic.deg.common.util.FlatMappingSpliterator;
 import com.scottlogic.deg.generator.decisiontree.ConstraintNode;
 import com.scottlogic.deg.generator.decisiontree.DecisionTree;
 import com.scottlogic.deg.generator.utils.SetUtils;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 

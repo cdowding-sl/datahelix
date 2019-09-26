@@ -18,7 +18,7 @@ package com.scottlogic.deg.generator.generation;
 
 import com.scottlogic.deg.common.profile.Types;
 import com.scottlogic.deg.generator.fieldspecs.FieldSpec;
-import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedSet;
+import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
 import com.scottlogic.deg.generator.generation.fieldvaluesources.CannedValuesFieldValueSource;
 import com.scottlogic.deg.generator.generation.fieldvaluesources.FieldValueSource;
 import com.scottlogic.deg.generator.generation.fieldvaluesources.NullOnlySource;
@@ -80,7 +80,7 @@ public class StandardFieldValueSourceEvaluator implements FieldValueSourceEvalua
         return Stream.concat(setRestrictionSources.stream(), Stream.of(NULL_ONLY_SOURCE)).collect(Collectors.toList());
     }
 
-    private List<FieldValueSource> getSetRestrictionSources(DistributedSet<Object> whitelist) {
+    private List<FieldValueSource> getSetRestrictionSources(DistributedList<Object> whitelist) {
         if (whitelist.distributedSet().isEmpty()){
             return Collections.emptyList();
         }

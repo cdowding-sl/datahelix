@@ -18,7 +18,7 @@ package com.scottlogic.deg.profile.reader.file.names;
 
 
 import com.scottlogic.deg.common.profile.constraints.atomic.NameConstraintTypes;
-import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedSet;
+import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -29,21 +29,21 @@ public class NameRetrieverTest {
 
     @Test
     public void testLoadingFirstNames() {
-        DistributedSet<Object> names = NameRetriever.loadNamesFromFile(NameConstraintTypes.FIRST);
+        DistributedList<Object> names = NameRetriever.loadNamesFromFile(NameConstraintTypes.FIRST);
 
         assertEquals(704, names.distributedSet().size());
     }
 
     @Test
     public void testLoadingLastNames() {
-        DistributedSet<Object> names = NameRetriever.loadNamesFromFile(NameConstraintTypes.LAST);
+        DistributedList<Object> names = NameRetriever.loadNamesFromFile(NameConstraintTypes.LAST);
 
         assertEquals(280, names.distributedSet().size());
     }
 
     @Test
     public void testLoadingFullNames() {
-        DistributedSet<Object> names = NameRetriever.loadNamesFromFile(NameConstraintTypes.FULL);
+        DistributedList<Object> names = NameRetriever.loadNamesFromFile(NameConstraintTypes.FULL);
 
         assertEquals(197120, names.distributedSet().size());
     }
@@ -51,7 +51,7 @@ public class NameRetrieverTest {
     @ParameterizedTest
     @EnumSource(NameConstraintTypes.class)
     public void testAllValuesGiveValidResult(NameConstraintTypes config) {
-        DistributedSet<Object> result = NameRetriever.loadNamesFromFile(config);
+        DistributedList<Object> result = NameRetriever.loadNamesFromFile(config);
 
         assertNotNull(result);
     }

@@ -3,11 +3,12 @@ package com.scottlogic.deg.profile.reader.atomic;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.scottlogic.deg.common.ValidationException;
-import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedSet;
+import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
 import com.scottlogic.deg.generator.fieldspecs.whitelist.WeightedElement;
 import com.scottlogic.deg.profile.reader.file.CsvInputStreamReader;
 
 import java.io.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class FromFileReader {
@@ -22,16 +23,24 @@ public class FromFileReader {
         }
     }
 
-    public DistributedSet<Object> setFromFile(String file) {
+    public DistributedList<String> mapFromFile(String file, String key) {
         InputStream streamFromPath = createStreamFromPath(appendPath(file));
 
-        DistributedSet<String> names = CsvInputStreamReader.retrieveLines(streamFromPath);
+        DistributedList<String> values = CsvInputStreamReader.retrieveMapLines(streamFromPath, key);
+        closeStream(streamFromPath);
+        return values;
+    }
+
+    public DistributedList<Object> setFromFile(String file) {
+        InputStream streamFromPath = createStreamFromPath(appendPath(file));
+
+        DistributedList<String> names = CsvInputStreamReader.retrieveLines(streamFromPath);
         closeStream(streamFromPath);
 
-        return new DistributedSet<>(
+        return new DistributedList<>(
             names.distributedSet().stream()
                 .map(holder -> new WeightedElement<>((Object) holder.element(), holder.weight()))
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toList()));
     }
 
     private String appendPath(String path) {

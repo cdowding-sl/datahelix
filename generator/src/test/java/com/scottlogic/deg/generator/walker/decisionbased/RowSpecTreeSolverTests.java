@@ -6,7 +6,7 @@ import com.scottlogic.deg.generator.builders.TestConstraintNodeBuilder;
 import com.scottlogic.deg.generator.decisiontree.ConstraintNode;
 import com.scottlogic.deg.generator.decisiontree.DecisionTree;
 import com.scottlogic.deg.generator.fieldspecs.*;
-import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedSet;
+import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
 import com.scottlogic.deg.generator.reducer.ConstraintReducer;
 import com.scottlogic.deg.generator.restrictions.StringRestrictionsFactory;
 import com.scottlogic.deg.generator.walker.pruner.TreePruner;
@@ -74,7 +74,7 @@ class RowSpecTreeSolverTests {
         //Assert
         List<RowSpec> expectedRowSpecs = new ArrayList<>();
         Map<Field, FieldSpec> fieldToFieldSpec = new HashMap<>();
-        fieldToFieldSpec.put(fieldA, FieldSpec.fromType(fieldA.getType()).withWhitelist(DistributedSet.empty()));
+        fieldToFieldSpec.put(fieldA, FieldSpec.fromType(fieldA.getType()).withWhitelist(DistributedList.empty()));
         fieldToFieldSpec.put(fieldB, FieldSpec.fromType(fieldB.getType()));
         expectedRowSpecs.add(new RowSpec(profileFields, fieldToFieldSpec, Collections.emptyList()));
 
@@ -100,7 +100,7 @@ class RowSpecTreeSolverTests {
         List<RowSpec> expectedRowSpecs = new ArrayList<>();
         Map<Field, FieldSpec> option0 = new HashMap<>();
         option0.put(fieldA, FieldSpec.fromType(fieldA.getType()));
-        option0.put(fieldB, FieldSpec.fromType(fieldB.getType()).withWhitelist(DistributedSet.empty()));
+        option0.put(fieldB, FieldSpec.fromType(fieldB.getType()).withWhitelist(DistributedList.empty()));
         expectedRowSpecs.add(new RowSpec(profileFields, option0, Collections.emptyList()));
         Map<Field, FieldSpec> option1 = new HashMap<>();
         option1.put(fieldA, FieldSpec.fromType(fieldA.getType()));

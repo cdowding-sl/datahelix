@@ -56,6 +56,8 @@ public class AtomicConstraintTypeMapper {
                 return EqualToConstraint.class;
             case IS_IN_SET:
                 return IsInSetConstraint.class;
+            case IS_IN_MAP:
+                return IsInMapConstraint.class;
             default:
                 throw new UnsupportedOperationException();
         }

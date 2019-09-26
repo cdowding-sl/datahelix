@@ -5,7 +5,7 @@ import com.scottlogic.deg.common.ValidationException;
 import com.scottlogic.deg.common.profile.Types;
 import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
 import com.scottlogic.deg.common.util.NumberUtils;
-import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedSet;
+import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
 import com.scottlogic.deg.profile.dto.ConstraintDTO;
 import com.scottlogic.deg.profile.reader.InvalidProfileException;
 
@@ -44,17 +44,17 @@ public class AtomicConstraintValueReader {
         }
 
         if (dto.file != null && dto.is.equals(AtomicConstraintType.IS_IN_MAP.getText())){
-            throw new UnsupportedOperationException("inMap is unsupported");
+            return fromFileReader.mapFromFile(dto.file, dto.key);
         }
 
         return getValue(dto.value, type);
     }
 
-    private DistributedSet getSet(Collection<Object> values, Types type) {
+    private DistributedList getSet(Collection<Object> values, Types type) {
         List collect = values.stream()
             .map(val -> getValue(val, type))
             .collect(Collectors.toList());
-        return DistributedSet.uniform(collect);
+        return DistributedList.uniform(collect);
     }
 
     private Object getValue(Object value, Types type) {

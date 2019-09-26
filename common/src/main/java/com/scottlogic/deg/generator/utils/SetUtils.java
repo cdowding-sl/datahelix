@@ -59,6 +59,11 @@ public class SetUtils {
         return Collections.unmodifiableSet(Arrays.stream(elements).collect(Collectors.toSet()));
     }
 
+    @SafeVarargs
+    public static <T> List<T> ListOf(T... elements) {
+        return Collections.unmodifiableList(Arrays.stream(elements).collect(Collectors.toList()));
+    }
+
     public static <T> Stream<T> stream(Iterator<T> iterator){
         return StreamSupport.stream(
             Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED),

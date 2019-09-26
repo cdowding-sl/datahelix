@@ -16,7 +16,7 @@
 
 package com.scottlogic.deg.profile.reader.file;
 
-import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedSet;
+import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
 import com.scottlogic.deg.generator.fieldspecs.whitelist.WeightedElement;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.Charset;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public final class CsvInputStreamReader {
@@ -35,11 +35,37 @@ public final class CsvInputStreamReader {
         throw new UnsupportedOperationException("No instantiation of static class");
     }
 
-    public static DistributedSet<String> retrieveLines(InputStream stream) {
+    public static DistributedList<String> retrieveLines(InputStream stream) {
         List<CSVRecord> records = parse(stream);
-        return new DistributedSet<>(records.stream()
+        return new DistributedList<>(records.stream()
             .map(CsvInputStreamReader::createWeightedElement)
-            .collect(Collectors.toSet()));
+            .collect(Collectors.toList()));
+    }
+
+
+    public static DistributedList<String> retrieveMapLines(InputStream stream, String Key) {
+        List<CSVRecord> records = parse(stream);
+        // find the index from the header
+        Iterator<String> iterator = records.get(0).iterator();
+        int index = -1;
+        int cur = 0;
+        while(iterator.hasNext()) {
+            if (iterator.next().equals(Key)) {
+                index = cur;
+                break;
+            }
+            cur++;
+        }
+        if (index == -1) {
+            return null;
+        }
+
+        int finalIndex = index;
+        //Remove the header
+        records.remove(0);
+        return new DistributedList<>(records.stream()
+            .map(element -> WeightedElement.withDefaultWeight(element.get(finalIndex)))
+            .collect(Collectors.toList()));
     }
 
     private static WeightedElement<String> createWeightedElement(CSVRecord record) {

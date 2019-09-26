@@ -18,15 +18,10 @@ package com.scottlogic.deg.generator.fieldspecs;
 
 import com.scottlogic.deg.common.profile.Types;
 
-import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedSet;
+import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
 import com.scottlogic.deg.generator.restrictions.*;
-import com.scottlogic.deg.generator.restrictions.linear.LinearRestrictions;
 
-import java.math.BigDecimal;
-import java.time.OffsetDateTime;
 import java.util.*;
-
-import static com.scottlogic.deg.common.profile.Types.*;
 
 /**
  * Details a column's atomic constraints
@@ -36,7 +31,7 @@ import static com.scottlogic.deg.common.profile.Types.*;
  */
 public class FieldSpec {
 
-    private static final DistributedSet<Object> NO_VALUES = DistributedSet.empty();
+    private static final DistributedList<Object> NO_VALUES = DistributedList.empty();
 
     public static FieldSpec fromType(Types type) {
         return new FieldSpec(null, null, true, Collections.emptySet(), type);
@@ -47,13 +42,13 @@ public class FieldSpec {
     }
 
     private final boolean nullable;
-    private final DistributedSet<Object> whitelist;
+    private final DistributedList<Object> whitelist;
     private final Set<Object> blacklist;
     private final TypedRestrictions restrictions;
     private final Types types;
 
     private FieldSpec(
-        DistributedSet<Object> whitelist,
+        DistributedList<Object> whitelist,
         TypedRestrictions restrictions,
         boolean nullable,
         Set<Object> blacklist,
@@ -69,7 +64,7 @@ public class FieldSpec {
         return nullable;
     }
 
-    public DistributedSet<Object> getWhitelist() {
+    public DistributedList<Object> getWhitelist() {
         return whitelist;
     }
 
@@ -85,7 +80,7 @@ public class FieldSpec {
         return types;
     }
 
-    public FieldSpec withWhitelist(DistributedSet<Object> whitelist) {
+    public FieldSpec withWhitelist(DistributedList<Object> whitelist) {
         return new FieldSpec(whitelist, null, nullable, blacklist, types);
     }
 

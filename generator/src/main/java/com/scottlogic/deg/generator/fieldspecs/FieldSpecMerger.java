@@ -17,7 +17,7 @@
 package com.scottlogic.deg.generator.fieldspecs;
 
 import com.scottlogic.deg.common.profile.Types;
-import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedSet;
+import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
 import com.scottlogic.deg.generator.fieldspecs.whitelist.WeightedElement;
 import com.scottlogic.deg.generator.restrictions.StringRestrictionsMerger;
 import com.scottlogic.deg.generator.restrictions.linear.LinearRestrictionsMerger;
@@ -57,11 +57,11 @@ public class FieldSpecMerger {
     }
 
     private Optional<FieldSpec> mergeSets(FieldSpec left, FieldSpec right) {
-        DistributedSet<Object> set = new DistributedSet<>(left.getWhitelist().distributedSet().stream()
+        DistributedList<Object> set = new DistributedList<>(left.getWhitelist().distributedSet().stream()
             .flatMap(leftHolder -> right.getWhitelist().distributedSet().stream()
                 .filter(rightHolder -> elementsEqual(leftHolder, rightHolder))
                 .map(rightHolder -> mergeElements(leftHolder, rightHolder)))
-            .collect(Collectors.toSet()));
+            .collect(Collectors.toList()));
 
         return addNullable(left, right, setRestriction(left.getType(), set));
     }
@@ -71,10 +71,10 @@ public class FieldSpecMerger {
     }
 
     private Optional<FieldSpec> combineSetWithRestrictions(FieldSpec set, FieldSpec restrictions) {
-        DistributedSet<Object> newSet = new DistributedSet<>(
+        DistributedList<Object> newSet = new DistributedList<>(
             set.getWhitelist().distributedSet().stream()
                 .filter(holder -> restrictions.permits(holder.element()))
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toList()));
 
         return addNullable(set, restrictions, setRestriction(set.getType(), newSet));
     }
@@ -95,7 +95,7 @@ public class FieldSpecMerger {
         return (fieldSpec.getWhitelist() != null && fieldSpec.getWhitelist().isEmpty());
     }
 
-    private FieldSpec setRestriction(Types type, DistributedSet<Object> set) {
+    private FieldSpec setRestriction(Types type, DistributedList<Object> set) {
         return FieldSpec.fromType(type).withWhitelist(set);
     }
 

@@ -18,14 +18,12 @@ package com.scottlogic.deg.generator.generation;
 
 import com.google.common.collect.Iterators;
 import com.scottlogic.deg.generator.fieldspecs.FieldSpec;
-import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedSet;
-import com.scottlogic.deg.generator.generation.fieldvaluesources.CannedValuesFieldValueSource;
+import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
 import com.scottlogic.deg.generator.generation.fieldvaluesources.FieldValueSource;
 import com.scottlogic.deg.generator.generation.fieldvaluesources.NullOnlySource;
 import com.scottlogic.deg.generator.restrictions.*;
 import com.scottlogic.deg.generator.restrictions.linear.*;
 import org.junit.Assert;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -56,7 +54,7 @@ public class StandardFieldValueSourceEvaluatorTests {
     public void returnsNullSourceOnlyWithSetRestrictionWithEmptyWhitelist() {
         StandardFieldValueSourceEvaluator evaluator = new StandardFieldValueSourceEvaluator();
         FieldSpec fieldSpecMustBeNull = FieldSpec.fromType(STRING)
-            .withWhitelist((new DistributedSet<>(Collections.emptySet())));
+            .withWhitelist((new DistributedList<>(Collections.emptyList())));
 
         List<FieldValueSource> sources = evaluator.getFieldValueSources(fieldSpecMustBeNull);
 
@@ -78,7 +76,7 @@ public class StandardFieldValueSourceEvaluatorTests {
     public void shouldReturnNullSourceLastWithInSetRestrictionsAndNullNotDisallowed() {
         StandardFieldValueSourceEvaluator evaluator = new StandardFieldValueSourceEvaluator();
         FieldSpec fieldSpecInSetAndNullNotDisallowed = FieldSpec.fromType(NUMERIC)
-            .withWhitelist(DistributedSet.uniform(new HashSet<>(Arrays.asList(15, 25))));
+            .withWhitelist(DistributedList.uniform(new HashSet<>(Arrays.asList(15, 25))));
 
         List<FieldValueSource> sources = evaluator.getFieldValueSources(fieldSpecInSetAndNullNotDisallowed);
 
