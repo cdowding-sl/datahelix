@@ -18,6 +18,7 @@ package com.scottlogic.deg.generator.decisiontree.treepartitioning;
 
 import com.scottlogic.deg.common.profile.constraints.atomic.AtomicConstraint;
 import com.scottlogic.deg.common.profile.constraints.delayed.DelayedAtomicConstraint;
+import com.scottlogic.deg.common.profile.constraints.delayed.DelayedDateAtomicConstraint;
 import com.scottlogic.deg.generator.decisiontree.DecisionNode;
 
 import java.util.Objects;

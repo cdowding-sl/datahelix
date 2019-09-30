@@ -30,36 +30,36 @@ public class FieldRelationsFactory {
 
        switch (constraint.getUnderlyingConstraint()) {
            case IS_EQUAL_TO_CONSTANT:
-               return constructEqualToDate(constraint);
+               return constructEqualToDate((DelayedDateAtomicConstraint) constraint);
            case IS_BEFORE_CONSTANT_DATE_TIME:
-               return constructBeforeDate(constraint, false);
+               return constructBeforeDate((DelayedDateAtomicConstraint) constraint, false);
            case IS_BEFORE_OR_EQUAL_TO_CONSTANT_DATE_TIME:
-               return constructBeforeDate(constraint, true);
+               return constructBeforeDate((DelayedDateAtomicConstraint) constraint, true);
            case IS_AFTER_CONSTANT_DATE_TIME:
-               return constructAfterDate(constraint, false);
+               return constructAfterDate((DelayedDateAtomicConstraint) constraint, false);
            case IS_AFTER_OR_EQUAL_TO_CONSTANT_DATE_TIME:
-               return constructAfterDate(constraint, true);
+               return constructAfterDate((DelayedDateAtomicConstraint) constraint, true);
        }
 
        throw new IllegalArgumentException("Unsupported field spec relations: " + constraint.getUnderlyingConstraint());
 
    }
 
-   private FieldSpecRelations constructBeforeDate(DelayedAtomicConstraint constraint, boolean inclusive) {
+   private FieldSpecRelations constructBeforeDate(DelayedDateAtomicConstraint constraint, boolean inclusive) {
        return new BeforeDateRelation(
            constraint.getField(),
            constraint.getOtherField(),
            inclusive);
    }
 
-   private FieldSpecRelations constructAfterDate(DelayedAtomicConstraint constraint, boolean inclusive) {
+   private FieldSpecRelations constructAfterDate(DelayedDateAtomicConstraint constraint, boolean inclusive) {
        return new AfterDateRelation(
            constraint.getField(),
            constraint.getOtherField(),
            inclusive);
    }
 
-   private FieldSpecRelations constructEqualToDate(DelayedAtomicConstraint constraint) {
+   private FieldSpecRelations constructEqualToDate(DelayedDateAtomicConstraint constraint) {
        if (constraint.getOffsetUnit() != null) {
            return new EqualToOffsetDateRelation(
                constraint.getField(),

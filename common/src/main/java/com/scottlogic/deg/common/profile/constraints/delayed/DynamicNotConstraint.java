@@ -21,11 +21,11 @@ import com.scottlogic.deg.common.profile.Field;
 
 import java.util.Objects;
 
-public class DynamicNotConstraint extends DelayedAtomicConstraint {
+public class DynamicNotConstraint extends DelayedDateAtomicConstraint {
 
-    private final DelayedAtomicConstraint negatedConstraint;
+    private final DelayedDateAtomicConstraint negatedConstraint;
 
-    public DynamicNotConstraint(DelayedAtomicConstraint negatedConstraint) {
+    public DynamicNotConstraint(DelayedDateAtomicConstraint negatedConstraint) {
         super(negatedConstraint.getField(), negatedConstraint.getUnderlyingConstraint(), negatedConstraint.getOtherField());
         if (negatedConstraint instanceof DynamicNotConstraint) {
             throw new IllegalArgumentException("Nested DynamicNotConstraint not allowed");
