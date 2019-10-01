@@ -210,7 +210,7 @@ public class ConstraintValidationAndReadingTests {
         try {
             Object value = new AtomicConstraintValueReader(null).getValue(dto, types);
 
-            ConstraintValueValidator.validate(new Field(dto.field, types, false, null), type, value);
+            ConstraintValueValidator.validate(new Field(dto.field, types, false, null, false), type, value);
 
             Constraint constraint = AtomicConstraintFactory.create(type, createField(dto.field), value);
 
@@ -242,7 +242,7 @@ public class ConstraintValidationAndReadingTests {
     @MethodSource("numericOutOfBoundsOperandProvider")
     public void testAtomicConstraintReaderWithOutOfBoundValues(AtomicConstraintType type, ConstraintDTO dto) {
         Assertions.assertThrows(InvalidProfileException.class, () ->
-            ConstraintValueValidator.validate(new Field(dto.field, NUMERIC, false, null), type, dto.value));
+            ConstraintValueValidator.validate(new Field(dto.field, NUMERIC, false, null, false), type, dto.value));
     }
 
     @DisplayName("Should pass when string lengths have an integer operand")
@@ -342,7 +342,7 @@ public class ConstraintValidationAndReadingTests {
         dateDto.value = value;
 
         Object val = new AtomicConstraintValueReader(null).getValue(dateDto, DATETIME);
-        ConstraintValueValidator.validate(new Field("test", DATETIME, false, null), IS_AFTER_CONSTANT_DATE_TIME, val);
+        ConstraintValueValidator.validate(new Field("test", DATETIME, false, null, false), IS_AFTER_CONSTANT_DATE_TIME, val);
 
         return (OffsetDateTime)val;
     }

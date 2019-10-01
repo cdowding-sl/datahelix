@@ -22,10 +22,13 @@ import com.scottlogic.deg.common.profile.Field;
 import com.scottlogic.deg.common.profile.constraints.Constraint;
 import com.scottlogic.deg.common.profile.ProfileFields;
 import com.scottlogic.deg.common.profile.constraints.delayed.DelayedAtomicConstraint;
+import com.scottlogic.deg.common.profile.constraints.delayed.DelayedDateAtomicConstraint;
+import com.scottlogic.deg.common.profile.constraints.delayed.DelayedInMapAtomicConstraint;
 import com.scottlogic.deg.common.profile.constraints.grammatical.AndConstraint;
 import com.scottlogic.deg.common.profile.constraints.grammatical.ConditionalConstraint;
 import com.scottlogic.deg.common.profile.constraints.grammatical.OrConstraint;
 import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
+import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
 import com.scottlogic.deg.profile.dto.ConstraintDTO;
 import com.scottlogic.deg.profile.reader.atomic.AtomicConstraintValueReader;
 import com.scottlogic.deg.profile.reader.atomic.AtomicConstraintFactory;
@@ -64,6 +67,11 @@ public class MainConstraintReader {
             }
 
             AtomicConstraintType atomicConstraintType = AtomicConstraintType.fromText((String) dto.is);
+
+            if (atomicConstraintType == AtomicConstraintType.IS_IN_MAP) {
+                return createInMapAtomicConstraint(dto, fields);
+            }
+
             Field field = fields.getByName(dto.field);
 
             Object value = atomicConstraintValueReader.getValue(dto, field.type);
@@ -113,8 +121,18 @@ public class MainConstraintReader {
         throw new InvalidProfileException("Couldn't interpret constraint");
     }
 
+    private DelayedAtomicConstraint createInMapAtomicConstraint(ConstraintDTO dto, ProfileFields fields) {
+        Field field = fields.getByName(dto.file);
+        Field otherField = fields.getByName(dto.field);
+        return new DelayedInMapAtomicConstraint(
+            field,
+            AtomicConstraintType.IS_IN_MAP,
+            otherField,
+            (DistributedList<String>) atomicConstraintValueReader.getValue(dto, field.type));
+    }
+
     private DelayedAtomicConstraint createDelayedAtomicConstraint(ConstraintDTO dto, ProfileFields fields) {
-        return new DelayedAtomicConstraint(
+        return new DelayedDateAtomicConstraint(
             fields.getByName(dto.field),
             AtomicConstraintType.fromText((String) dto.is),
             fields.getByName(dto.otherField),

@@ -39,6 +39,8 @@ public class FieldRelationsFactory {
                return constructAfterDate((DelayedDateAtomicConstraint) constraint, false);
            case IS_AFTER_OR_EQUAL_TO_CONSTANT_DATE_TIME:
                return constructAfterDate((DelayedDateAtomicConstraint) constraint, true);
+           case IS_IN_MAP:
+               return constructInMap((DelayedInMapAtomicConstraint) constraint);
        }
 
        throw new IllegalArgumentException("Unsupported field spec relations: " + constraint.getUnderlyingConstraint());
@@ -72,4 +74,8 @@ public class FieldRelationsFactory {
                constraint.getOtherField());
        }
    }
+
+    private FieldSpecRelations constructInMap(DelayedInMapAtomicConstraint constraint) {
+        return new InMapRelation(constraint.getField(), constraint.getOtherField(), constraint.getUnderlyingList());
+    }
 }

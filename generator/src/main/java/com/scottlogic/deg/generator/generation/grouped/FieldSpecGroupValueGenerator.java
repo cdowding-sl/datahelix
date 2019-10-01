@@ -23,11 +23,15 @@ import com.scottlogic.deg.generator.fieldspecs.FieldSpec;
 import com.scottlogic.deg.generator.fieldspecs.FieldSpecGroup;
 import com.scottlogic.deg.generator.fieldspecs.FieldSpecMerger;
 import com.scottlogic.deg.generator.fieldspecs.relations.FieldSpecRelations;
+import com.scottlogic.deg.generator.fieldspecs.relations.InMapRelation;
 import com.scottlogic.deg.generator.generation.FieldPair;
 import com.scottlogic.deg.generator.generation.FieldSpecValueGenerator;
 import com.scottlogic.deg.generator.generation.databags.*;
+import com.scottlogic.deg.generator.restrictions.linear.Limit;
+import com.scottlogic.deg.generator.restrictions.linear.LinearRestrictionsFactory;
 import com.scottlogic.deg.generator.utils.SetUtils;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -44,15 +48,80 @@ public class FieldSpecGroupValueGenerator {
     }
 
     public Stream<DataBag> generate(FieldSpecGroup group) {
-        Field first = SetUtils.firstIteratorElement(group.fieldSpecs().keySet());
+        if(group.relations().stream().allMatch(fieldSpecRelations -> fieldSpecRelations instanceof InMapRelation)) {
+            return getInMapDataBagStream(group);
+        } else {
+            Field first = SetUtils.firstIteratorElement(group.fieldSpecs().keySet());
 
-        FieldSpecGroup groupRespectingFirstField = initialAdjustments(first, group);
-        FieldSpec firstSpec = groupRespectingFirstField.fieldSpecs().get(first);
+            FieldSpecGroup groupRespectingFirstField = initialAdjustments(first, group);
+            FieldSpec firstSpec = groupRespectingFirstField.fieldSpecs().get(first);
 
-        Stream<DataBag> firstDataBagValues = underlyingGenerator.generate(first, firstSpec)
-            .map(value -> toDataBag(first, value));
+            Stream<DataBag> firstDataBagValues = underlyingGenerator.generate(first, firstSpec)
+                .map(value -> toDataBag(first, value));
 
-        return createRemainingDataBags(firstDataBagValues, first, groupRespectingFirstField);
+            return createRemainingDataBags(firstDataBagValues, first, groupRespectingFirstField);
+        }
+    }
+
+    private Stream<DataBag> getInMapDataBagStream(FieldSpecGroup group) {
+        Set<Field> controllers = group.relations().stream()
+            .map(FieldSpecRelations::main)
+            .collect(Collectors.toSet());
+
+        if(controllers.size() > 1) {
+            throw new UnsupportedOperationException("related inMap contraints are not supported");
+        }
+
+        Field controller = (Field) controllers.toArray()[0];
+        FieldSpec controllerSpec = getInMapControllerFieldSpec(controller, new ArrayList<>(group.relations()), group.fieldSpecs());
+
+        //output data
+        Stream<DataBag> index = underlyingGenerator.generate(controller, controllerSpec)
+            .map(value -> toDataBag(controller, value));
+
+        // TODO work out how nullable is meant to work here
+        return index.map(indexes ->
+            group.relations().stream()
+                .collect(Collectors.toMap(
+                        FieldSpecRelations::other,
+                        fieldSpecRelations ->
+                            new DataBagValue(
+                                ((InMapRelation) fieldSpecRelations)
+                                    .getUnderlyingList()
+                                    .distributedSet()
+                                    .get(((BigDecimal) indexes.getDataBagValue(controller).getValue()).intValue())
+                                    .element())
+                       ))
+            ).map(DataBag::new);
+    }
+
+    private FieldSpec getInMapControllerFieldSpec(Field controller, ArrayList<FieldSpecRelations> relations, Map<Field, FieldSpec> fieldSpecMap) {
+        FieldSpec controllerSpec = fieldSpecMap.get(controller);
+
+        int setSize = ((InMapRelation)relations.get(0)).getUnderlyingList().distributedSet().size();
+
+        controllerSpec = controllerSpec.withRestrictions(LinearRestrictionsFactory.createNumericRestrictions(
+            new Limit<>(new BigDecimal(0), true),
+            new Limit<>(new BigDecimal(setSize), false),
+            0
+        ));
+
+        for (FieldSpecRelations relation: relations) {
+            InMapRelation rel = (InMapRelation)relation;
+            FieldSpec testing = fieldSpecMap.get(rel.other());
+            for (int i = 0; i < setSize; i++) {
+                if (controllerSpec.getBlacklist().contains(new BigDecimal(i))) {
+                    continue;
+                }
+                String testingElement = rel.getUnderlyingList().distributedSet().get(i).element();
+                if (!testing.permits(testingElement)) {
+                    Set<Object> newBlackList = new HashSet<>(controllerSpec.getBlacklist());
+                    newBlackList.add(new BigDecimal(i));
+                    controllerSpec = controllerSpec.withBlacklist(newBlackList);
+                }
+            }
+        }
+        return controllerSpec;
     }
 
     private static DataBag toDataBag(Field field, DataBagValue value) {

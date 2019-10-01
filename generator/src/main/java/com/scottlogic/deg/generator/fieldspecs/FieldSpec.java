@@ -19,9 +19,11 @@ package com.scottlogic.deg.generator.fieldspecs;
 import com.scottlogic.deg.common.profile.Types;
 
 import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
+import com.scottlogic.deg.generator.fieldspecs.whitelist.WeightedElement;
 import com.scottlogic.deg.generator.restrictions.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Details a column's atomic constraints
@@ -125,6 +127,13 @@ public class FieldSpec {
 
         if (restrictions != null && !restrictions.match(value)) {
             return false;
+        }
+
+        if (whitelist != null) {
+            List<Object> whitelistValues = whitelist.distributedSet().stream()
+                .map(WeightedElement::element)
+                .collect(Collectors.toList());
+            return whitelistValues.contains(value);
         }
 
         return true;
