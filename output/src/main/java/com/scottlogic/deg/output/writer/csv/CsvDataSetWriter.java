@@ -52,6 +52,7 @@ class CsvDataSetWriter implements DataSetWriter {
             .withEscape('\0') //Dont escape any character, we're formatting strings ourselves
             .withQuoteMode(QuoteMode.NONE)
             .withHeader(fields.stream()
+                .filter(field -> !field.isInternal())
                 .map(f -> f.name)
                 .toArray(String[]::new))
             .print(outputStreamAsAppendable);
