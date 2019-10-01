@@ -22,17 +22,23 @@ public class Field {
     public final String name;
     public final Types type;
     private final boolean unique;
+    private final boolean internalOnly;
     private final String formatting;
 
-    public Field(String name, Types type, Boolean unique, String formatting) {
+    public Field(String name, Types type, Boolean unique, String formatting, Boolean internalOnly) {
         this.name = name;
         this.type = type;
         this.unique = unique;
         this.formatting = formatting;
+        this.internalOnly = internalOnly;
     }
 
     public boolean isUnique() {
         return unique;
+    }
+
+    public boolean isInternal() {
+        return internalOnly;
     }
 
     @Override

@@ -21,6 +21,6 @@ public class FieldBuilder {
         return createField(name, Types.STRING);
     }
     public static Field createField(String name, Types type) {
-        return new Field(name, type, false, null);
+        return new Field(name, type, false, null, false);
     }
 }

@@ -62,6 +62,7 @@ class CsvDataSetWriter implements DataSetWriter {
     @Override
     public void writeRow(GeneratedObject row) throws IOException {
         csvPrinter.printRecord(fieldOrder.stream()
+                .filter(field -> !field.isInternal())
                 .map(row::getFormattedValue)
                 .map(CsvDataSetWriter::wrapInQuotesIfString)
                 .collect(Collectors.toList()));
