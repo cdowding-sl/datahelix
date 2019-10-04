@@ -16,6 +16,8 @@
 
 package com.scottlogic.deg.profile.dtos;
 
+import com.scottlogic.deg.profile.dtos.fields.FieldDTO;
+
 import java.util.Collection;
 
 public class ProfileDTO

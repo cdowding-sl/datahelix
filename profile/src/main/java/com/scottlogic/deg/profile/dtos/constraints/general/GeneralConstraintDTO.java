@@ -25,4 +25,10 @@ public abstract class GeneralConstraintDTO extends ConstraintDTO
     {
         super(type);
     }
+
+    @Override
+    public boolean hasDependency()
+    {
+        return false;
+    }
 }

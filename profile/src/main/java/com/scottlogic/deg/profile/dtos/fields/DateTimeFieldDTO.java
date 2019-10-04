@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-package com.scottlogic.deg.profile.dtos.constraints.textual;
+package com.scottlogic.deg.profile.dtos.fields;
 
-import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
-import com.scottlogic.deg.profile.dtos.constraints.ConstraintType;
+import com.scottlogic.deg.common.profile.DataType;
 
-public abstract class TextualConstraintDTO extends ConstraintDTO
+public class DateTimeFieldDTO extends FieldDTO
 {
-    TextualConstraintDTO(ConstraintType type)
+    public DateTimeFieldDTO()
     {
-        super(type);
-    }
-
-    @Override
-    public boolean hasDependency()
-    {
-        return false;
+        super(DataType.DATETIME);
     }
 }

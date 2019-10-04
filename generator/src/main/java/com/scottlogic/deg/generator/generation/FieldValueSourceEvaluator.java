@@ -16,7 +16,7 @@
 
 package com.scottlogic.deg.generator.generation;
 
-import com.scottlogic.deg.common.profile.Types;
+import com.scottlogic.deg.common.profile.DataType;
 import com.scottlogic.deg.generator.fieldspecs.FieldSpec;
 import com.scottlogic.deg.generator.generation.fieldvaluesources.*;
 import com.scottlogic.deg.generator.generation.fieldvaluesources.datetime.DateTimeFieldValueSource;
@@ -36,7 +36,7 @@ import static com.scottlogic.deg.generator.utils.Defaults.*;
 public class FieldValueSourceEvaluator {
     private static final FieldValueSource NULL_ONLY_SOURCE = new NullOnlySource();
 
-    public FieldValueSource getFieldValueSources(Types type, FieldSpec fieldSpec){
+    public FieldValueSource getFieldValueSources(DataType type, FieldSpec fieldSpec){
 
         Optional<FieldValueSource> source = getSource(type, fieldSpec);
 
@@ -52,7 +52,7 @@ public class FieldValueSourceEvaluator {
         return new NullAppendingValueSource(source.get());
     }
 
-    private Optional<FieldValueSource> getSource(Types type, FieldSpec fieldSpec) {
+    private Optional<FieldValueSource> getSource(DataType type, FieldSpec fieldSpec) {
         if (fieldSpec.getWhitelist() != null){
             if (fieldSpec.getWhitelist().isEmpty()){
                 return Optional.empty();
@@ -64,7 +64,7 @@ public class FieldValueSourceEvaluator {
         return Optional.of(getRestrictionSource(type, fieldSpec));
     }
 
-    private FieldValueSource getRestrictionSource(Types type, FieldSpec fieldSpec) {
+    private FieldValueSource getRestrictionSource(DataType type, FieldSpec fieldSpec) {
         switch (type) {
             case DATETIME:
                 return getDateTimeSource(fieldSpec);

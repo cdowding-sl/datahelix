@@ -2,7 +2,7 @@ package com.scottlogic.deg.profile.reader.atomic;
 
 import com.google.inject.Inject;
 import com.scottlogic.deg.common.ValidationException;
-import com.scottlogic.deg.common.profile.Types;
+import com.scottlogic.deg.common.profile.DataType;
 import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
 import com.scottlogic.deg.common.util.NumberUtils;
 import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
@@ -26,7 +26,7 @@ public class AtomicConstraintValueReader {
     }
 
 
-    public Object getValue(ConstraintDTO dto, Types type){
+    public Object getValue(ConstraintDTO dto, DataType type){
         try {
             return tryGetValue(dto, type);
         } catch (IllegalArgumentException | ValidationException e){
@@ -34,7 +34,7 @@ public class AtomicConstraintValueReader {
         }
     }
 
-    private Object tryGetValue(ConstraintDTO dto, Types type){
+    private Object tryGetValue(ConstraintDTO dto, DataType type){
         if (dto.values != null){
             return getSet(dto.values, type);
         }
@@ -50,7 +50,7 @@ public class AtomicConstraintValueReader {
         return getValue(dto.value, type);
     }
 
-    private DistributedList getSet(Collection<Object> values, Types type) {
+    private DistributedList getSet(Collection<Object> values, DataType type) {
         List collect = values.stream()
             .map(val -> getValue(val, type))
             .distinct()
@@ -58,11 +58,11 @@ public class AtomicConstraintValueReader {
         return DistributedList.uniform(collect);
     }
 
-    private Object getValue(Object value, Types type) {
+    private Object getValue(Object value, DataType type) {
         if (value instanceof Map){
             return getDate((Map) value);
         }
-        if (type == Types.NUMERIC){
+        if (type == DataType.NUMERIC){
             return getBigDecimal(value);
         }
 
@@ -71,12 +71,7 @@ public class AtomicConstraintValueReader {
 
     private Object getBigDecimal(Object value) {
         BigDecimal bigDecimal = NumberUtils.coerceToBigDecimal(value);
-
-        if (bigDecimal == null){
-            return value;
-        }
-
-        return bigDecimal;
+        return bigDecimal == null ? value : bigDecimal;
     }
 
 

@@ -1,13 +1,10 @@
 package com.scottlogic.deg.generator.fieldspecs.relations;
 
 import com.scottlogic.deg.common.profile.Field;
-import com.scottlogic.deg.common.profile.Types;
+import com.scottlogic.deg.common.profile.DataType;
 import com.scottlogic.deg.common.profile.constraintdetail.Timescale;
 import com.scottlogic.deg.generator.fieldspecs.FieldSpec;
-import com.scottlogic.deg.generator.restrictions.linear.Limit;
 import com.scottlogic.deg.generator.restrictions.linear.LinearRestrictions;
-import com.scottlogic.deg.generator.restrictions.linear.LinearRestrictionsFactory;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
@@ -21,8 +18,8 @@ import static com.shazam.shazamcrest.MatcherAssert.assertThat;
 import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
 
 class FieldSpecRelationsTest {
-    private Field main = createField("main", Types.DATETIME);
-    private Field other = createField("other", Types.DATETIME);
+    private Field main = createField("main", DataType.DATETIME);
+    private Field other = createField("other", DataType.DATETIME);
 
     @Test
     public void equalTo_exactValue_returnsSame(){

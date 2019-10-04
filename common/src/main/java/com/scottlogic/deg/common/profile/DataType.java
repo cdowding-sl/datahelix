@@ -3,14 +3,15 @@ package com.scottlogic.deg.common.profile;
 import java.time.OffsetDateTime;
 import java.util.function.Function;
 
-public enum Types {
+public enum DataType
+{
     NUMERIC(o -> o instanceof Number),
     STRING(o -> o instanceof String),
     DATETIME(o -> o instanceof OffsetDateTime);
 
     private final Function<Object, Boolean> isInstanceOf;
 
-    Types(final Function<Object, Boolean> isInstanceOf) {
+    DataType(final Function<Object, Boolean> isInstanceOf) {
         this.isInstanceOf = isInstanceOf;
     }
 

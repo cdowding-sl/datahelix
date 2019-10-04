@@ -29,4 +29,10 @@ public abstract class ChronologicalConstraintDTO extends ConstraintDTO
     {
         super(type);
     }
+
+    @Override
+    public boolean hasDependency()
+    {
+        return otherField != null;
+    }
 }

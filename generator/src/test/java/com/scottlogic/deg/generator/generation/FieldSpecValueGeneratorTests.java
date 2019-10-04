@@ -17,7 +17,7 @@
 package com.scottlogic.deg.generator.generation;
 
 import com.scottlogic.deg.common.profile.Field;
-import com.scottlogic.deg.common.profile.Types;
+import com.scottlogic.deg.common.profile.DataType;
 import com.scottlogic.deg.generator.fieldspecs.FieldSpec;
 import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
 import com.scottlogic.deg.generator.generation.databags.DataBagValue;
@@ -35,8 +35,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.scottlogic.deg.common.profile.FieldBuilder.createField;
-import static com.scottlogic.deg.common.profile.Types.NUMERIC;
-import static com.scottlogic.deg.common.profile.Types.STRING;
+import static com.scottlogic.deg.common.profile.DataType.NUMERIC;
+import static com.scottlogic.deg.common.profile.DataType.STRING;
 import static com.scottlogic.deg.generator.config.detail.DataGenerationType.*;
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
 import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
@@ -121,7 +121,7 @@ class FieldSpecValueGeneratorTests {
                 randomNumberGenerator
             );
 
-            fieldSpecFulfiller.generate(new Field(null, Types.STRING, true, null, false), fieldSpec).collect(Collectors.toSet());
+            fieldSpecFulfiller.generate(new Field(null, DataType.STRING, true, null, false), fieldSpec).collect(Collectors.toSet());
 
             verify(fieldValueSource, times(1)).generateAllValues();
             verify(fieldValueSource, times(0)).generateInterestingValues();

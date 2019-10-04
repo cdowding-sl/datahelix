@@ -4,20 +4,18 @@ import com.scottlogic.deg.common.ValidationException;
 import com.scottlogic.deg.common.profile.Field;
 import com.scottlogic.deg.common.profile.constraintdetail.ParsedDateGranularity;
 import com.scottlogic.deg.common.profile.constraintdetail.ParsedGranularity;
-import com.scottlogic.deg.common.profile.Types;
+import com.scottlogic.deg.common.profile.DataType;
 import com.scottlogic.deg.common.util.Defaults;
 import com.scottlogic.deg.common.util.NumberUtils;
 import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
 import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
 import com.scottlogic.deg.profile.reader.InvalidProfileException;
-
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.regex.Pattern;
-
 import static com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType.IS_GRANULAR_TO;
 import static com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType.IS_NULL;
-import static com.scottlogic.deg.common.profile.Types.*;
+import static com.scottlogic.deg.common.profile.DataType.*;
 
 public class ConstraintValueValidator {
 
@@ -86,7 +84,7 @@ public class ConstraintValueValidator {
         }
     }
 
-    private static void validateTypeIs(Field field, AtomicConstraintType type, Types s) {
+    private static void validateTypeIs(Field field, AtomicConstraintType type, DataType s) {
         if (field.type == null){
             throw new ValidationException("is not typed; add its type to the field definition");
         }

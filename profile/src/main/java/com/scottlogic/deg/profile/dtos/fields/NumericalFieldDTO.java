@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package com.scottlogic.deg.profile.dtos;
+package com.scottlogic.deg.profile.dtos.fields;
 
-public class FieldDTO {
-    public String name;
-    public String type;
-    public String formatting;
-    public boolean unique;
-    public boolean nullable = true;
+import com.scottlogic.deg.common.profile.DataType;
+
+public class NumericalFieldDTO extends FieldDTO
+{
+    public NumericalFieldDTO()
+    {
+        super(DataType.NUMERIC);
+    }
 }

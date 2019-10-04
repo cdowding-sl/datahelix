@@ -48,7 +48,7 @@ public class CucumberProfileReader implements ProfileReader {
 
     private Profile getProfile() {
         try {
-            MainConstraintReader constraintReader = new MainConstraintReader(new AtomicConstraintValueReader(new FromFileReader("")));
+            ConstraintReader constraintReader = new ConstraintReader(new AtomicConstraintValueReader(new FromFileReader("")));
             ProfileFields profileFields = new ProfileFields(state.profileFields);
             AtomicBoolean exceptionInMapping = new AtomicBoolean();
 

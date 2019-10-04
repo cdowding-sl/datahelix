@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.scottlogic.deg.common.profile.Types.*;
+import static com.scottlogic.deg.common.profile.DataType.*;
 import static com.scottlogic.deg.common.util.Defaults.*;
 import static org.hamcrest.Matchers.*;
 import static com.scottlogic.deg.common.profile.FieldBuilder.createField;

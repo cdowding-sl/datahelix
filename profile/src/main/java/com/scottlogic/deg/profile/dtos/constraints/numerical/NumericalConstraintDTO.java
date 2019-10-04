@@ -25,4 +25,10 @@ public abstract class NumericalConstraintDTO extends ConstraintDTO
     {
         super(type);
     }
+
+    @Override
+    public boolean hasDependency()
+    {
+        return false;
+    }
 }

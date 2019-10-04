@@ -21,19 +21,17 @@ import com.google.inject.name.Named;
 import com.scottlogic.deg.common.profile.*;
 import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
 import com.scottlogic.deg.common.profile.constraints.Constraint;
-import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
 import com.scottlogic.deg.profile.dtos.ProfileDTO;
 import com.scottlogic.deg.profile.serialisation.ProfileSerialiser;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.scottlogic.deg.profile.reader.atomic.AtomicConstraintFactory.create;
-import static com.scottlogic.deg.profile.reader.atomic.ConstraintReaderHelpers.getFieldType;
 
 /**
  * JsonProfileReader is responsible for reading and validating a profile from a path to a profile JSON file.
@@ -42,10 +40,10 @@ import static com.scottlogic.deg.profile.reader.atomic.ConstraintReaderHelpers.g
 public class JsonProfileReader implements ProfileReader
 {
     private final File profileFile;
-    private final MainConstraintReader mainConstraintReader;
+    private final ConstraintReader mainConstraintReader;
 
     @Inject
-    public JsonProfileReader(@Named("config:profileFile") File profileFile, MainConstraintReader mainConstraintReader)
+    public JsonProfileReader(@Named("config:profileFile") File profileFile, ConstraintReader mainConstraintReader)
     {
         this.profileFile = profileFile;
         this.mainConstraintReader = mainConstraintReader;
@@ -58,69 +56,47 @@ public class JsonProfileReader implements ProfileReader
         return read(profileJson);
     }
 
-    public Profile read(String profileJson) throws IOException {
+    public Profile read(String profileJson) throws IOException
+    {
         ProfileDTO profileDto = new ProfileSerialiser().deserialise(profileJson);
         if (profileDto.fields == null) throw new InvalidProfileException("Profile is invalid: 'fields' have not been defined.");
         if (profileDto.rules == null) throw new InvalidProfileException("Profile is invalid: 'rules' have not been defined.");
 
-        //This is the types of the field that have not been set by the field def
-        Map<String, String> fieldTypes = getTypesFromConstraints(profileDto);
-
         ProfileFields profileFields = new ProfileFields(profileDto.fields.stream()
-                .map(fDto -> new Field(fDto.name, getFieldType(fieldTypes.getOrDefault(fDto.name, fDto.type)), fDto.unique, fDto.formatting,false))
+                .map(fieldDTO -> new Field(fieldDTO.name, fieldDTO.getDataType(), fieldDTO.unique, fieldDTO.formatting, false))
                 .collect(Collectors.toList()));
 
-        Collection<Rule> rules = profileDto.rules.stream().map(
-            r -> {
-                if (r.constraints.isEmpty()) {
-                    throw new InvalidProfileException("Profile is invalid: unable to find 'constraints' for rule: " + r.rule);
-                }
-                RuleInformation constraintRule = new RuleInformation(r.rule);
-                return new Rule(constraintRule, mainConstraintReader.getSubConstraints(profileFields, r.constraints));
-            }).collect(Collectors.toList());
+        Collection<Rule> rules = profileDto.rules.stream().map(r ->
+        {
+            if (r.constraints.isEmpty()) throw new InvalidProfileException("Profile is invalid: unable to find 'constraints' for rule: " + r.rule);
+            RuleInformation ruleInformation = new RuleInformation(r.rule);
+            return new Rule(ruleInformation, mainConstraintReader.getSubConstraints(profileFields, r.constraints));
+        }).collect(Collectors.toList());
 
 
         // add nullable
         Collection<Constraint> nullableRules = profileDto.fields.stream()
-            .filter(fieldDTO -> !fieldDTO.nullable)
-            .map(fieldDTO -> create(AtomicConstraintType.IS_NULL, profileFields.getByName(fieldDTO.name), null).negate())
-            .collect(Collectors.toList());
+                .filter(fieldDTO -> !fieldDTO.nullable)
+                .map(fieldDTO -> create(AtomicConstraintType.IS_NULL, profileFields.getByName(fieldDTO.name), null).negate())
+                .collect(Collectors.toList());
 
-        if (nullableRules.size() > 0) {
+        if (nullableRules.size() > 0)
+        {
             rules.add(new Rule(new RuleInformation("nullable-rules"), nullableRules));
         }
 
         // add types
         Collection<Constraint> typeRules = profileDto.fields.stream()
-            .filter(fieldDTO -> fieldDTO.type != null )
-            .map(fieldDTO -> create(AtomicConstraintType.IS_OF_TYPE, profileFields.getByName(fieldDTO.name), fieldDTO.type))
-            .filter(constraint -> !(constraint instanceof RemoveFromTree))
-            .collect(Collectors.toList());
+                .filter(fieldDTO -> fieldDTO.getDataType() != null)
+                .map(fieldDTO -> create(AtomicConstraintType.IS_OF_TYPE, profileFields.getByName(fieldDTO.name), fieldDTO.getDataType()))
+                .filter(constraint -> !(constraint instanceof RemoveFromTree))
+                .collect(Collectors.toList());
 
-        if (typeRules.size() > 0) {
+        if (typeRules.size() > 0)
+        {
             rules.add(new Rule(new RuleInformation("type-rules"), typeRules));
         }
 
         return new Profile(profileFields, rules, profileDto.description);
-    }
-    private Map<String, String> getTypesFromConstraints(ProfileDTO profileDto) {
-        return getTopLevelConstraintsOfType(profileDto, AtomicConstraintType.IS_OF_TYPE.getText())
-            .collect(Collectors.toMap(
-                constraintDTO -> constraintDTO.field,
-                constraintDTO -> (String)constraintDTO.value,
-                (a, b) -> a
-            ));
-    }
-
-    private Stream<ConstraintDTO> getTopLevelConstraintsOfType(ProfileDTO profileDto, String constraint) {
-        return profileDto.rules.stream()
-            .flatMap(ruleDTO -> ruleDTO.constraints.stream())
-            .flatMap(this::getConstraintOrAllOfConstraints)
-            .filter(constraintDTO -> constraintDTO.is != null)
-            .filter(constraintDTO -> constraintDTO.is.equals(constraint));
-    }
-
-    private Stream<ConstraintDTO> getConstraintOrAllOfConstraints(ConstraintDTO constraintDTO) {
-        return constraintDTO.allOf != null ? constraintDTO.allOf.stream() : Stream.of(constraintDTO);
     }
 }

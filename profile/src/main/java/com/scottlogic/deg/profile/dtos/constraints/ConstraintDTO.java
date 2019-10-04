@@ -16,8 +16,6 @@
 
 package com.scottlogic.deg.profile.dtos.constraints;
 
-import java.util.Collection;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.scottlogic.deg.profile.dtos.constraints.chronological.*;
@@ -49,14 +47,6 @@ public abstract class ConstraintDTO
 {
     private final ConstraintType type;
     public String field;
-    public ConstraintDTO not;
-    public Collection<ConstraintDTO> anyOf;
-    public Collection<ConstraintDTO> allOf;
-    @JsonProperty("if")
-    public ConstraintDTO if_;
-    public ConstraintDTO then;
-    @JsonProperty("else")
-    public ConstraintDTO else_;
 
     protected ConstraintDTO(ConstraintType type)
     {
@@ -67,4 +57,6 @@ public abstract class ConstraintDTO
     {
         return type;
     }
+
+    public abstract boolean hasDependency();
 }

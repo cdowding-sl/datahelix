@@ -19,7 +19,7 @@ package com.scottlogic.deg.orchestrator.cucumber.testframework.utils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scottlogic.deg.common.profile.Field;
-import com.scottlogic.deg.common.profile.Types;
+import com.scottlogic.deg.common.profile.DataType;
 import com.scottlogic.deg.generator.config.detail.CombinationStrategyType;
 import com.scottlogic.deg.generator.config.detail.DataGenerationType;
 import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
@@ -182,7 +182,7 @@ public class CucumberTestState {
         profileFields.add(newField);
     }
 
-    public void setFieldType(String fieldName, Types types) {
+    public void setFieldType(String fieldName, DataType types) {
         Field oldField = profileFields.stream()
             .filter(f -> f.name.equals(fieldName))
             .findFirst()

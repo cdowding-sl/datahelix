@@ -20,12 +20,12 @@ import java.util.Objects;
 
 public class Field {
     public final String name;
-    public final Types type;
+    public final DataType type;
     private final boolean unique;
     private final String formatting;
     private final boolean internal;
 
-    public Field(String name, Types type, boolean unique, String formatting, boolean internal) {
+    public Field(String name, DataType type, boolean unique, String formatting, boolean internal) {
         this.name = name;
         this.type = type;
         this.unique = unique;
@@ -39,6 +39,14 @@ public class Field {
 
     public boolean isUnique() {
         return unique;
+    }
+
+    public String getFormatting() {
+        return formatting;
+    }
+
+    public DataType getType() {
+        return type;
     }
 
     @Override
@@ -60,14 +68,6 @@ public class Field {
     @Override
     public int hashCode() {
         return Objects.hash(name, unique, formatting, type);
-    }
-
-    public String getFormatting() {
-        return formatting;
-    }
-
-    public Types getType() {
-        return type;
     }
 
 }

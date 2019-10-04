@@ -29,4 +29,10 @@ public class EqualToConstraintDTO extends GeneralConstraintDTO
     {
         super(ConstraintType.EQUAL_TO);
     }
+
+    @Override
+    public boolean hasDependency()
+    {
+        return otherField != null;
+    }
 }

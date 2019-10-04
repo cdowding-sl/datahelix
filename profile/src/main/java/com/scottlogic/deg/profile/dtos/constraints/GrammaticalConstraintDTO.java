@@ -14,16 +14,25 @@
  * limitations under the License.
  */
 
-package com.scottlogic.deg.profile.dtos.constraints.textual;
+package com.scottlogic.deg.profile.dtos.constraints;
 
-import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
-import com.scottlogic.deg.profile.dtos.constraints.ConstraintType;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Collection;
 
-public abstract class TextualConstraintDTO extends ConstraintDTO
+public class GrammaticalConstraintDTO extends ConstraintDTO
 {
-    TextualConstraintDTO(ConstraintType type)
+    public GrammaticalConstraintDTO not;
+    public Collection<GrammaticalConstraintDTO> anyOf;
+    public Collection<GrammaticalConstraintDTO> allOf;
+    @JsonProperty("if")
+    public GrammaticalConstraintDTO if_;
+    public GrammaticalConstraintDTO then;
+    @JsonProperty("else")
+    public GrammaticalConstraintDTO else_;
+
+    public GrammaticalConstraintDTO()
     {
-        super(type);
+        super(ConstraintType.GRAMMATICAL);
     }
 
     @Override

@@ -18,5 +18,6 @@ public enum ConstraintType
     AFTER,
     AFTER_OR_AT,
     BEFORE,
-    BEFORE_OR_AT
+    BEFORE_OR_AT,
+    GRAMMATICAL
 }
