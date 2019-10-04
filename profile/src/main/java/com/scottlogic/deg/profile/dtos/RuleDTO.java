@@ -14,19 +14,12 @@
  * limitations under the License.
  */
 
-package com.scottlogic.deg.profile.dto;
-
-import org.junit.jupiter.api.DynamicTest;
-import org.junit.jupiter.api.TestFactory;
+package com.scottlogic.deg.profile.dtos;
 
 import java.util.Collection;
 
-class ProfileSchemaValidatorMedeiaTests extends ProfileSchemaValidatorTests {
-
-    private ProfileSchemaValidator profileValidator = new ProfileSchemaValidatorMedeia();
-
-    @Override
-    protected ProfileSchemaValidator setValidator() {
-        return profileValidator;
-    }
+public class RuleDTO
+{
+    public String rule;
+    public Collection<ConstraintDTO> constraints;
 }

@@ -13,11 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.scottlogic.deg.profile.dto;
+
+package com.scottlogic.deg.profile.serialisation;
 
 import java.io.IOException;
-import java.net.URL;
 
-public interface SchemaVersionValidator {
-    URL getSchemaFile() throws IOException;
+public interface ISerialiser<TDto>
+{
+    String serialise(TDto dto) throws IOException;
+    TDto deserialise(String json) throws IOException;
 }
+

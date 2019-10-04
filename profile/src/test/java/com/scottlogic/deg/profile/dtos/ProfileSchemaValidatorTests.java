@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package com.scottlogic.deg.profile.dto;
+package com.scottlogic.deg.profile.dtos;
 
 import com.scottlogic.deg.common.ValidationException;
+import com.scottlogic.deg.profile.services.ProfileSchemaValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.leadpony.justify.api.JsonSchema;

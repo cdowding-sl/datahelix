@@ -17,10 +17,10 @@
 package com.scottlogic.deg.profile;
 
 import com.scottlogic.deg.profile.serialisation.ProfileSerialiser;
-import com.scottlogic.deg.profile.dto.ConstraintDTO;
-import com.scottlogic.deg.profile.dto.FieldDTO;
-import com.scottlogic.deg.profile.dto.RuleDTO;
-import com.scottlogic.deg.profile.dto.ProfileDTO;
+import com.scottlogic.deg.profile.dtos.ConstraintDTO;
+import com.scottlogic.deg.profile.dtos.FieldDTO;
+import com.scottlogic.deg.profile.dtos.RuleDTO;
+import com.scottlogic.deg.profile.dtos.ProfileDTO;
 import org.hamcrest.core.Is;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -30,6 +30,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.function.Consumer;
 import java.util.function.Function;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ProfileSerialiserTests {
     @Test
@@ -86,7 +88,7 @@ public class ProfileSerialiserTests {
                     "   { \"name\" : \"price\", \"unique\": false, \"nullable\": true }" +
                     "]," +
                     "\"rules\" : [" +
-                    " { \"rule\" : null," +
+                    " { " +
                     "\"constraints\" : [" +
                     "   {" +
                     "       \"field\" : \"typecode\"," +
@@ -96,7 +98,6 @@ public class ProfileSerialiserTests {
                     "  ]" +
                     "}," +
                     "{" +
-                    "  \"rule\" : null," +
                     "  \"constraints\" : [" +
                     "   {" +
                     "       \"if\" : {" +
@@ -149,7 +150,6 @@ public class ProfileSerialiserTests {
                     "]," +
                     "\"rules\" : [" +
                     " { " +
-                    "  \"rule\": null," +
                     "  \"constraints\": [" +
                     "   {" +
                     "       \"field\" : \"typecode\"," +
@@ -207,9 +207,7 @@ public class ProfileSerialiserTests {
                     "}"); // normalise the line endings for comparison;
 
         // Act
-        final String actualJson = normalise.apply(
-            new ProfileSerialiser()
-                .serialise(profile));
+        final String actualJson = normalise.apply(new ProfileSerialiser().serialise(profile));
 
         // Assert
         Assert.assertThat(actualJson, Is.is(expectedJson));
@@ -225,10 +223,8 @@ public class ProfileSerialiserTests {
         String description,
         ConstraintDTO... constraints) {
         RuleDTO newRule = new RuleDTO();
-
         newRule.rule = description;
         newRule.constraints = Arrays.asList(constraints);
-
         return newRule;
     }
 
@@ -240,13 +236,11 @@ public class ProfileSerialiserTests {
 
     private static RuleDTO createConstraintAsRule(Consumer<ConstraintDTO> setupConstraint) {
         ConstraintDTO newConstraint = createConstraint(setupConstraint);
-
         return createRule(null, newConstraint);
     }
 
     private static RuleDTO createConstraintAsRule(String name, Consumer<ConstraintDTO> setupConstraint) {
         ConstraintDTO newConstraint = createConstraint(setupConstraint);
-
         return createRule(name, newConstraint);
     }
 }

@@ -13,11 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.scottlogic.deg.profile.serialisation;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+package com.scottlogic.deg.profile.dtos;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class SchemaDto {
-    public String schemaVersion;
+import com.scottlogic.deg.profile.services.ProfileSchemaValidator;
+import com.scottlogic.deg.profile.services.ProfileSchemaValidatorMedeia;
+
+class ProfileSchemaValidatorMedeiaTests extends ProfileSchemaValidatorTests {
+
+    private ProfileSchemaValidator profileValidator = new ProfileSchemaValidatorMedeia();
+
+    @Override
+    protected ProfileSchemaValidator setValidator() {
+        return profileValidator;
+    }
 }

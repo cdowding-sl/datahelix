@@ -14,23 +14,18 @@
  * limitations under the License.
  */
 
-package com.scottlogic.deg.profile.dto;
+package com.scottlogic.deg.profile.dtos;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.scottlogic.deg.profile.services.ProfileSchemaValidator;
+import com.scottlogic.deg.profile.services.ProfileSchemaValidatorLeadPony;
 
-import java.util.Collection;
+class ProfileSchemaValidatorLeadPonyTests extends ProfileSchemaValidatorTests {
 
-@JsonDeserialize(using = RuleDeserializer.class)
-@JsonSerialize(using = RuleSerializer.class)
-public class RuleDTO {
-    public String rule;
-    public Collection<ConstraintDTO> constraints;
+    private ProfileSchemaValidator profileValidator = new ProfileSchemaValidatorLeadPony();
 
-    public RuleDTO() {}
 
-    public RuleDTO(String rule, Collection<ConstraintDTO> constraints){
-        this.rule = rule;
-        this.constraints = constraints;
+    @Override
+    protected ProfileSchemaValidator setValidator() {
+        return profileValidator;
     }
 }

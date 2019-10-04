@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.scottlogic.deg.profile.dto;
 
-import java.io.IOException;
+package com.scottlogic.deg.profile.services;
+
+import java.io.File;
 import java.net.URL;
 
-public class NoopVersionChecker implements SchemaVersionValidator {
+public class NoopProfileSchemaLoader implements ProfileSchemaLoader {
 
     @Override
-    public URL getSchemaFile() throws IOException {
-        return null;
+    public void validateProfile(File profileFile, URL schema) {
+        return;
     }
 }

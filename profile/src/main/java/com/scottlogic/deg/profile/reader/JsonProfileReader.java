@@ -21,9 +21,9 @@ import com.google.inject.name.Named;
 import com.scottlogic.deg.common.profile.*;
 import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
 import com.scottlogic.deg.common.profile.constraints.Constraint;
-import com.scottlogic.deg.profile.dto.ConstraintDTO;
-import com.scottlogic.deg.profile.serialisation.ProfileDeserialiser;
-import com.scottlogic.deg.profile.dto.ProfileDTO;
+import com.scottlogic.deg.profile.dtos.ConstraintDTO;
+import com.scottlogic.deg.profile.dtos.ProfileDTO;
+import com.scottlogic.deg.profile.serialisation.ProfileSerialiser;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,29 +58,15 @@ public class JsonProfileReader implements ProfileReader {
     }
 
     public Profile read(String profileJson) throws IOException {
-        ProfileDTO profileDto = new ProfileDeserialiser()
-            .deserialise(profileJson);
-
-        if (profileDto.fields == null) {
-            throw new InvalidProfileException("Profile is invalid: 'fields' have not been defined.");
-        }
-        if (profileDto.rules == null) {
-            throw new InvalidProfileException("Profile is invalid: 'rules' have not been defined.");
-        }
+        ProfileDTO profileDto = new ProfileSerialiser().deserialise(profileJson);
+        if (profileDto.fields == null) throw new InvalidProfileException("Profile is invalid: 'fields' have not been defined.");
+        if (profileDto.rules == null) throw new InvalidProfileException("Profile is invalid: 'rules' have not been defined.");
 
         //This is the types of the field that have not been set by the field def
         Map<String, String> fieldTypes = getTypesFromConstraints(profileDto);
 
-        ProfileFields profileFields = new ProfileFields(
-            profileDto.fields.stream()
-                .map(fDto ->
-                    new Field(
-                        fDto.name,
-                        getFieldType(fieldTypes.getOrDefault(fDto.name, fDto.type)),
-                        fDto.unique,
-                        fDto.formatting,
-                        false)
-                )
+        ProfileFields profileFields = new ProfileFields(profileDto.fields.stream()
+                .map(fDto -> new Field(fDto.name, getFieldType(fieldTypes.getOrDefault(fDto.name, fDto.type)), fDto.unique, fDto.formatting,false))
                 .collect(Collectors.toList()));
 
         Collection<Rule> rules = profileDto.rules.stream().map(

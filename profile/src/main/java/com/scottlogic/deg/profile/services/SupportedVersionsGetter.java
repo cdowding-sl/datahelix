@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.scottlogic.deg.profile.dto;
+package com.scottlogic.deg.profile.services;
 
 import org.leadpony.justify.api.JsonSchema;
 import org.leadpony.justify.api.JsonValidationService;

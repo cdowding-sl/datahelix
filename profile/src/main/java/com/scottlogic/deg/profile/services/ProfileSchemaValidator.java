@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.scottlogic.deg.profile.dto;
+package com.scottlogic.deg.profile.services;
 
 import java.io.File;
 import java.net.URL;
@@ -26,14 +26,14 @@ import java.net.URL;
  * DataHelix Profile Schema (datahelix.schema.json)
  * </p>
  */
-public interface ProfileSchemaLoader {
+public interface ProfileSchemaValidator {
 
     /**
      * Validates a json file against the DataHelix Profile JSON Schema.
      *
-     * @param profileFile an File object that is the profile to validate
+     * @param profile the profile to validate against the schema
      * @param schema the schema to check validate against
      * @return the result of validating the provided profile
      */
-    void validateProfile(File profileFile, URL schema);
+    void validateProfile(String profile, String schema);
 }

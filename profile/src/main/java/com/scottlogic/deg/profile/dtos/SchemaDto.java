@@ -13,8 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.scottlogic.deg.profile.dtos;
 
-package com.scottlogic.deg.profile.dto;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-public class UndefinedValue {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class SchemaDto
+{
+    public String schemaVersion;
 }

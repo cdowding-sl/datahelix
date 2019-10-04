@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.scottlogic.deg.profile.dto;
+package com.scottlogic.deg.profile.services;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;

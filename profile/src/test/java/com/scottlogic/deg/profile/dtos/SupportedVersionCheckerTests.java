@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package com.scottlogic.deg.profile.dto;
+package com.scottlogic.deg.profile.dtos;
 
 import com.scottlogic.deg.common.ValidationException;
 import com.scottlogic.deg.profile.guice.ProfileConfigSource;
 import com.scottlogic.deg.profile.serialisation.SchemaVersionGetter;
+import com.scottlogic.deg.profile.services.SupportedVersionChecker;
+import com.scottlogic.deg.profile.services.SupportedVersionsGetter;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;

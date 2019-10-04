@@ -18,9 +18,9 @@ package com.scottlogic.deg.profile.guice;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
-import com.scottlogic.deg.profile.dto.*;
 import com.scottlogic.deg.profile.reader.JsonProfileReader;
 import com.scottlogic.deg.profile.reader.ProfileReader;
+import com.scottlogic.deg.profile.services.*;
 
 import java.io.File;
 

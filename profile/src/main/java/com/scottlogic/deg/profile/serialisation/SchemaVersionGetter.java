@@ -16,24 +16,18 @@
 package com.scottlogic.deg.profile.serialisation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.scottlogic.deg.profile.dtos.SchemaDto;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class SchemaVersionGetter {
+public class SchemaVersionGetter
+{
     public String getSchemaVersionOfJson(Path filePath) throws IOException {
         byte[] encoded = Files.readAllBytes(filePath);
         String profileJson = new String(encoded, StandardCharsets.UTF_8);
-
-        return this.getSchemaVersionOfJson(profileJson);
-    }
-
-    private String getSchemaVersionOfJson(String json) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-
-        SchemaDto schemaDto = mapper.readerFor(SchemaDto.class).readValue(json);
+        SchemaDto schemaDto =  new ObjectMapper().readerFor(SchemaDto.class).readValue(profileJson);
         return schemaDto.schemaVersion;
     }
 }

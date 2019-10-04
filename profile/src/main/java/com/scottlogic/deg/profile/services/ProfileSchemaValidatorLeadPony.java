@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.scottlogic.deg.profile.dto;
+package com.scottlogic.deg.profile.services;
 
 import com.scottlogic.deg.common.ValidationException;
 import org.leadpony.justify.api.JsonSchema;

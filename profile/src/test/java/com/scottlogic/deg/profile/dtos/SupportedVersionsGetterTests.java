@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package com.scottlogic.deg.profile.dto;
+package com.scottlogic.deg.profile.dtos;
 
+import com.scottlogic.deg.profile.services.SupportedVersionsGetter;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

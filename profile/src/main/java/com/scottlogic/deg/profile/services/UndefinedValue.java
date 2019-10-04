@@ -14,19 +14,7 @@
  * limitations under the License.
  */
 
-package com.scottlogic.deg.profile.serialisation;
+package com.scottlogic.deg.profile.services;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.scottlogic.deg.profile.dto.ProfileDTO;
-
-import java.io.IOException;
-
-public class ProfileDeserialiser {
-    public ProfileDTO deserialise(String json) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
-
-        return mapper.readerFor(ProfileDTO.class).readValue(json);
-    }
+public class UndefinedValue {
 }

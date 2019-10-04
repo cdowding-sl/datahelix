@@ -27,7 +27,7 @@ import com.scottlogic.deg.common.profile.constraints.grammatical.AndConstraint;
 import com.scottlogic.deg.common.profile.constraints.grammatical.ConditionalConstraint;
 import com.scottlogic.deg.common.profile.constraints.grammatical.OrConstraint;
 import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
-import com.scottlogic.deg.profile.dto.ConstraintDTO;
+import com.scottlogic.deg.profile.dtos.ConstraintDTO;
 import com.scottlogic.deg.profile.reader.atomic.AtomicConstraintValueReader;
 import com.scottlogic.deg.profile.reader.atomic.AtomicConstraintFactory;
 import com.scottlogic.deg.profile.reader.atomic.ConstraintValueValidator;

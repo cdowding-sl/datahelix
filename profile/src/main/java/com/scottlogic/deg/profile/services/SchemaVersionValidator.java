@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.scottlogic.deg.profile.services;
 
-package com.scottlogic.deg.profile.dto;
+import java.io.IOException;
+import java.net.URL;
 
-public class FieldDTO {
-    public String name;
-    public String type;
-    public String formatting;
-    public boolean unique;
-    public boolean nullable = true;
+public interface SchemaVersionValidator {
+    URL getSchemaFile() throws IOException;
 }

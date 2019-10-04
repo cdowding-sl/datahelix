@@ -23,7 +23,7 @@ import com.scottlogic.deg.common.profile.Types;
 import com.scottlogic.deg.generator.config.detail.CombinationStrategyType;
 import com.scottlogic.deg.generator.config.detail.DataGenerationType;
 import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
-import com.scottlogic.deg.profile.dto.ConstraintDTO;
+import com.scottlogic.deg.profile.dtos.ConstraintDTO;
 
 import java.io.IOException;
 import java.util.*;

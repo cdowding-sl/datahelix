@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package com.scottlogic.deg.profile.dto;
+package com.scottlogic.deg.profile.dtos;
 
-class ProfileSchemaValidatorLeadPonyTests extends ProfileSchemaValidatorTests {
+import java.util.Collection;
 
-    private ProfileSchemaValidator profileValidator = new ProfileSchemaValidatorLeadPony();
-
-
-    @Override
-    protected ProfileSchemaValidator setValidator() {
-        return profileValidator;
-    }
+public class ProfileDTO
+{
+    public String schemaVersion;
+    public Collection<FieldDTO> fields;
+    public Collection<RuleDTO> rules;
+    public String description;
 }
