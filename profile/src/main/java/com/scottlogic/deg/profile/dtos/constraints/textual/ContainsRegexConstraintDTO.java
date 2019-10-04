@@ -18,12 +18,12 @@ package com.scottlogic.deg.profile.dtos.constraints.textual;
 
 import com.scottlogic.deg.profile.dtos.constraints.ConstraintType;
 
-public class ContainingRegexConstraintDTO extends TextualConstraintDTO
+public class ContainsRegexConstraintDTO extends TextualConstraintDTO
 {
-    String value;
+    public String value;
 
-    public ContainingRegexConstraintDTO()
+    public ContainsRegexConstraintDTO()
     {
-        super(ConstraintType.CONTAINING_REGEX);
+        super(ConstraintType.CONTAINS_REGEX);
     }
 }

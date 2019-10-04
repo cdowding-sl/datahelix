@@ -22,6 +22,8 @@ import com.scottlogic.deg.common.profile.*;
 import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
 import com.scottlogic.deg.common.profile.constraints.Constraint;
 import com.scottlogic.deg.profile.dtos.ProfileDTO;
+import com.scottlogic.deg.profile.dtos.RuleDTO;
+import com.scottlogic.deg.profile.dtos.constraints.general.NullConstraintDTO;
 import com.scottlogic.deg.profile.serialisation.ProfileSerialiser;
 
 import java.io.File;
@@ -30,8 +32,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static com.scottlogic.deg.profile.reader.atomic.AtomicConstraintFactory.create;
+import static com.scottlogic.deg.profile.reader.atomic.ConstraintFactory.create;
 
 /**
  * JsonProfileReader is responsible for reading and validating a profile from a path to a profile JSON file.
@@ -58,45 +61,33 @@ public class JsonProfileReader implements ProfileReader
 
     public Profile read(String profileJson) throws IOException
     {
-        ProfileDTO profileDto = new ProfileSerialiser().deserialise(profileJson);
-        if (profileDto.fields == null) throw new InvalidProfileException("Profile is invalid: 'fields' have not been defined.");
-        if (profileDto.rules == null) throw new InvalidProfileException("Profile is invalid: 'rules' have not been defined.");
+        ProfileDTO profileDTO = new ProfileSerialiser().deserialise(profileJson);
+        if (profileDTO.fields == null) throw new InvalidProfileException("Profile is invalid: 'fields' have not been defined.");
+        if (profileDTO.rules == null) throw new InvalidProfileException("Profile is invalid: 'rules' have not been defined.");
 
-        ProfileFields profileFields = new ProfileFields(profileDto.fields.stream()
+        ProfileFields profileFields = new ProfileFields(profileDTO.fields.stream()
                 .map(fieldDTO -> new Field(fieldDTO.name, fieldDTO.getDataType(), fieldDTO.unique, fieldDTO.formatting, false))
                 .collect(Collectors.toList()));
 
-        Collection<Rule> rules = profileDto.rules.stream().map(r ->
+        List<String> rulesWithEmptyConstraints = profileDTO.rules.stream().filter(r -> r.constraints.isEmpty()).map(r -> r.rule).collect(Collectors.toList());
+        if(!rulesWithEmptyConstraints.isEmpty())
         {
-            if (r.constraints.isEmpty()) throw new InvalidProfileException("Profile is invalid: unable to find 'constraints' for rule: " + r.rule);
-            RuleInformation ruleInformation = new RuleInformation(r.rule);
-            return new Rule(ruleInformation, mainConstraintReader.getSubConstraints(profileFields, r.constraints));
-        }).collect(Collectors.toList());
+            throw new InvalidProfileException("Profile is invalid: unable to find 'constraints' for rule(s): " + String.join(",", rulesWithEmptyConstraints));
+        }
 
+        Collection<Rule> rules = profileDTO.rules.stream()
+                .map(r -> new Rule(new RuleInformation(r.rule), mainConstraintReader.readMany(profileFields, r.constraints)))
+                .collect(Collectors.toList());
 
-        // add nullable
-        Collection<Constraint> nullableRules = profileDto.fields.stream()
+        Collection<Constraint> nullableConstraints = profileDTO.fields.stream()
                 .filter(fieldDTO -> !fieldDTO.nullable)
-                .map(fieldDTO -> create(AtomicConstraintType.IS_NULL, profileFields.getByName(fieldDTO.name), null).negate())
+                .map(fieldDTO -> create(profileFields.getByName(fieldDTO.name), new NullConstraintDTO()).negate())
                 .collect(Collectors.toList());
 
-        if (nullableRules.size() > 0)
+        if (!nullableConstraints.isEmpty())
         {
-            rules.add(new Rule(new RuleInformation("nullable-rules"), nullableRules));
+            rules.add(new Rule(new RuleInformation("nullable-rules"), nullableConstraints));
         }
-
-        // add types
-        Collection<Constraint> typeRules = profileDto.fields.stream()
-                .filter(fieldDTO -> fieldDTO.getDataType() != null)
-                .map(fieldDTO -> create(AtomicConstraintType.IS_OF_TYPE, profileFields.getByName(fieldDTO.name), fieldDTO.getDataType()))
-                .filter(constraint -> !(constraint instanceof RemoveFromTree))
-                .collect(Collectors.toList());
-
-        if (typeRules.size() > 0)
-        {
-            rules.add(new Rule(new RuleInformation("type-rules"), typeRules));
-        }
-
-        return new Profile(profileFields, rules, profileDto.description);
+        return new Profile(profileFields, rules, profileDTO.description);
     }
 }

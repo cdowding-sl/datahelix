@@ -16,7 +16,6 @@
 
 package com.scottlogic.deg.profile.reader;
 
-import com.google.inject.Inject;
 import com.scottlogic.deg.common.date.TemporalAdjusterGenerator;
 import com.scottlogic.deg.common.profile.Field;
 import com.scottlogic.deg.common.profile.constraints.Constraint;
@@ -30,10 +29,8 @@ import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
 import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.ConstraintType;
 import com.scottlogic.deg.profile.dtos.constraints.GrammaticalConstraintDTO;
-import com.scottlogic.deg.profile.reader.atomic.AtomicConstraintValueReader;
-import com.scottlogic.deg.profile.reader.atomic.AtomicConstraintFactory;
-import com.scottlogic.deg.profile.reader.atomic.ConstraintValueValidator;
-
+import com.scottlogic.deg.profile.dtos.constraints.general.EqualToConstraintDTO;
+import com.scottlogic.deg.profile.reader.atomic.ConstraintFactory;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.Set;
@@ -41,79 +38,53 @@ import java.util.stream.Collectors;
 
 public class ConstraintReader
 {
-    private final AtomicConstraintValueReader atomicConstraintValueReader;
-
-    @Inject
-    public ConstraintReader(AtomicConstraintValueReader atomicConstraintValueReader)
-    {
-        this.atomicConstraintValueReader = atomicConstraintValueReader;
-    }
-
-    Set<Constraint> getSubConstraints(ProfileFields fields, Collection<ConstraintDTO> constraints)
+    Set<Constraint> readMany(ProfileFields fields, Collection<ConstraintDTO> constraints)
     {
         return constraints.stream()
-                .map(subConstraintDto -> apply(subConstraintDto, fields))
+                .map(subConstraintDto -> read(subConstraintDto, fields))
                 .filter(constraint -> !(constraint instanceof RemoveFromTree))
                 .collect(Collectors.toSet());
     }
 
-    public Constraint apply(ConstraintDTO dto, ProfileFields fields)
+    private Constraint read(ConstraintDTO dto, ProfileFields fields)
     {
         if (dto == null) throw new InvalidProfileException("Constraint is null");
         ConstraintType dtoType = dto.getType();
-        if (dtoType == ConstraintType.GRAMMATICAL) return getGrammaticalSubConstraints((GrammaticalConstraintDTO) dto, fields);
-        if (dto.hasDependency()) return createDelayedDateAtomicConstraint(dto, fields);
+        if (dtoType == ConstraintType.GRAMMATICAL) return readGrammatical((GrammaticalConstraintDTO) dto, fields);
+        if (dto.hasDependency()) return readDelayed((EqualToConstraintDTO) dto, fields);
         Field field = fields.getByName(dto.field);
-        Object value = atomicConstraintValueReader.getValue(dto, field.type);
-        ConstraintValueValidator.validate(field, dtoType, value);
-        return AtomicConstraintFactory.create(dtoType, field, value);
+        return ConstraintFactory.create(field, dto);
     }
 
-    private Constraint getGrammaticalSubConstraints(GrammaticalConstraintDTO dto, ProfileFields fields)
+    private Constraint readGrammatical(GrammaticalConstraintDTO dto, ProfileFields fields)
     {
-        if (dto.not != null) return this.apply(dto.not, fields).negate();
-
-        if (dto.allOf != null)
+        if (dto.not != null) return read(dto.not, fields).negate();
+        if (dto.allOf != null) return new AndConstraint(readMany(fields, dto.allOf));
+        if (dto.anyOf != null) return new OrConstraint(readMany(fields, dto.anyOf));
+        if (dto.if_ != null && dto.then != null)
         {
-            if (dto.allOf.isEmpty())
-            {
-                throw new InvalidProfileException("AllOf must contain at least one constraint.");
-                return new AndConstraint(getSubConstraints(fields, dto.allOf));
-            }
-
-            if (dto.anyOf != null) return new OrConstraint(getSubConstraints(fields, dto.anyOf));
-            if (dto.if_ != null)
-            {
-                return new ConditionalConstraint(
-                        this.apply(dto.if_,fields),
-                        this.apply(dto.then, fields),
-                        dto.else_ != null ? this.apply(dto.else_, fields) : null);
-            }
-
-            throw new InvalidProfileException("Couldn't interpret constraint");
+            Constraint ifConstraint = read(dto.if_, fields);
+            Constraint thenConstraint = read(dto.then, fields);
+            Constraint elseConstraint = dto.else_ == null ? null : read(dto.else_, fields);
+            return new ConditionalConstraint(ifConstraint, thenConstraint, elseConstraint);
         }
+        throw new InvalidProfileException("Couldn't interpret constraint");
     }
 
-    private DelayedAtomicConstraint createDelayedDateAtomicConstraint(ConstraintDTO dto, ProfileFields fields)
+    private DelayedAtomicConstraint readDelayed(EqualToConstraintDTO dto, ProfileFields fields)
     {
         return new DelayedDateAtomicConstraint(
                 fields.getByName(dto.field),
-                AtomicConstraintType.fromText((String) dto.is),
+                AtomicConstraintType.IS_EQUAL_TO_CONSTANT,
                 fields.getByName(dto.otherField),
                 getOffsetUnit(dto),
                 dto.offset);
     }
 
-    private TemporalAdjusterGenerator getOffsetUnit(ConstraintDTO dto)
+    private TemporalAdjusterGenerator getOffsetUnit(EqualToConstraintDTO dto)
     {
-        if (dto.offsetUnit == null)
-        {
-            return null;
-        }
         String offsetUnitUpperCase = dto.offsetUnit.toUpperCase();
         boolean workingDay = offsetUnitUpperCase.equals("WORKING DAYS");
-        return new TemporalAdjusterGenerator(
-                ChronoUnit.valueOf(ChronoUnit.class, workingDay ? "DAYS" : offsetUnitUpperCase),
-                workingDay);
+        return new TemporalAdjusterGenerator(Enum.valueOf(ChronoUnit.class, workingDay ? "DAYS" : offsetUnitUpperCase), workingDay);
     }
 }

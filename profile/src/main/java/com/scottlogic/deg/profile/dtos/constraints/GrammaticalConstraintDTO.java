@@ -21,14 +21,14 @@ import java.util.Collection;
 
 public class GrammaticalConstraintDTO extends ConstraintDTO
 {
-    public GrammaticalConstraintDTO not;
-    public Collection<GrammaticalConstraintDTO> anyOf;
-    public Collection<GrammaticalConstraintDTO> allOf;
+    public ConstraintDTO not;
+    public Collection<ConstraintDTO> anyOf;
+    public Collection<ConstraintDTO> allOf;
     @JsonProperty("if")
-    public GrammaticalConstraintDTO if_;
-    public GrammaticalConstraintDTO then;
+    public ConstraintDTO if_;
+    public ConstraintDTO then;
     @JsonProperty("else")
-    public GrammaticalConstraintDTO else_;
+    public ConstraintDTO else_;
 
     public GrammaticalConstraintDTO()
     {

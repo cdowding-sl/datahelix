@@ -16,9 +16,7 @@
 
 package com.scottlogic.deg.profile.reader.atomic;
 
-import com.scottlogic.deg.common.profile.DataType;
 import com.scottlogic.deg.profile.reader.InvalidProfileException;
-
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -33,10 +31,8 @@ public class ConstraintReaderHelpers {
 
     private static final OffsetDateTime NOW = OffsetDateTime.now();
 
-    public static OffsetDateTime parseDate(String value) {
-        if (value.toUpperCase().equals("NOW")) {
-            return NOW;
-        }
+    static OffsetDateTime parseDate(String value) {
+        if (value.equalsIgnoreCase("NOW")) return NOW;
 
         DateTimeFormatter formatter = new DateTimeFormatterBuilder()
             .append(DateTimeFormatter.ofPattern("u-MM-dd'T'HH:mm:ss'.'SSS"))
@@ -59,29 +55,4 @@ public class ConstraintReaderHelpers {
             ));
         }
     }
-
-    public static DataType getFieldType(String type) {
-        switch (type) {
-            case "decimal":
-            case "integer":
-                return DataType.NUMERIC;
-
-            case "string":
-            case "ISIN":
-            case "SEDOL":
-            case "CUSIP":
-            case "RIC":
-            case "firstname":
-            case "lastname":
-            case "fullname":
-                return DataType.STRING;
-
-            case "datetime":
-                return DataType.DATETIME;
-        }
-
-        throw new InvalidProfileException("Profile is invalid: no type known for " + type);
-
-    }
-
 }

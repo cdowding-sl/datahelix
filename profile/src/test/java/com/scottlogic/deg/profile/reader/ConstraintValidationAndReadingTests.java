@@ -24,8 +24,7 @@ import com.scottlogic.deg.common.profile.constraints.Constraint;
 import com.scottlogic.deg.common.profile.constraints.atomic.*;
 import com.scottlogic.deg.common.util.Defaults;
 import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
-import com.scottlogic.deg.profile.reader.atomic.AtomicConstraintFactory;
-import com.scottlogic.deg.profile.reader.atomic.AtomicConstraintValueReader;
+import com.scottlogic.deg.profile.reader.atomic.ConstraintFactory;
 import com.scottlogic.deg.profile.reader.atomic.ConstraintValueValidator;
 import org.junit.Assert;
 import org.junit.jupiter.api.*;
@@ -208,11 +207,11 @@ public class ConstraintValidationAndReadingTests {
     public void testAtomicConstraintReader(AtomicConstraintType type, ConstraintDTO dto, Class<?> constraintType, DataType types) {
 
         try {
-            Object value = new AtomicConstraintValueReader(null).getValue(dto, types);
+            Object value = new ConstraintValueReader(null).getValue(dto, types);
 
             ConstraintValueValidator.validate(createField(dto.field, types), type, value);
 
-            Constraint constraint = AtomicConstraintFactory.create(type, createField(dto.field), value);
+            Constraint constraint = ConstraintFactory.create(type, createField(dto.field), value);
 
             Assert.assertThat("Expected " + constraintType.getName() + " but got " + constraint.getClass().getName(),
                     constraint,
@@ -341,7 +340,7 @@ public class ConstraintValidationAndReadingTests {
         dateDto.field = "test";
         dateDto.value = value;
 
-        Object val = new AtomicConstraintValueReader(null).getValue(dateDto, DATETIME);
+        Object val = new ConstraintValueReader(null).getValue(dateDto, DATETIME);
         ConstraintValueValidator.validate(createField("test", DATETIME), IS_AFTER_CONSTANT_DATE_TIME, val);
 
         return (OffsetDateTime)val;

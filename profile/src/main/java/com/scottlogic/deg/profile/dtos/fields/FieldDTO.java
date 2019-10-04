@@ -22,8 +22,15 @@ import com.scottlogic.deg.common.profile.DataType;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = NumericalFieldDTO.class, name = "numeric"),
-        @JsonSubTypes.Type(value = TextualFieldDTO.class, name = "string"),
+        @JsonSubTypes.Type(value = NumericalFieldDTO.class, name = "decimal"),
+        @JsonSubTypes.Type(value = NumericalFieldDTO.class, name = "integer"),
+        @JsonSubTypes.Type(value = TextualFieldDTO.class, name = "ISIN"),
+        @JsonSubTypes.Type(value = TextualFieldDTO.class, name = "SEDOL"),
+        @JsonSubTypes.Type(value = TextualFieldDTO.class, name = "CUSIP"),
+        @JsonSubTypes.Type(value = TextualFieldDTO.class, name = "RIC"),
+        @JsonSubTypes.Type(value = TextualFieldDTO.class, name = "firstname"),
+        @JsonSubTypes.Type(value = TextualFieldDTO.class, name = "lastname"),
+        @JsonSubTypes.Type(value = TextualFieldDTO.class, name = "fullname"),
         @JsonSubTypes.Type(value = DateTimeFieldDTO.class, name = "datetime")
 })
 public abstract class FieldDTO
