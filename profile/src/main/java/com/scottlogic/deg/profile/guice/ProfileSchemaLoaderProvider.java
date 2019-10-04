@@ -36,10 +36,6 @@ public class ProfileSchemaLoaderProvider implements Provider<ProfileSchemaLoader
 
     @Override
     public ProfileSchemaLoader get() {
-        if (profileConfigSource.isSchemaValidationDisabled()) {
-            return new NoopProfileSchemaLoader();
-        }
-
-        return new ProfileSchemaFileLoader(validator);
+        return profileConfigSource.isSchemaValidationDisabled() ? new NoopProfileSchemaLoader() : new ProfileSchemaFileLoader(validator);
     }
 }

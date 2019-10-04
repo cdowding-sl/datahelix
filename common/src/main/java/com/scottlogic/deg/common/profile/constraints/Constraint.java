@@ -27,10 +27,7 @@ import java.util.Set;
  * (invoked via the mode of `genTreeJson`), which produces a JSON for the decision
  * tree in memory.
  */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        property = "type"
-        )
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
     @JsonSubTypes.Type(value = IsInSetConstraint.class, name = "IsInSetConstraint"),
     @JsonSubTypes.Type(value = IsStringShorterThanConstraint.class, name = "IsStringShorterThanConstraint"),

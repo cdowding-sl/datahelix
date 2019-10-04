@@ -18,7 +18,6 @@ package com.scottlogic.deg.profile.services;
 import com.google.inject.Inject;
 import com.scottlogic.deg.common.ValidationException;
 import com.scottlogic.deg.profile.guice.ProfileConfigSource;
-import com.scottlogic.deg.profile.serialisation.SchemaVersionGetter;
 
 import java.io.IOException;
 import java.net.URL;

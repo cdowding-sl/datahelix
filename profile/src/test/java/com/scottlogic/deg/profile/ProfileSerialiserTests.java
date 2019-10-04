@@ -17,7 +17,7 @@
 package com.scottlogic.deg.profile;
 
 import com.scottlogic.deg.profile.serialisation.ProfileSerialiser;
-import com.scottlogic.deg.profile.dtos.ConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
 import com.scottlogic.deg.profile.dtos.FieldDTO;
 import com.scottlogic.deg.profile.dtos.RuleDTO;
 import com.scottlogic.deg.profile.dtos.ProfileDTO;

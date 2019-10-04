@@ -21,10 +21,9 @@ import com.google.inject.name.Named;
 import com.scottlogic.deg.common.profile.*;
 import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
 import com.scottlogic.deg.common.profile.constraints.Constraint;
-import com.scottlogic.deg.profile.dtos.ConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
 import com.scottlogic.deg.profile.dtos.ProfileDTO;
 import com.scottlogic.deg.profile.serialisation.ProfileSerialiser;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -40,21 +39,23 @@ import static com.scottlogic.deg.profile.reader.atomic.ConstraintReaderHelpers.g
  * JsonProfileReader is responsible for reading and validating a profile from a path to a profile JSON file.
  * It returns a Profile object for consumption by a generator
  */
-public class JsonProfileReader implements ProfileReader {
+public class JsonProfileReader implements ProfileReader
+{
     private final File profileFile;
     private final MainConstraintReader mainConstraintReader;
 
     @Inject
-    public JsonProfileReader(@Named("config:profileFile") File profileFile, MainConstraintReader mainConstraintReader) {
+    public JsonProfileReader(@Named("config:profileFile") File profileFile, MainConstraintReader mainConstraintReader)
+    {
         this.profileFile = profileFile;
         this.mainConstraintReader = mainConstraintReader;
     }
 
-    public Profile read() throws IOException {
+    public Profile read() throws IOException
+    {
         byte[] encoded = Files.readAllBytes(profileFile.toPath());
         String profileJson = new String(encoded, StandardCharsets.UTF_8);
-
-        return this.read(profileJson);
+        return read(profileJson);
     }
 
     public Profile read(String profileJson) throws IOException {
@@ -120,10 +121,6 @@ public class JsonProfileReader implements ProfileReader {
     }
 
     private Stream<ConstraintDTO> getConstraintOrAllOfConstraints(ConstraintDTO constraintDTO) {
-        if (constraintDTO.allOf != null){
-            return constraintDTO.allOf.stream();
-        }
-
-        return Stream.of(constraintDTO);
+        return constraintDTO.allOf != null ? constraintDTO.allOf.stream() : Stream.of(constraintDTO);
     }
 }

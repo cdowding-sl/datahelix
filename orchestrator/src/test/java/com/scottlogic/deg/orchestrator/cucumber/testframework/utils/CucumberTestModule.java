@@ -28,7 +28,7 @@ import com.scottlogic.deg.orchestrator.violate.manifest.ManifestWriter;
 import com.scottlogic.deg.output.outputtarget.OutputTargetFactory;
 import com.scottlogic.deg.output.outputtarget.SingleDatasetOutputTarget;
 import com.scottlogic.deg.profile.reader.ProfileReader;
-import com.scottlogic.deg.profile.reader.validation.ConfigValidator;
+import com.scottlogic.deg.profile.services.ConfigValidator;
 import com.scottlogic.deg.profile.services.NoopVersionChecker;
 import com.scottlogic.deg.profile.services.SchemaVersionValidator;
 

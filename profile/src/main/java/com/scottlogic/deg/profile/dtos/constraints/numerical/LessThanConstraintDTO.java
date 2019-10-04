@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package com.scottlogic.deg.profile.dtos;
+package com.scottlogic.deg.profile.dtos.constraints.numerical;
 
-import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.ConstraintType;
 
-import java.util.Collection;
-
-public class RuleDTO
+public class LessThanConstraintDTO extends NumericalConstraintDTO
 {
-    public String rule;
-    public Collection<ConstraintDTO> constraints;
+    public double value;
+
+    public LessThanConstraintDTO()
+    {
+        super(ConstraintType.LESS_THAN);
+    }
 }

@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
-package com.scottlogic.deg.profile.dtos;
+package com.scottlogic.deg.profile.dtos.constraints.chronological;
 
 import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.ConstraintType;
 
-import java.util.Collection;
-
-public class RuleDTO
+public abstract class ChronologicalConstraintDTO extends ConstraintDTO
 {
-    public String rule;
-    public Collection<ConstraintDTO> constraints;
+    public String otherField;
+    public int offset;
+    public String offsetUnit;
+
+    ChronologicalConstraintDTO(ConstraintType type)
+    {
+        super(type);
+    }
 }

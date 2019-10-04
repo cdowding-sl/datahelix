@@ -24,8 +24,8 @@ import com.scottlogic.deg.profile.services.*;
 
 import java.io.File;
 
-public class ProfileModule extends AbstractModule {
-
+public class ProfileModule extends AbstractModule
+{
     private final ProfileConfigSource profileConfigSource;
 
     public ProfileModule(ProfileConfigSource profileConfigSource) {
@@ -36,18 +36,11 @@ public class ProfileModule extends AbstractModule {
     protected void configure() {
         // Bind command line to correct implementation
         bind(ProfileConfigSource.class).toInstance(profileConfigSource);
-
         bind(ProfileSchemaValidator.class).to(ProfileSchemaValidatorLeadPony.class);
         bind(ProfileSchemaLoader.class).toProvider(ProfileSchemaLoaderProvider.class);
         bind(SchemaVersionValidator.class).to(SupportedVersionChecker.class);
-
         bind(ProfileReader.class).to(JsonProfileReader.class);
-
-        bind(File.class)
-            .annotatedWith(Names.named("config:profileFile"))
-            .toInstance(profileConfigSource.getProfileFile());
-        bind(String.class)
-            .annotatedWith(Names.named("config:fromFilePath"))
-            .toInstance(profileConfigSource.fromFilePath());
+        bind(File.class).annotatedWith(Names.named("config:profileFile")).toInstance(profileConfigSource.getProfileFile());
+        bind(String.class).annotatedWith(Names.named("config:fromFilePath")).toInstance(profileConfigSource.fromFilePath());
     }
 }

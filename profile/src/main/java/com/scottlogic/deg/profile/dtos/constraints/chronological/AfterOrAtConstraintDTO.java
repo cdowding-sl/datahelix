@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package com.scottlogic.deg.profile.dtos;
+package com.scottlogic.deg.profile.dtos.constraints.chronological;
 
-import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.ConstraintType;
 
-import java.util.Collection;
-
-public class RuleDTO
+public class AfterOrAtConstraintDTO extends ChronologicalConstraintDTO
 {
-    public String rule;
-    public Collection<ConstraintDTO> constraints;
+    public String value;
+
+    public AfterOrAtConstraintDTO()
+    {
+        super(ConstraintType.AFTER_OR_AT);
+    }
 }

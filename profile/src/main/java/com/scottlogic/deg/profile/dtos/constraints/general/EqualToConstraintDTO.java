@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
-package com.scottlogic.deg.profile.dtos;
+package com.scottlogic.deg.profile.dtos.constraints.general;
 
-import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.ConstraintType;
 
-import java.util.Collection;
-
-public class RuleDTO
+public class EqualToConstraintDTO extends GeneralConstraintDTO
 {
-    public String rule;
-    public Collection<ConstraintDTO> constraints;
+    public Object value;
+    public String otherField;
+    public int offset;
+    public String offsetUnit;
+
+    public EqualToConstraintDTO()
+    {
+        super(ConstraintType.EQUAL_TO);
+    }
 }

@@ -20,14 +20,13 @@ import com.scottlogic.deg.common.profile.Field;
 import com.scottlogic.deg.common.profile.Profile;
 import com.scottlogic.deg.common.profile.ProfileFields;
 import com.scottlogic.deg.profile.guice.ProfileConfigSource;
-import com.scottlogic.deg.profile.reader.validation.ConfigValidator;
+import com.scottlogic.deg.profile.services.ConfigValidator;
 import com.scottlogic.deg.profile.services.ProfileSchemaLoader;
 import com.scottlogic.deg.profile.services.SchemaVersionValidator;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ValidatingProfileReader {
