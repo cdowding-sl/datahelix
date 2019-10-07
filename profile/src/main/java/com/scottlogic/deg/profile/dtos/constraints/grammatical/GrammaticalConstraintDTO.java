@@ -16,11 +16,9 @@
 
 package com.scottlogic.deg.profile.dtos.constraints.grammatical;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.scottlogic.deg.common.profile.ConstraintType;
 import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
 
-@JsonDeserialize(as = GrammaticalConstraintDTO.class)
 public abstract class GrammaticalConstraintDTO extends ConstraintDTO
 {
     GrammaticalConstraintDTO(ConstraintType type)

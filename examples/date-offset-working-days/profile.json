@@ -16,11 +16,12 @@
     {
       "constraints": [
         {
-          "field": "bar",
-          "is": "equalTo",
-          "otherField": "foo",
-          "offset": -3,
-          "offsetUnit": "working days"
+          "equalTo": {
+            "field": "bar",
+            "otherField": "foo",
+            "offset": -3,
+            "offsetUnit": "working days"
+          }
         }
       ]
     }

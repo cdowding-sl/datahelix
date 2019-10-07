@@ -41,54 +41,53 @@
     {
       "constraints": [
         {
-          "field": "first",
-          "is": "after",
-          "value": {
-            "date": "8001-02-03T04:05:06.007"
+          "after": {
+            "field": "first",
+            "value": "8001-02-03T04:05:06.007"
           }
         },
         {
-          "field": "second",
-          "is": "equalTo",
-          "otherField": "first",
-          "offset": 3,
-          "offsetUnit": "days"
+          "equalTo": {
+            "field": "second",
+            "otherField": "first",
+            "offset": 3,
+            "offsetUnit": "days"
+          }
         },
         {
-          "field": "third",
-          "is": "equalTo",
-          "otherField": "fourth",
-          "offset": -3,
-          "offsetUnit": "days"
+          "equalTo": {
+            "field": "third",
+            "otherField": "fourth",
+            "offset": -3,
+            "offsetUnit": "days"
+          }
         },
         {
+          "equalTo": {
           "field": "firstWorking",
-          "is": "equalTo",
-          "value": {
-            "date": "2019-08-12T12:00:00.000"
+          "value": "2019-08-12T12:00:00.000"
           }
         },
         {
-          "field": "secondWorking",
-          "is": "equalTo",
-          "otherField": "firstWorking",
-          "offset": -8,
-          "offsetUnit": "working days"
+          "equalTo": {
+            "field": "secondWorking",
+            "otherField": "firstWorking",
+            "offset": -8,
+            "offsetUnit": "working days"
+          }
         },
         {
+          "before": {
+            "field": "current",
+            "value": "now"
+          }
+        },
+        {
+          "after": {
           "field": "current",
-          "is": "before",
-          "value": {
-            "date": "now"
+          "value": "2019-06-01T12:00:00.000"
           }
         },
-        {
-          "field": "current",
-          "is": "after",
-          "value": {
-            "date": "2019-06-01T12:00:00.000"
-          }
-        }
       ]
     }
   ]

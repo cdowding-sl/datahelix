@@ -18,16 +18,31 @@ package com.scottlogic.deg.orchestrator.cucumber.testframework.utils;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.scottlogic.deg.common.profile.Field;
+import com.scottlogic.deg.common.profile.ConstraintType;
 import com.scottlogic.deg.common.profile.DataType;
+import com.scottlogic.deg.common.profile.Field;
+import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
 import com.scottlogic.deg.generator.config.detail.CombinationStrategyType;
 import com.scottlogic.deg.generator.config.detail.DataGenerationType;
-import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.PredicateConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.predicate.chronological.AfterConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.predicate.chronological.AfterOrAtConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.predicate.chronological.BeforeConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.predicate.chronological.BeforeOrAtConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.predicate.general.*;
+import com.scottlogic.deg.profile.dtos.constraints.predicate.numerical.GreaterThanConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.predicate.numerical.GreaterThanOrEqualToConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.predicate.numerical.LessThanConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.predicate.numerical.LessThanOrEqualToConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.predicate.textual.*;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
+
 import static com.scottlogic.deg.common.profile.FieldBuilder.createField;
 
 /**
@@ -96,8 +111,8 @@ public class CucumberTestState {
     }
 
     public void addNotConstraint(String fieldName, String constraintName, Object value) {
-        PredicateConstraintDTO notDto = new PredicateConstraintDTO();
-        notDto.not = this.createConstraint(fieldName, constraintName, value);
+        NotConstraintDTO notDto = new NotConstraintDTO();
+        notDto.constraint = this.createConstraint(fieldName, constraintName, value);
         this.addConstraintToList(notDto);
     }
 
@@ -137,18 +152,65 @@ public class CucumberTestState {
         return contstraintsToNotViolate;
     }
 
-    private PredicateConstraintDTO createConstraint(String fieldName, String constraintName, Object value) {
-        PredicateConstraintDTO dto = new PredicateConstraintDTO();
-        dto.field = fieldName;
-        dto.is = this.extractConstraint(constraintName);
-        if (value != null){
-            if (value instanceof Collection){
-                dto.values = (Collection<Object>) value;
-            } else {
-                dto.value = value;
-            }
+    private PredicateConstraintDTO createConstraint(String fieldName, String constraintName, Object _value)
+    {
+        PredicateConstraintDTO predicateConstraintDTO = null;
+        switch (ConstraintType.valueOf(this.extractConstraint(constraintName)))
+        {
+            case EQUAL_TO:
+                predicateConstraintDTO = new EqualToConstraintDTO(){{field = fieldName; value = _value;}};
+                break;
+            case IN_SET:
+                 predicateConstraintDTO = new InSetConstraintDTO(){{field = fieldName; values = (Collection<Object>) _value; }};
+                break;
+            case NULL:
+                predicateConstraintDTO = new NullConstraintDTO(){{field = fieldName;}};
+                break;
+            case GRANULAR_TO:
+                predicateConstraintDTO = new GranularToConstraintDTO(){{field = fieldName; value = _value;}};
+                break;
+            case MATCHES_REGEX:
+                predicateConstraintDTO = new MatchesRegexConstraintDTO(){{field = fieldName; value = (String) _value; }};
+                break;
+            case CONTAINS_REGEX:
+                predicateConstraintDTO = new ContainsRegexConstraintDTO(){{field = fieldName; value = (String) _value;}};
+                break;
+            case OF_LENGTH:
+                predicateConstraintDTO = new OfLengthConstraintDTO(){{field = fieldName; value = (int) _value;}};
+                break;
+            case LONGER_THAN:
+                predicateConstraintDTO = new LongerThanConstraintDTO(){{field = fieldName; value = (int) _value;}};
+                break;
+            case SHORTER_THAN:
+                predicateConstraintDTO = new ShorterThanConstraintDTO(){{field = fieldName; value = (int) _value;}};
+                break;
+            case GREATER_THAN:
+                predicateConstraintDTO = new GreaterThanConstraintDTO(){{field = fieldName; value = (double) _value;}};
+                break;
+            case GREATER_THAN_OR_EQUAL_TO:
+                predicateConstraintDTO = new GreaterThanOrEqualToConstraintDTO(){{field = fieldName; value = (double) _value;}};
+                break;
+            case LESS_THAN:
+                predicateConstraintDTO = new LessThanConstraintDTO(){{field = fieldName; value = (double) _value;}};
+                break;
+            case LESS_THAN_OR_EQUAL_TO:
+                predicateConstraintDTO = new LessThanOrEqualToConstraintDTO(){{field = fieldName; value = (double) _value;}};
+                break;
+            case AFTER:
+                predicateConstraintDTO = new AfterConstraintDTO(){{field = fieldName; value = (String) _value;}};
+                break;
+            case AFTER_OR_AT:
+                predicateConstraintDTO = new AfterOrAtConstraintDTO(){{field = fieldName; value = (String) _value;}};
+                break;
+            case BEFORE:
+                predicateConstraintDTO = new BeforeConstraintDTO(){{field = fieldName; value = (String) _value;}};
+                break;
+            case BEFORE_OR_AT:
+                predicateConstraintDTO = new BeforeOrAtConstraintDTO(){{field = fieldName; value = (String) _value;}};
+                break;
         }
-        return dto;
+        predicateConstraintDTO.field = fieldName;
+        return predicateConstraintDTO;
     }
 
     private String extractConstraint(String gherkinConstraint) {

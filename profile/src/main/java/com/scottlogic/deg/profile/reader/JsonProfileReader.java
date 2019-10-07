@@ -21,6 +21,7 @@ import com.google.inject.name.Named;
 import com.scottlogic.deg.common.profile.*;
 import com.scottlogic.deg.common.profile.constraints.Constraint;
 import com.scottlogic.deg.profile.dtos.ProfileDTO;
+import com.scottlogic.deg.profile.dtos.constraints.predicate.general.NullConstraintDTO;
 import com.scottlogic.deg.profile.serialisation.ProfileSerialiser;
 
 import java.io.File;
@@ -76,7 +77,7 @@ public class JsonProfileReader implements ProfileReader
 
         Collection<Constraint> nullableConstraints = profileDTO.fields.stream()
                 .filter(fieldDTO -> !fieldDTO.nullable)
-                .map(fieldDTO -> constraintReader.readNullConstraint(fieldDTO, profileFields))
+                .map(fieldDTO -> constraintReader.read(new NullConstraintDTO(), profileFields).negate())
                 .collect(Collectors.toList());
 
         if (!nullableConstraints.isEmpty())

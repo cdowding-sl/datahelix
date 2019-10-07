@@ -11,10 +11,9 @@
     {
       "constraints": [
         {
-          "field": "date",
-          "is": "after",
-          "value": {
-            "date": "8001-02-03T04:05:06.007"
+          "after": {
+            "field": "date",
+            "value": "8001-02-03T04:05:06.007"
           }
         }
       ]

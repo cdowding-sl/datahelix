@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.scottlogic.deg.profile.dtos.constraints.grammatical;
+package com.scottlogic.deg.profile.dtos.constraints.predicate.general;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -22,7 +22,7 @@ import com.scottlogic.deg.common.profile.ConstraintType;
 import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
 
 @JsonDeserialize(as = NotConstraintDTO.class)
-public class NotConstraintDTO extends GrammaticalConstraintDTO
+public class NotConstraintDTO extends GeneralConstraintDTO
 {
     @JsonProperty("not")
     public ConstraintDTO constraint;

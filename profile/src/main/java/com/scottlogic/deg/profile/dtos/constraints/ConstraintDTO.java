@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.scottlogic.deg.common.profile.ConstraintType;
 import com.scottlogic.deg.profile.dtos.constraints.grammatical.*;
+import com.scottlogic.deg.profile.dtos.constraints.predicate.general.NotConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.chronological.AfterConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.chronological.AfterOrAtConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.chronological.BeforeConstraintDTO;

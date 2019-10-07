@@ -17,16 +17,15 @@
 package com.scottlogic.deg.profile.reader;
 
 
+import com.scottlogic.deg.common.profile.DataType;
 import com.scottlogic.deg.common.profile.Field;
 import com.scottlogic.deg.common.profile.Profile;
 import com.scottlogic.deg.common.profile.Rule;
 import com.scottlogic.deg.common.profile.constraints.Constraint;
 import com.scottlogic.deg.common.profile.constraints.atomic.*;
-import com.scottlogic.deg.common.profile.DataType;
 import com.scottlogic.deg.common.profile.constraints.grammatical.AndConstraint;
 import com.scottlogic.deg.common.profile.constraints.grammatical.ConditionalConstraint;
 import com.scottlogic.deg.common.profile.constraints.grammatical.OrConstraint;
-import com.scottlogic.deg.profile.reader.atomic.ConstraintValueReader;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -38,13 +37,14 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.function.Consumer;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.core.IsNull.nullValue;
 
 public class JsonProfileReaderTests {
     private final String schemaVersion = "\"0.7\"";
     private String json;
-    private JsonProfileReader jsonProfileReader = new JsonProfileReader(null, new ConstraintReader(new ConstraintValueReader(null)));
+    private JsonProfileReader jsonProfileReader = new JsonProfileReader(null, new ConstraintReader(null));
 
 
     private void givenJson(String json) {

@@ -21,7 +21,6 @@ import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
 
 public abstract class PredicateConstraintDTO extends ConstraintDTO
 {
-    public String is;
     public String field;
 
     protected PredicateConstraintDTO(ConstraintType type)
