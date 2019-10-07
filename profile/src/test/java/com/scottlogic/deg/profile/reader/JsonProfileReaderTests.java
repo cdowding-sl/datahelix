@@ -44,10 +44,7 @@ import static org.hamcrest.core.IsNull.nullValue;
 public class JsonProfileReaderTests {
     private final String schemaVersion = "\"0.7\"";
     private String json;
-    private JsonProfileReader jsonProfileReader = new JsonProfileReader(
-        null,
-        new ConstraintReader(
-            new ConstraintValueReader(null)));
+    private JsonProfileReader jsonProfileReader = new JsonProfileReader(null, new ConstraintReader(new ConstraintValueReader(null)));
 
 
     private void givenJson(String json) {

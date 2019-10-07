@@ -18,35 +18,44 @@
         {
           "anyOf": [
             {
-              "field": "forename",
-              "is": "equalTo",
-              "value": "Matt"
+              "equalTo":
+              {
+                "field": "forename",
+                "value": "Matt"
+              }
             },
             {
-              "field": "forename",
-              "is": "equalTo",
-              "value": "Ryan"
+              "equalTo":
+              {
+                "field": "forename",
+                "value": "Ryan"
+              }
             }
           ]
         },
         {
-          "if": {
-            "field": "forename",
-            "is": "equalTo",
-            "value": "Matt"
-          },
-          "then": {
-            "field": "surname",
-            "is": "equalTo",
-            "value": "Damon"
-          },
-          "else": {
-            "field": "surname",
-            "is": "inSet",
-            "values": [
-              "Reynolds",
-              "Gosling"
-            ]
+          "condition": {
+            "if": {
+              "equalTo": {
+                "field": "forename",
+                "value": "Matt"
+              }
+            },
+            "then": {
+              "equalTo": {
+                "field": "surname",
+                "value": "Damon"
+              }
+            },
+            "else": {
+              "inSet": {
+                "field": "surname",
+                "values": [
+                  "Reynolds",
+                  "Gosling"
+                ]
+              }
+            }
           }
         }
       ]

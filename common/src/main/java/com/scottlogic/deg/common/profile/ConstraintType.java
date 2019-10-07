@@ -2,25 +2,38 @@ package com.scottlogic.deg.common.profile;
 
 public enum ConstraintType
 {
-    EQUAL_TO,
-    IN_SET,
-    IN_MAP,
-    NULL,
-    GRANULAR_TO,
-    MATCHES_REGEX,
-    CONTAINS_REGEX,
-    OF_LENGTH,
-    LONGER_THAN,
-    SHORTER_THAN,
-    GREATER_THAN,
-    GREATER_THAN_OR_EQUAL_TO,
-    LESS_THAN,
-    LESS_THAN_OR_EQUAL_TO,
-    AFTER,
-    AFTER_OR_AT,
-    BEFORE,
-    BEFORE_OR_AT,
-    GRAMMATICAL,
-    IS_UNIQUE,
-    FORMATTED_AS
+    EQUAL_TO("equalTo"),
+    IN_SET("inSet"),
+    IN_MAP("inMap"),
+    NULL("null"),
+    GRANULAR_TO("granularTo"),
+    MATCHES_REGEX("matchingRegex"),
+    CONTAINS_REGEX("containingRegex"),
+    OF_LENGTH("ofLength"),
+    LONGER_THAN("longerThan"),
+    SHORTER_THAN("shorterThan"),
+    GREATER_THAN("greaterThan"),
+    GREATER_THAN_OR_EQUAL_TO("greaterThanOrEqualTo"),
+    LESS_THAN("lessThan"),
+    LESS_THAN_OR_EQUAL_TO("lessThanOrEqualTo"),
+    AFTER("after"),
+    AFTER_OR_AT("afterOrAt"),
+    BEFORE("before"),
+    BEFORE_OR_AT("beforeOrAt"),
+    NOT("not"),
+    ANY_OF("anyOf"),
+    ALL_OF("allOf"),
+    CONDITION("condition");
+
+    private final String name;
+
+    ConstraintType(String name)
+    {
+        this.name = name;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
 }
