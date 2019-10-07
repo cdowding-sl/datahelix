@@ -1,5 +1,6 @@
 package com.scottlogic.deg.profile.reader.atomic;
 
+import com.google.inject.Inject;
 import com.scottlogic.deg.common.profile.Field;
 import com.scottlogic.deg.common.profile.constraintdetail.ParsedDateGranularity;
 import com.scottlogic.deg.common.profile.constraintdetail.ParsedGranularity;
@@ -7,51 +8,47 @@ import com.scottlogic.deg.common.profile.constraints.Constraint;
 import com.scottlogic.deg.common.profile.constraints.atomic.*;
 import com.scottlogic.deg.common.util.NumberUtils;
 import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
-import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.PredicateConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.chronological.AfterConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.chronological.AfterOrAtConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.chronological.BeforeConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.chronological.BeforeOrAtConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.general.EqualToConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.general.GranularToConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.general.InMapConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.general.InSetConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.numerical.GreaterThanConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.numerical.GreaterThanOrEqualToConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.numerical.LessThanConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.numerical.LessThanOrEqualToConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.textual.*;
-import com.scottlogic.deg.profile.reader.RemoveFromTree;
-
-import java.math.BigDecimal;
-import java.time.OffsetDateTime;
-import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ConstraintFactory
 {
-    public static Constraint create(Field field, ConstraintDTO dto){
-        switch (dto.getType()) {
+    private final FileReader fileReader;
+
+    @Inject
+    public ConstraintFactory(FileReader fileReader)
+    {
+        this.fileReader = fileReader;
+    }
+
+    public Constraint create(PredicateConstraintDTO dto, Field field)
+    {
+        switch (dto.getType())
+        {
             case EQUAL_TO:
                 return new EqualToConstraint(field, ((EqualToConstraintDTO)dto).value);
             case IN_SET:
-                return new IsInSetConstraint(field, DistributedList.uniform(((InSetConstraintDTO)dto).values
-                        .stream()
-                        .distinct()
-                        .collect(Collectors.toList())));
+                InSetConstraintDTO inSetConstraintDTO = (InSetConstraintDTO)dto;
+                return new IsInSetConstraint(field, inSetConstraintDTO.file != null
+                        ? fileReader.setFromFile(inSetConstraintDTO.file)
+                        : DistributedList.uniform(inSetConstraintDTO.values.stream().distinct().collect(Collectors.toList())));
             case IN_MAP:
-                if (dto.file != null && dto.is.equals(AtomicConstraintType.IS_IN_SET.getText()))
-                {
-                    return fromFileReader.setFromFile(dto.file);
-                }
-                if (dto.file != null && dto.is.equals(AtomicConstraintType.IS_IN_MAP.getText()))
-                {
-                    return fromFileReader.listFromMapFile(dto.file, dto.key);
-                }
-                return new IsInMapConstraint(field, DistributedList.uniform(((InSetConstraintDTO)dto).values
-                        .stream()
-                        .distinct()
-                        .collect(Collectors.toList())));
+                InMapConstraintDTO inMapConstraintDTO = (InMapConstraintDTO) dto;
+                return new IsInMapConstraint(field, fileReader.listFromMapFile(inMapConstraintDTO.file, inMapConstraintDTO.key));
             case NULL:
                 return new IsNullConstraint(field);
             case MATCHES_REGEX:
@@ -85,9 +82,6 @@ public class ConstraintFactory
                 return granularToConstraintDTO.value instanceof Number
                         ? new IsGranularToNumericConstraint(field, ParsedGranularity.parse(granularToConstraintDTO.value))
                         : new IsGranularToDateConstraint(field, ParsedDateGranularity.parse((String) granularToConstraintDTO.value));
-            case IS_UNIQUE:
-            case FORMATTED_AS:
-                return new RemoveFromTree();
             default:
                 throw new IllegalArgumentException("constraint type not found");
         }

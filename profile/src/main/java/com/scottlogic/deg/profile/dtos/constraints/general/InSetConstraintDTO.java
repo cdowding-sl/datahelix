@@ -16,10 +16,12 @@
 
 package com.scottlogic.deg.profile.dtos.constraints.general;
 
-import com.scottlogic.deg.profile.dtos.constraints.ConstraintType;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.scottlogic.deg.common.profile.ConstraintType;
 
 import java.util.Collection;
 
+@JsonDeserialize(as = InSetConstraintDTO.class)
 public class InSetConstraintDTO extends GeneralConstraintDTO
 {
     public Collection<Object> values;

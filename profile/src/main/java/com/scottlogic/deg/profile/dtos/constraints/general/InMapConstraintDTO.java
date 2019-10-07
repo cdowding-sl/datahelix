@@ -19,22 +19,14 @@ package com.scottlogic.deg.profile.dtos.constraints.general;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.scottlogic.deg.common.profile.ConstraintType;
 
-@JsonDeserialize(as = EqualToConstraintDTO.class)
-public class EqualToConstraintDTO extends GeneralConstraintDTO
+@JsonDeserialize(as = InMapConstraintDTO.class)
+public class InMapConstraintDTO extends GeneralConstraintDTO
 {
-    public Object value;
-    public String otherField;
-    public int offset;
-    public String offsetUnit;
+    public String file;
+    public String key;
 
-    public EqualToConstraintDTO()
+    public InMapConstraintDTO()
     {
-        super(ConstraintType.EQUAL_TO);
-    }
-
-    @Override
-    public boolean hasDependency()
-    {
-        return otherField != null;
+        super(ConstraintType.IN_MAP);
     }
 }

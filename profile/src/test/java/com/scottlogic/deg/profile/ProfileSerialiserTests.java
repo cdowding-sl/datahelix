@@ -17,7 +17,7 @@
 package com.scottlogic.deg.profile;
 
 import com.scottlogic.deg.profile.serialisation.ProfileSerialiser;
-import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.PredicateConstraintDTO;
 import com.scottlogic.deg.profile.dtos.fields.FieldDTO;
 import com.scottlogic.deg.profile.dtos.RuleDTO;
 import com.scottlogic.deg.profile.dtos.ProfileDTO;
@@ -221,26 +221,26 @@ public class ProfileSerialiserTests {
 
     private static RuleDTO createRule(
         String description,
-        ConstraintDTO... constraints) {
+        PredicateConstraintDTO... constraints) {
         RuleDTO newRule = new RuleDTO();
         newRule.rule = description;
         newRule.constraints = Arrays.asList(constraints);
         return newRule;
     }
 
-    private static ConstraintDTO createConstraint(Consumer<ConstraintDTO> setupConstraint) {
-        ConstraintDTO newConstraint = new ConstraintDTO();
+    private static PredicateConstraintDTO createConstraint(Consumer<PredicateConstraintDTO> setupConstraint) {
+        PredicateConstraintDTO newConstraint = new PredicateConstraintDTO();
         setupConstraint.accept(newConstraint);
         return newConstraint;
     }
 
-    private static RuleDTO createConstraintAsRule(Consumer<ConstraintDTO> setupConstraint) {
-        ConstraintDTO newConstraint = createConstraint(setupConstraint);
+    private static RuleDTO createConstraintAsRule(Consumer<PredicateConstraintDTO> setupConstraint) {
+        PredicateConstraintDTO newConstraint = createConstraint(setupConstraint);
         return createRule(null, newConstraint);
     }
 
-    private static RuleDTO createConstraintAsRule(String name, Consumer<ConstraintDTO> setupConstraint) {
-        ConstraintDTO newConstraint = createConstraint(setupConstraint);
+    private static RuleDTO createConstraintAsRule(String name, Consumer<PredicateConstraintDTO> setupConstraint) {
+        PredicateConstraintDTO newConstraint = createConstraint(setupConstraint);
         return createRule(name, newConstraint);
     }
 }

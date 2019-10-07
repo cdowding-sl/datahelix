@@ -19,22 +19,17 @@ package com.scottlogic.deg.profile.reader;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.scottlogic.deg.common.profile.*;
-import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
 import com.scottlogic.deg.common.profile.constraints.Constraint;
 import com.scottlogic.deg.profile.dtos.ProfileDTO;
-import com.scottlogic.deg.profile.dtos.RuleDTO;
-import com.scottlogic.deg.profile.dtos.constraints.general.NullConstraintDTO;
 import com.scottlogic.deg.profile.serialisation.ProfileSerialiser;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static com.scottlogic.deg.profile.reader.atomic.ConstraintFactory.create;
 
 /**
  * JsonProfileReader is responsible for reading and validating a profile from a path to a profile JSON file.
@@ -43,13 +38,13 @@ import static com.scottlogic.deg.profile.reader.atomic.ConstraintFactory.create;
 public class JsonProfileReader implements ProfileReader
 {
     private final File profileFile;
-    private final ConstraintReader mainConstraintReader;
+    private final ConstraintReader constraintReader;
 
     @Inject
-    public JsonProfileReader(@Named("config:profileFile") File profileFile, ConstraintReader mainConstraintReader)
+    public JsonProfileReader(@Named("config:profileFile") File profileFile, ConstraintReader constraintReader)
     {
         this.profileFile = profileFile;
-        this.mainConstraintReader = mainConstraintReader;
+        this.constraintReader = constraintReader;
     }
 
     public Profile read() throws IOException
@@ -76,12 +71,12 @@ public class JsonProfileReader implements ProfileReader
         }
 
         Collection<Rule> rules = profileDTO.rules.stream()
-                .map(r -> new Rule(new RuleInformation(r.rule), mainConstraintReader.readMany(profileFields, r.constraints)))
+                .map(r -> new Rule(new RuleInformation(r.rule), constraintReader.readMany(r.constraints, profileFields)))
                 .collect(Collectors.toList());
 
         Collection<Constraint> nullableConstraints = profileDTO.fields.stream()
                 .filter(fieldDTO -> !fieldDTO.nullable)
-                .map(fieldDTO -> create(profileFields.getByName(fieldDTO.name), new NullConstraintDTO()).negate())
+                .map(fieldDTO -> constraintReader.readNullConstraint(fieldDTO, profileFields))
                 .collect(Collectors.toList());
 
         if (!nullableConstraints.isEmpty())

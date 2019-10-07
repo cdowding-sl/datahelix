@@ -31,12 +31,14 @@ import com.scottlogic.deg.common.profile.DataType;
         @JsonSubTypes.Type(value = TextualFieldDTO.class, name = "firstname"),
         @JsonSubTypes.Type(value = TextualFieldDTO.class, name = "lastname"),
         @JsonSubTypes.Type(value = TextualFieldDTO.class, name = "fullname"),
+        @JsonSubTypes.Type(value = TextualFieldDTO.class, name = "string"),
         @JsonSubTypes.Type(value = DateTimeFieldDTO.class, name = "datetime")
 })
 public abstract class FieldDTO
 {
     private final DataType dataType;
     public String name;
+    public String type;
     public String formatting;
     public boolean unique;
     public boolean nullable = true;

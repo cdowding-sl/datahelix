@@ -16,6 +16,7 @@
 
 package com.scottlogic.deg.profile.reader;
 
+import com.google.inject.Inject;
 import com.scottlogic.deg.common.date.TemporalAdjusterGenerator;
 import com.scottlogic.deg.common.profile.Field;
 import com.scottlogic.deg.common.profile.constraints.Constraint;
@@ -27,18 +28,30 @@ import com.scottlogic.deg.common.profile.constraints.grammatical.ConditionalCons
 import com.scottlogic.deg.common.profile.constraints.grammatical.OrConstraint;
 import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
 import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
-import com.scottlogic.deg.profile.dtos.constraints.ConstraintType;
+import com.scottlogic.deg.profile.dtos.constraints.PredicateConstraintDTO;
+import com.scottlogic.deg.common.profile.ConstraintType;
 import com.scottlogic.deg.profile.dtos.constraints.GrammaticalConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.general.EqualToConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.general.NullConstraintDTO;
+import com.scottlogic.deg.profile.dtos.fields.FieldDTO;
 import com.scottlogic.deg.profile.reader.atomic.ConstraintFactory;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
 public class ConstraintReader
 {
-    Set<Constraint> readMany(ProfileFields fields, Collection<ConstraintDTO> constraints)
+    private final ConstraintFactory constraintFactory;
+
+    @Inject
+    public ConstraintReader(ConstraintFactory constraintFactory)
+    {
+        this.constraintFactory = constraintFactory;
+    }
+
+    Set<Constraint> readMany(Collection<ConstraintDTO> constraints, ProfileFields fields)
     {
         return constraints.stream()
                 .map(subConstraintDto -> read(subConstraintDto, fields))
@@ -46,21 +59,26 @@ public class ConstraintReader
                 .collect(Collectors.toSet());
     }
 
-    private Constraint read(ConstraintDTO dto, ProfileFields fields)
+    Constraint readNullConstraint(FieldDTO fieldDTO, ProfileFields profileFields){
+        return constraintFactory.create(new NullConstraintDTO(), profileFields.getByName(fieldDTO.name)).negate();
+    }
+
+    public Constraint read(ConstraintDTO dto, ProfileFields fields)
     {
         if (dto == null) throw new InvalidProfileException("Constraint is null");
         ConstraintType dtoType = dto.getType();
         if (dtoType == ConstraintType.GRAMMATICAL) return readGrammatical((GrammaticalConstraintDTO) dto, fields);
-        if (dto.hasDependency()) return readDelayed((EqualToConstraintDTO) dto, fields);
-        Field field = fields.getByName(dto.field);
-        return ConstraintFactory.create(field, dto);
+        PredicateConstraintDTO predicateConstraintDTO = (PredicateConstraintDTO) dto;
+        if (predicateConstraintDTO.hasDependency()) return readDelayed((EqualToConstraintDTO) dto, fields);
+        Field field = fields.getByName(predicateConstraintDTO.field);
+        return constraintFactory.create(predicateConstraintDTO, field);
     }
 
     private Constraint readGrammatical(GrammaticalConstraintDTO dto, ProfileFields fields)
     {
         if (dto.not != null) return read(dto.not, fields).negate();
-        if (dto.allOf != null) return new AndConstraint(readMany(fields, dto.allOf));
-        if (dto.anyOf != null) return new OrConstraint(readMany(fields, dto.anyOf));
+        if (dto.allOf != null) return new AndConstraint(readMany(dto.allOf, fields));
+        if (dto.anyOf != null) return new OrConstraint(readMany(dto.anyOf, fields));
         if (dto.if_ != null && dto.then != null)
         {
             Constraint ifConstraint = read(dto.if_, fields);

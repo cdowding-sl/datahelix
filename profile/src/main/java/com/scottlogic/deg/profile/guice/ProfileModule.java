@@ -41,6 +41,6 @@ public class ProfileModule extends AbstractModule
         bind(SchemaVersionValidator.class).to(SupportedVersionChecker.class);
         bind(ProfileReader.class).to(JsonProfileReader.class);
         bind(File.class).annotatedWith(Names.named("config:profileFile")).toInstance(profileConfigSource.getProfileFile());
-        bind(String.class).annotatedWith(Names.named("config:fromFilePath")).toInstance(profileConfigSource.fromFilePath());
+        bind(String.class).annotatedWith(Names.named("config:filePath")).toInstance(profileConfigSource.fromFilePath());
     }
 }

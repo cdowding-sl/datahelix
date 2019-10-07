@@ -17,11 +17,15 @@
 package com.scottlogic.deg.profile.dtos.constraints;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.scottlogic.deg.common.profile.ConstraintType;
+
 import java.util.Collection;
 
+@JsonDeserialize(as = GrammaticalConstraintDTO.class)
 public class GrammaticalConstraintDTO extends ConstraintDTO
 {
-    public ConstraintDTO not;
+    public PredicateConstraintDTO not;
     public Collection<ConstraintDTO> anyOf;
     public Collection<ConstraintDTO> allOf;
     @JsonProperty("if")
@@ -33,11 +37,5 @@ public class GrammaticalConstraintDTO extends ConstraintDTO
     public GrammaticalConstraintDTO()
     {
         super(ConstraintType.GRAMMATICAL);
-    }
-
-    @Override
-    public boolean hasDependency()
-    {
-        return false;
     }
 }

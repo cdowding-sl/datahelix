@@ -16,8 +16,10 @@
 
 package com.scottlogic.deg.profile.dtos.constraints.chronological;
 
-import com.scottlogic.deg.profile.dtos.constraints.ConstraintType;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.scottlogic.deg.common.profile.ConstraintType;
 
+@JsonDeserialize(as = AfterOrAtConstraintDTO.class)
 public class AfterOrAtConstraintDTO extends ChronologicalConstraintDTO
 {
     public String value;

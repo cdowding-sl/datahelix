@@ -16,8 +16,10 @@
 
 package com.scottlogic.deg.profile.dtos.constraints.textual;
 
-import com.scottlogic.deg.profile.dtos.constraints.ConstraintType;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.scottlogic.deg.common.profile.ConstraintType;
 
+@JsonDeserialize(as = OfLengthConstraintDTO.class)
 public class OfLengthConstraintDTO extends TextualConstraintDTO
 {
     public int value;

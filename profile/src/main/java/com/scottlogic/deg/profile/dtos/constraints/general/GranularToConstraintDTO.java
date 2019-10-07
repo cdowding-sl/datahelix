@@ -16,8 +16,10 @@
 
 package com.scottlogic.deg.profile.dtos.constraints.general;
 
-import com.scottlogic.deg.profile.dtos.constraints.ConstraintType;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.scottlogic.deg.common.profile.ConstraintType;
 
+@JsonDeserialize(as = GranularToConstraintDTO.class)
 public class GranularToConstraintDTO extends GeneralConstraintDTO
 {
     public Object value;

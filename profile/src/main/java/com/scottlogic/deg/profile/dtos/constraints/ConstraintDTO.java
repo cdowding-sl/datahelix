@@ -16,39 +16,22 @@
 
 package com.scottlogic.deg.profile.dtos.constraints;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.scottlogic.deg.profile.dtos.constraints.chronological.*;
-import com.scottlogic.deg.profile.dtos.constraints.general.*;
-import com.scottlogic.deg.profile.dtos.constraints.numerical.*;
-import com.scottlogic.deg.profile.dtos.constraints.textual.*;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.scottlogic.deg.common.profile.ConstraintType;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "is")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = EqualToConstraintDTO.class, name = "equalTo"),
-        @JsonSubTypes.Type(value = InSetConstraintDTO.class, name = "inSet"),
-        @JsonSubTypes.Type(value = NullConstraintDTO.class, name = "null"),
-        @JsonSubTypes.Type(value = GranularToConstraintDTO.class, name = "granularTo"),
-        @JsonSubTypes.Type(value = MatchesRegexConstraintDTO.class, name = "matchingRegex"),
-        @JsonSubTypes.Type(value = ContainsRegexConstraintDTO.class, name = "containingRegex"),
-        @JsonSubTypes.Type(value = OfLengthConstraintDTO.class, name = "ofLength"),
-        @JsonSubTypes.Type(value = LongerThanConstraintDTO.class, name = "longerThan"),
-        @JsonSubTypes.Type(value = ShorterThanConstraintDTO.class, name = "shorterThan"),
-        @JsonSubTypes.Type(value = GreaterThanConstraintDTO.class, name = "greaterThan"),
-        @JsonSubTypes.Type(value = GreaterThanOrEqualToConstraintDTO.class, name = "greaterThanOrEqualTo"),
-        @JsonSubTypes.Type(value = LessThanConstraintDTO.class, name = "lessThan"),
-        @JsonSubTypes.Type(value = LessThanOrEqualToConstraintDTO.class, name = "lessThanOrEqualTo"),
-        @JsonSubTypes.Type(value = AfterConstraintDTO.class, name = "after"),
-        @JsonSubTypes.Type(value = AfterOrAtConstraintDTO.class, name = "afterOrAt"),
-        @JsonSubTypes.Type(value = BeforeConstraintDTO.class, name = "before"),
-        @JsonSubTypes.Type(value = BeforeOrAtConstraintDTO.class, name = "beforeOrAt"),
-})
+import java.io.IOException;
+
+@JsonDeserialize(using = ConstraintDTO.ConstraintDeserializer.class)
 public abstract class ConstraintDTO
 {
     private final ConstraintType type;
-    public String field;
 
-    protected ConstraintDTO(ConstraintType type)
+    ConstraintDTO(ConstraintType type)
     {
         this.type = type;
     }
@@ -58,5 +41,16 @@ public abstract class ConstraintDTO
         return type;
     }
 
-    public abstract boolean hasDependency();
+    static class ConstraintDeserializer extends JsonDeserializer<ConstraintDTO>
+    {
+        @Override
+        public ConstraintDTO deserialize(JsonParser p, DeserializationContext context) throws IOException
+        {
+            ObjectMapper objectMapper = (ObjectMapper) p.getCodec();
+            ObjectNode object = objectMapper.readTree(p);
+            return object.has("is")
+                    ? objectMapper.readerFor(PredicateConstraintDTO.class).readValue(object.toString())
+                    : objectMapper.treeToValue(object, GrammaticalConstraintDTO.class);
+        }
+    }
 }

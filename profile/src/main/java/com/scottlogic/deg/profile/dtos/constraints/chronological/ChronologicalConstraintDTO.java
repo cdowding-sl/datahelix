@@ -16,10 +16,10 @@
 
 package com.scottlogic.deg.profile.dtos.constraints.chronological;
 
-import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
-import com.scottlogic.deg.profile.dtos.constraints.ConstraintType;
+import com.scottlogic.deg.profile.dtos.constraints.PredicateConstraintDTO;
+import com.scottlogic.deg.common.profile.ConstraintType;
 
-public abstract class ChronologicalConstraintDTO extends ConstraintDTO
+public abstract class ChronologicalConstraintDTO extends PredicateConstraintDTO
 {
     public String otherField;
     public int offset;

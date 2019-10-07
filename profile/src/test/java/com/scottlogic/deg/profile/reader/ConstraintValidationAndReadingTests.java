@@ -23,7 +23,7 @@ import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
 import com.scottlogic.deg.common.profile.constraints.Constraint;
 import com.scottlogic.deg.common.profile.constraints.atomic.*;
 import com.scottlogic.deg.common.util.Defaults;
-import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.PredicateConstraintDTO;
 import com.scottlogic.deg.profile.reader.atomic.ConstraintFactory;
 import com.scottlogic.deg.profile.reader.atomic.ConstraintValueValidator;
 import org.junit.Assert;
@@ -66,29 +66,29 @@ public class ConstraintValidationAndReadingTests {
     }
 
     private static Stream<Arguments> testProvider() {
-        ConstraintDTO stringValueDto = new ConstraintDTO();
+        PredicateConstraintDTO stringValueDto = new PredicateConstraintDTO();
         stringValueDto.field = "test";
         stringValueDto.is = IS_EQUAL_TO_CONSTANT.toString();
         stringValueDto.value = "value";
 
-        ConstraintDTO numberValueDto = new ConstraintDTO();
+        PredicateConstraintDTO numberValueDto = new PredicateConstraintDTO();
         numberValueDto.field = "test";
         numberValueDto.value = BigDecimal.valueOf(10);
 
-        ConstraintDTO dateValueDto = new ConstraintDTO();
+        PredicateConstraintDTO dateValueDto = new PredicateConstraintDTO();
         dateValueDto.field = "test";
 
         dateValueDto.value = createDateObject("2020-01-01T01:02:03.456");
 
-        ConstraintDTO multipleValuesDto = new ConstraintDTO();
+        PredicateConstraintDTO multipleValuesDto = new PredicateConstraintDTO();
         multipleValuesDto.field = "test";
         multipleValuesDto.values = Arrays.asList("A", "B");
 
-        ConstraintDTO integerTypeValueDto = new ConstraintDTO();
+        PredicateConstraintDTO integerTypeValueDto = new PredicateConstraintDTO();
         integerTypeValueDto.field = "test";
         integerTypeValueDto.value = 1;
 
-        ConstraintDTO notValueDto = new ConstraintDTO();
+        PredicateConstraintDTO notValueDto = new PredicateConstraintDTO();
         notValueDto.field = "test";
         notValueDto.not = stringValueDto;
 
@@ -113,15 +113,15 @@ public class ConstraintValidationAndReadingTests {
     }
 
     private static Stream<Arguments> stringLengthInvalidOperandProvider() {
-        ConstraintDTO numberValueDto = new ConstraintDTO();
+        PredicateConstraintDTO numberValueDto = new PredicateConstraintDTO();
         numberValueDto.field = "test";
         numberValueDto.value = new BigDecimal(10.11);
 
-        ConstraintDTO stringValueDto = new ConstraintDTO();
+        PredicateConstraintDTO stringValueDto = new PredicateConstraintDTO();
         stringValueDto.field = "test";
         stringValueDto.value = "value";
 
-        ConstraintDTO nullValueDto = new ConstraintDTO();
+        PredicateConstraintDTO nullValueDto = new PredicateConstraintDTO();
         nullValueDto.field = "test";
         nullValueDto.value = null;
 
@@ -140,7 +140,7 @@ public class ConstraintValidationAndReadingTests {
     }
 
     private static Stream<Arguments> ofTypeInvalidValueProvider() {
-        ConstraintDTO numericTypeValueDto = new ConstraintDTO();
+        PredicateConstraintDTO numericTypeValueDto = new PredicateConstraintDTO();
         numericTypeValueDto.field = "test";
         numericTypeValueDto.value = "numeric";
 
@@ -148,11 +148,11 @@ public class ConstraintValidationAndReadingTests {
     }
 
     private static Stream<Arguments> numericOutOfBoundsOperandProvider() {
-        ConstraintDTO maxValueDtoPlusOne = new ConstraintDTO();
+        PredicateConstraintDTO maxValueDtoPlusOne = new PredicateConstraintDTO();
         maxValueDtoPlusOne.field = "test";
         maxValueDtoPlusOne.value = Defaults.NUMERIC_MAX.add(BigDecimal.ONE);
 
-        ConstraintDTO minValueDtoMinusOne = new ConstraintDTO();
+        PredicateConstraintDTO minValueDtoMinusOne = new PredicateConstraintDTO();
         minValueDtoMinusOne.field = "test";
         minValueDtoMinusOne.value = Defaults.NUMERIC_MIN.subtract(BigDecimal.ONE);
 
@@ -175,15 +175,15 @@ public class ConstraintValidationAndReadingTests {
 
     private static Stream<Arguments> stringLengthValidOperandProvider() {
 
-        ConstraintDTO integerAsDecimalDto = new ConstraintDTO();
+        PredicateConstraintDTO integerAsDecimalDto = new PredicateConstraintDTO();
         integerAsDecimalDto.field = "test";
         integerAsDecimalDto.value = new BigDecimal(10);
 
-        ConstraintDTO integerAsIntegerDto = new ConstraintDTO();
+        PredicateConstraintDTO integerAsIntegerDto = new PredicateConstraintDTO();
         integerAsIntegerDto.field = "test";
         integerAsIntegerDto.value = 10;
 
-        ConstraintDTO integerAsDecimalWith0Fraction = new ConstraintDTO();
+        PredicateConstraintDTO integerAsDecimalWith0Fraction = new PredicateConstraintDTO();
         integerAsDecimalWith0Fraction.field = "test";
         integerAsDecimalWith0Fraction.value = new BigDecimal(10.0);
 
@@ -204,7 +204,7 @@ public class ConstraintValidationAndReadingTests {
     @DisplayName("Should return correct constraint type")
     @ParameterizedTest(name = "{0} should return {1}")
     @MethodSource("testProvider")
-    public void testAtomicConstraintReader(AtomicConstraintType type, ConstraintDTO dto, Class<?> constraintType, DataType types) {
+    public void testAtomicConstraintReader(AtomicConstraintType type, PredicateConstraintDTO dto, Class<?> constraintType, DataType types) {
 
         try {
             Object value = new ConstraintValueReader(null).getValue(dto, types);
@@ -225,7 +225,7 @@ public class ConstraintValidationAndReadingTests {
     @DisplayName("Should fail when operators have an invalid operand")
     @ParameterizedTest(name = "{0} should be invalid")
     @MethodSource({"stringLengthInvalidOperandProvider", "ofTypeInvalidValueProvider"})
-    public void testAtomicConstraintReaderWithInvalidOperands(AtomicConstraintType type, ConstraintDTO dto) {
+    public void testAtomicConstraintReaderWithInvalidOperands(AtomicConstraintType type, PredicateConstraintDTO dto) {
         Assertions.assertThrows(InvalidProfileException.class, () -> ConstraintValueValidator.validate(createField(dto.field), type, dto.value));
     }
 
@@ -239,7 +239,7 @@ public class ConstraintValidationAndReadingTests {
     @DisplayName("Should fail when value property is numeric and out of bounds")
     @ParameterizedTest(name = "{0} should be invalid")
     @MethodSource("numericOutOfBoundsOperandProvider")
-    public void testAtomicConstraintReaderWithOutOfBoundValues(AtomicConstraintType type, ConstraintDTO dto) {
+    public void testAtomicConstraintReaderWithOutOfBoundValues(AtomicConstraintType type, PredicateConstraintDTO dto) {
         Assertions.assertThrows(InvalidProfileException.class, () ->
             ConstraintValueValidator.validate(createField(dto.field, NUMERIC), type, dto.value));
     }
@@ -247,7 +247,7 @@ public class ConstraintValidationAndReadingTests {
     @DisplayName("Should pass when string lengths have an integer operand")
     @ParameterizedTest(name = "{0} should be valid")
     @MethodSource("stringLengthValidOperandProvider")
-    public void testAtomicConstraintReaderWithValidOperands(AtomicConstraintType type, ConstraintDTO dto) {
+    public void testAtomicConstraintReaderWithValidOperands(AtomicConstraintType type, PredicateConstraintDTO dto) {
         Assertions.assertDoesNotThrow(() -> ConstraintValueValidator.validate(createField(dto.field), type, dto.value));
     }
 
@@ -336,7 +336,7 @@ public class ConstraintValidationAndReadingTests {
     }
 
     private OffsetDateTime tryParseConstraintDateTimeValue(Object value) {
-        ConstraintDTO dateDto = new ConstraintDTO();
+        PredicateConstraintDTO dateDto = new PredicateConstraintDTO();
         dateDto.field = "test";
         dateDto.value = value;
 

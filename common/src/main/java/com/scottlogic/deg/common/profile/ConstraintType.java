@@ -1,9 +1,10 @@
-package com.scottlogic.deg.profile.dtos.constraints;
+package com.scottlogic.deg.common.profile;
 
 public enum ConstraintType
 {
     EQUAL_TO,
     IN_SET,
+    IN_MAP,
     NULL,
     GRANULAR_TO,
     MATCHES_REGEX,
@@ -19,5 +20,7 @@ public enum ConstraintType
     AFTER_OR_AT,
     BEFORE,
     BEFORE_OR_AT,
-    GRAMMATICAL
+    GRAMMATICAL,
+    IS_UNIQUE,
+    FORMATTED_AS
 }

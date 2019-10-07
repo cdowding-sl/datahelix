@@ -16,8 +16,10 @@
 
 package com.scottlogic.deg.profile.dtos.constraints.numerical;
 
-import com.scottlogic.deg.profile.dtos.constraints.ConstraintType;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.scottlogic.deg.common.profile.ConstraintType;
 
+@JsonDeserialize(as = GreaterThanOrEqualToConstraintDTO.class)
 public class GreaterThanOrEqualToConstraintDTO extends NumericalConstraintDTO
 {
     public double value;

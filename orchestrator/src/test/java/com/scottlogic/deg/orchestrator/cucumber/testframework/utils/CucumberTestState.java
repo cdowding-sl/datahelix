@@ -23,7 +23,7 @@ import com.scottlogic.deg.common.profile.DataType;
 import com.scottlogic.deg.generator.config.detail.CombinationStrategyType;
 import com.scottlogic.deg.generator.config.detail.DataGenerationType;
 import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
-import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.PredicateConstraintDTO;
 
 import java.io.IOException;
 import java.util.*;
@@ -56,7 +56,7 @@ public class CucumberTestState {
 
     List<List<Object>> generatedObjects;
     List<Field> profileFields;
-    List<ConstraintDTO> constraints;
+    List<PredicateConstraintDTO> constraints;
     List<Exception> testExceptions;
 
     private final List<AtomicConstraintType> contstraintsToNotViolate = new ArrayList<>();
@@ -91,12 +91,12 @@ public class CucumberTestState {
     }
 
     public void addConstraint(String fieldName, String constraintName, Object value) {
-        ConstraintDTO dto = this.createConstraint(fieldName, constraintName, value);
+        PredicateConstraintDTO dto = this.createConstraint(fieldName, constraintName, value);
         this.addConstraintToList(dto);
     }
 
     public void addNotConstraint(String fieldName, String constraintName, Object value) {
-        ConstraintDTO notDto = new ConstraintDTO();
+        PredicateConstraintDTO notDto = new PredicateConstraintDTO();
         notDto.not = this.createConstraint(fieldName, constraintName, value);
         this.addConstraintToList(notDto);
     }
@@ -137,8 +137,8 @@ public class CucumberTestState {
         return contstraintsToNotViolate;
     }
 
-    private ConstraintDTO createConstraint(String fieldName, String constraintName, Object value) {
-        ConstraintDTO dto = new ConstraintDTO();
+    private PredicateConstraintDTO createConstraint(String fieldName, String constraintName, Object value) {
+        PredicateConstraintDTO dto = new PredicateConstraintDTO();
         dto.field = fieldName;
         dto.is = this.extractConstraint(constraintName);
         if (value != null){
@@ -160,7 +160,7 @@ public class CucumberTestState {
             .collect(Collectors.joining());
     }
 
-    private void addConstraintToList(ConstraintDTO constraintDTO) {
+    private void addConstraintToList(PredicateConstraintDTO constraintDTO) {
         this.constraints.add(constraintDTO);
     }
 
@@ -208,6 +208,6 @@ public class CucumberTestState {
 }
 
 class ConstraintHolder {
-    public Collection<ConstraintDTO> constraints;
+    public Collection<PredicateConstraintDTO> constraints;
     public ConstraintHolder(){}
 }

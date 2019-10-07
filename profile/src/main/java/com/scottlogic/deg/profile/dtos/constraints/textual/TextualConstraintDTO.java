@@ -16,10 +16,10 @@
 
 package com.scottlogic.deg.profile.dtos.constraints.textual;
 
-import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
-import com.scottlogic.deg.profile.dtos.constraints.ConstraintType;
+import com.scottlogic.deg.profile.dtos.constraints.PredicateConstraintDTO;
+import com.scottlogic.deg.common.profile.ConstraintType;
 
-public abstract class TextualConstraintDTO extends ConstraintDTO
+public abstract class TextualConstraintDTO extends PredicateConstraintDTO
 {
     TextualConstraintDTO(ConstraintType type)
     {
