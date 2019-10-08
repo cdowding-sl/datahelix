@@ -16,13 +16,17 @@
 
 package com.scottlogic.deg.generator.generation;
 
+import com.scottlogic.deg.common.profile.DataType;
 import com.scottlogic.deg.generator.fieldspecs.FieldSpec;
 import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
-import com.scottlogic.deg.generator.generation.fieldvaluesources.NullAppendingValueSource;
 import com.scottlogic.deg.generator.generation.fieldvaluesources.FieldValueSource;
+import com.scottlogic.deg.generator.generation.fieldvaluesources.NullAppendingValueSource;
 import com.scottlogic.deg.generator.generation.fieldvaluesources.NullOnlySource;
-import com.scottlogic.deg.generator.restrictions.*;
-import com.scottlogic.deg.generator.restrictions.linear.*;
+import com.scottlogic.deg.generator.restrictions.StringRestrictions;
+import com.scottlogic.deg.generator.restrictions.StringRestrictionsFactory;
+import com.scottlogic.deg.generator.restrictions.linear.Limit;
+import com.scottlogic.deg.generator.restrictions.linear.LinearRestrictions;
+import com.scottlogic.deg.generator.restrictions.linear.LinearRestrictionsFactory;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
@@ -32,11 +36,10 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static com.scottlogic.deg.common.profile.DataType.*;
+import static com.scottlogic.deg.common.profile.DataType.STRING;
 import static com.scottlogic.deg.generator.restrictions.linear.LinearRestrictionsFactory.createNumericRestrictions;
 import static com.scottlogic.deg.generator.utils.Defaults.NUMERIC_MAX_LIMIT;
 import static com.scottlogic.deg.generator.utils.Defaults.NUMERIC_MIN_LIMIT;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 public class FieldValueSourceEvaluatorTests {
 
@@ -75,7 +78,7 @@ public class FieldValueSourceEvaluatorTests {
         FieldValueSourceEvaluator evaluator = new FieldValueSourceEvaluator();
         FieldSpec fieldSpecInSetAndNullNotDisallowed = FieldSpec.fromList(DistributedList.uniform(new HashSet<>(Arrays.asList(15, 25))));
 
-        FieldValueSource sources = evaluator.getFieldValueSources(NUMERIC, fieldSpecInSetAndNullNotDisallowed);
+        FieldValueSource sources = evaluator.getFieldValueSources(DataType.DECIMAL, fieldSpecInSetAndNullNotDisallowed);
 
         AssertLastSourceIsNullOnlySource(sources);
     }
@@ -88,7 +91,7 @@ public class FieldValueSourceEvaluatorTests {
             new Limit<>(new BigDecimal(30), false));
         FieldSpec fieldSpecWithTypedNumericRestrictionsAndNullNotDisallowed = FieldSpec.fromRestriction(numericRestrictions);
 
-        FieldValueSource sources = evaluator.getFieldValueSources(NUMERIC, fieldSpecWithTypedNumericRestrictionsAndNullNotDisallowed);
+        FieldValueSource sources = evaluator.getFieldValueSources(DataType.DECIMAL, fieldSpecWithTypedNumericRestrictionsAndNullNotDisallowed);
 
         AssertLastSourceIsNullOnlySource(sources);
     }
@@ -102,7 +105,7 @@ public class FieldValueSourceEvaluatorTests {
         );
         FieldSpec fieldSpecInSetWithTypedDateTimeRestrictionsAndNullNotDisallowed = FieldSpec.fromRestriction(dateTimeRestrictions);
 
-        FieldValueSource sources = evaluator.getFieldValueSources(DATETIME, fieldSpecInSetWithTypedDateTimeRestrictionsAndNullNotDisallowed);
+        FieldValueSource sources = evaluator.getFieldValueSources(DataType.DATE_TIME, fieldSpecInSetWithTypedDateTimeRestrictionsAndNullNotDisallowed);
 
         AssertLastSourceIsNullOnlySource(sources);
     }
@@ -117,7 +120,7 @@ public class FieldValueSourceEvaluatorTests {
         );
         FieldValueSourceEvaluator evaluator = new FieldValueSourceEvaluator();
 
-        final FieldValueSource result = evaluator.getFieldValueSources(NUMERIC, fieldSpec);
+        final FieldValueSource result = evaluator.getFieldValueSources(DataType.DECIMAL, fieldSpec);
 
         Iterator interestingValuesIterator = result.generateInterestingValues().iterator();
         List<BigDecimal> valuesFromResult = new ArrayList<>();
@@ -141,7 +144,7 @@ public class FieldValueSourceEvaluatorTests {
         ).withNotNull();
         FieldValueSourceEvaluator evaluator = new FieldValueSourceEvaluator();
 
-        final FieldValueSource result = evaluator.getFieldValueSources(NUMERIC, fieldSpec);
+        final FieldValueSource result = evaluator.getFieldValueSources(DataType.DECIMAL, fieldSpec);
 
         Iterator allValuesIterator = result.generateAllValues().iterator();
         List<BigDecimal> valuesFromResult = new ArrayList<>();
@@ -171,7 +174,7 @@ public class FieldValueSourceEvaluatorTests {
         FieldSpec fieldSpec = FieldSpec.fromRestriction(restrictions).withNotNull();
         FieldValueSourceEvaluator evaluator = new FieldValueSourceEvaluator();
 
-        final FieldValueSource result = evaluator.getFieldValueSources(NUMERIC, fieldSpec);
+        final FieldValueSource result = evaluator.getFieldValueSources(DataType.DECIMAL, fieldSpec);
 
         Iterator interestingValuesIterator = result.generateInterestingValues().iterator();
         List<BigDecimal> valuesFromResult = new ArrayList<>();
@@ -193,7 +196,7 @@ public class FieldValueSourceEvaluatorTests {
         ).withNotNull();
         FieldValueSourceEvaluator evaluator = new FieldValueSourceEvaluator();
 
-        final FieldValueSource result = evaluator.getFieldValueSources(NUMERIC, fieldSpec);
+        final FieldValueSource result = evaluator.getFieldValueSources(DataType.DECIMAL, fieldSpec);
 
         Iterator interestingValuesIterator = result.generateInterestingValues().iterator();
         List<BigDecimal> valuesFromResult = new ArrayList<>();
@@ -216,7 +219,7 @@ public class FieldValueSourceEvaluatorTests {
         ).withNotNull();
         FieldValueSourceEvaluator evaluator = new FieldValueSourceEvaluator();
 
-        final FieldValueSource result = evaluator.getFieldValueSources(NUMERIC, fieldSpec);
+        final FieldValueSource result = evaluator.getFieldValueSources(DataType.DECIMAL, fieldSpec);
 
         Iterator interestingValuesIterator = result.generateInterestingValues().iterator();
         List<BigDecimal> valuesFromResult = new ArrayList<>();
@@ -237,7 +240,7 @@ public class FieldValueSourceEvaluatorTests {
         ).withNotNull();
         FieldValueSourceEvaluator evaluator = new FieldValueSourceEvaluator();
 
-        final FieldValueSource result = evaluator.getFieldValueSources(NUMERIC, fieldSpec);
+        final FieldValueSource result = evaluator.getFieldValueSources(DataType.DECIMAL, fieldSpec);
 
         Iterator allValuesIterator = result.generateAllValues().iterator();
         List<BigDecimal> valuesFromResult = new ArrayList<>();

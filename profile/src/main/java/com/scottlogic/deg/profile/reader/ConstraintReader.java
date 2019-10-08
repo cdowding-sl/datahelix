@@ -19,16 +19,12 @@ package com.scottlogic.deg.profile.reader;
 import com.google.inject.Inject;
 import com.scottlogic.deg.common.date.TemporalAdjusterGenerator;
 import com.scottlogic.deg.common.profile.ProfileFields;
-import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
 import com.scottlogic.deg.common.profile.constraintdetail.ParsedDateGranularity;
 import com.scottlogic.deg.common.profile.constraintdetail.ParsedGranularity;
 import com.scottlogic.deg.common.profile.constraints.Constraint;
 import com.scottlogic.deg.common.profile.constraints.atomic.*;
-import com.scottlogic.deg.common.profile.constraints.delayed.DelayedAtomicConstraint;
-import com.scottlogic.deg.common.profile.constraints.delayed.DelayedDateAtomicConstraint;
 import com.scottlogic.deg.common.profile.constraints.grammatical.AndConstraint;
 import com.scottlogic.deg.common.profile.constraints.grammatical.ConditionalConstraint;
-import com.scottlogic.deg.common.profile.constraints.grammatical.GrammaticalConstraint;
 import com.scottlogic.deg.common.profile.constraints.grammatical.OrConstraint;
 import com.scottlogic.deg.common.util.NumberUtils;
 import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
@@ -80,7 +76,6 @@ public class ConstraintReader
     {
         return constraints.stream()
                 .map(subConstraintDto -> read(subConstraintDto, fields))
-                .filter(constraint -> !(constraint instanceof RemoveFromTree))
                 .collect(Collectors.toSet());
     }
 
@@ -91,7 +86,7 @@ public class ConstraintReader
         if (dto instanceof PredicateConstraintDTO)
         {
             PredicateConstraintDTO predicateConstraintDTO = (PredicateConstraintDTO)dto;
-            if(predicateConstraintDTO.hasDependency()) return readDelayed((EqualToConstraintDTO) predicateConstraintDTO, profileFields);
+            if(predicateConstraintDTO.hasDependency()) return null;
             switch (predicateConstraintDTO.getType())
             {
                 case EQUAL_TO:
@@ -143,7 +138,7 @@ public class ConstraintReader
                     throw new InvalidProfileException("Predicate constraint type not found: " + predicateConstraintDTO);
             }
         }
-        if(dto instanceof GrammaticalConstraint)
+        if(dto instanceof GrammaticalConstraintDTO)
         {
             GrammaticalConstraintDTO grammaticalConstraintDTO = (GrammaticalConstraintDTO) dto;
             switch(grammaticalConstraintDTO.getType())
@@ -166,12 +161,6 @@ public class ConstraintReader
         throw new InvalidProfileException("Constraint type not found: " + dto);
     }
 
-    private DelayedAtomicConstraint readDelayed(EqualToConstraintDTO dto, ProfileFields fields)
-    {
-        return dto.offsetUnit != null
-                ? new DelayedDateAtomicConstraint(fields.getByName(dto.field), AtomicConstraintType.IS_EQUAL_TO_CONSTANT, fields.getByName(dto.otherField), getOffsetUnit(dto), dto.offset)
-                : new DelayedDateAtomicConstraint(fields.getByName(dto.field), AtomicConstraintType.IS_AFTER_CONSTANT_DATE_TIME, fields.getByName(dto.otherField));
-    }
 
     private TemporalAdjusterGenerator getOffsetUnit(EqualToConstraintDTO dto)
     {

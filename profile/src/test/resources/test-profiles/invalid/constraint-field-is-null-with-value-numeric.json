@@ -1,13 +1,14 @@
 {
-  "schemaVersion": "0.7",
+  "schemaVersion": "0.10",
   "rules": [
     {
       "rule": "rule 1",
       "constraints": [
         {
-          "field": "field1",
-          "is": "null",
-          "value": 43
+          "null" : {
+            "field": "field1",
+            "value": 43
+          }
         }
       ]
     }

@@ -1,13 +1,14 @@
 {
-  "schemaVersion": "0.7",
+  "schemaVersion": "0.10",
   "rules": [
     {
       "rule": "rule 1",
       "constraints": [
         {
-          "afield": "field1",
-          "is": "shorterThan",
-          "value": 19
+          "shorterThan": {
+            "afield": "field1",
+            "value": 19
+          }
         }
       ]
     }

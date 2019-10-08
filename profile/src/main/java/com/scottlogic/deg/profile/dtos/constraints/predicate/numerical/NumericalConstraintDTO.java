@@ -16,11 +16,13 @@
 
 package com.scottlogic.deg.profile.dtos.constraints.predicate.numerical;
 
-import com.scottlogic.deg.profile.dtos.constraints.predicate.PredicateConstraintDTO;
 import com.scottlogic.deg.common.profile.ConstraintType;
+import com.scottlogic.deg.profile.dtos.constraints.predicate.PredicateConstraintDTO;
 
 public abstract class NumericalConstraintDTO extends PredicateConstraintDTO
 {
+    public Number value;
+
     NumericalConstraintDTO(ConstraintType type)
     {
         super(type);

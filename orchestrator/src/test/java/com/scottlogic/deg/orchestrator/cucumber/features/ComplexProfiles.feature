@@ -18,28 +18,38 @@ Feature: Generator can produce correct data for complex profiles.
               "allOf": [
                 {
                   "anyOf": [
-                    { "field": "bar", "is": "equalTo", "value": 1 },
-                    { "field": "bar", "is": "equalTo", "value": 2 }
+                  {
+                    "equalTo":
+                      {
+                        "field": "bar", "value": 1
+                      }
+                  },
+                  {
+                      "equalTo":
+                      {
+                          "field": "bar", "value": 2
+                      }
+                  }
                   ]
                 },
                 {
                   "anyOf": [
-                    { "field": "foo", "is": "equalTo", "value": 1 },
-                    { "field": "bar", "is": "equalTo", "value": 3 }
+                    { "equalTo": { "field": "foo", "value": 1 } },
+                     { "equalTo": { "field": "bar", "value": 3 } }
                   ]
                 },
                 {
                   "anyOf": [
-                    { "field": "foo", "is": "equalTo", "value": 2 },
-                    { "field": "bar", "is": "equalTo", "value": 4 }
+                     { "equalTo": { "field": "foo", "value": 2 } },
+                     { "equalTo": { "field": "bar", "value": 4 } }
                   ]
                 }
               ]
             },
             {
               "allOf": [
-                { "field": "foo", "is": "equalTo", "value": 10 },
-                { "field": "bar", "is": "equalTo", "value": 10 }
+                 { "equalTo": { "field": "foo", "value": 10 } },
+                 { "equalTo": { "field": "bar", "value": 10 } }
               ]
             }
           ]

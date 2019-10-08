@@ -1,14 +1,21 @@
 {
-  "schemaVersion": "0.7",
+  "schemaVersion": "0.10",
   "fields": [
     {
-      "name": "field1"
-    }, {
-      "name": "field2"
-    }, {
-      "name": "field3"
-    }, {
-      "name": "field4"
+      "name": "field1",
+      "type": "datetime"
+    },
+    {
+      "name": "field2",
+      "type": "datetime"
+    },
+    {
+      "name": "field3",
+      "type": "datetime"
+    },
+    {
+      "name": "field4",
+      "type": "datetime"
     }
   ],
   "rules": [
@@ -16,64 +23,49 @@
       "constraints": [
         {
           "not": {
+            "null": {
+              "field": "field1"
+            }
+          }
+        },
+        {
+          "not": {
+            "null": {
+              "field": "field2"
+            }
+          }
+        },
+        {
+          "not": {
+            "null": {
+              "field": "field3"
+            }
+          }
+        },
+        {
+          "not": {
+            "null": {
+              "field": "field4"
+            }
+          }
+        },
+        {
+          "after": {
             "field": "field1",
-            "is": "null"
+            "value": "8001-02-03T04:05:06.007"
           }
         },
         {
-          "not": {
+          "afterField": {
             "field": "field2",
-            "is": "null"
+            "value": "field1"
           }
         },
         {
-          "not": {
+          "beforeOr": {
             "field": "field3",
-            "is": "null"
+            "value": "field4"
           }
-        },
-        {
-          "not": {
-            "field": "field4",
-            "is": "null"
-          }
-        },
-        {
-          "field": "field1",
-          "is": "ofType",
-          "value": "datetime"
-        },
-        {
-          "field": "field2",
-          "is": "ofType",
-          "value": "datetime"
-        },
-        {
-          "field": "field3",
-          "is": "ofType",
-          "value": "datetime"
-        },
-        {
-          "field": "field4",
-          "is": "ofType",
-          "value": "datetime"
-        },
-        {
-          "field": "field1",
-          "is": "after",
-          "value": {
-            "date": "8001-02-03T04:05:06.007"
-          }
-        },
-        {
-          "field": "field2",
-          "is": "afterField",
-          "value": "field1"
-        },
-        {
-          "field": "field3",
-          "is": "beforeOr",
-          "value": "field4"
         }
       ]
     }

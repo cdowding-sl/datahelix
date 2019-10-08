@@ -18,10 +18,10 @@ package com.scottlogic.deg.profile.dtos.fields;
 
 import com.scottlogic.deg.common.profile.DataType;
 
-public class TextualFieldDTO extends FieldDTO
+public class CUSIPFieldDTO extends FieldDTO
 {
-    public TextualFieldDTO()
+    public CUSIPFieldDTO()
     {
-        super(DataType.STRING);
+        super(DataType.CUSIP);
     }
 }

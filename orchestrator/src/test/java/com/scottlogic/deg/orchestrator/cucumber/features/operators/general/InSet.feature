@@ -1480,8 +1480,8 @@ Feature: User can specify that a field value belongs to a set of predetermined o
     And there is a constraint:
       """
       { "anyOf": [
-        { "field": "foo", "is": "inSet", "values": [ "Test 1", "Test 2" ] },
-        { "field": "foo", "is": "inSet", "values": [ "Test 3", "Test 4" ] }
+        { "inSet" { "field": "foo", "values": [ "Test 1", "Test 2" ] } },
+        { "inSet": { "field": "foo", "values": [ "Test 3", "Test 4" ] } }
       ]}
       """
     Then the following data should be generated:
@@ -1497,8 +1497,8 @@ Feature: User can specify that a field value belongs to a set of predetermined o
     And there is a constraint:
       """
       { "allOf": [
-        { "field": "foo", "is": "inSet", "values": [ "Test1", "Test2" ] },
-        { "field": "foo", "is": "inSet", "values": [ "Test1", "Test2" ] }
+        { "inSet" { "field": "foo", "values": [ "Test 1", "Test 2" ] } },
+        { "inSet" { "field": "foo", "values": [ "Test 1", "Test 2" ] } }
       ]}
       """
     Then the following data should be generated:
@@ -1513,8 +1513,8 @@ Feature: User can specify that a field value belongs to a set of predetermined o
     And there is a constraint:
       """
       { "allOf": [
-        { "field": "foo", "is": "inSet", "values": [ "Test1", "Test2" ] },
-        { "field": "foo", "is": "inSet", "values": [ "Test3", "Test4" ] }
+       { "inSet" { "field": "foo", "values": [ "Test 1", "Test 2" ] } },
+        { "inSet" { "field": "foo", "values": [ "Test 3", "Test 4" ] } }
       ]}
       """
     Then the following data should be generated:
@@ -1536,9 +1536,12 @@ Feature: User can specify that a field value belongs to a set of predetermined o
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "inSet", "values": [ "Test1", "Test2" ] },
-        "then": { "field": "price", "is": "equalTo", "value": 1 },
-        "else": { "field": "price", "is": "equalTo", "value": 2 }
+      "condition" :
+       {
+        "if": { "inSet" { "field": "foo", "values": [ "Test 1", "Test 2" ] } },
+        "then": {"equalTo": { "field": "price", "value": 1 } },
+        "else": {"equalTo": { "field": "price", "value": 2 } }
+        }
       }
       """
     And foo is anything but null

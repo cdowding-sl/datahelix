@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package com.scottlogic.deg.profile.dtos.constraints.predicate.numerical;
+package com.scottlogic.deg.profile.dtos.fields;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.scottlogic.deg.common.profile.ConstraintType;
+import com.scottlogic.deg.common.profile.DataType;
 
-@JsonDeserialize(as = LessThanConstraintDTO.class)
-public class LessThanConstraintDTO extends NumericalConstraintDTO
+public class RICFieldDTO extends FieldDTO
 {
-    public LessThanConstraintDTO()
+    public RICFieldDTO()
     {
-        super(ConstraintType.LESS_THAN);
+        super(DataType.RIC);
     }
 }

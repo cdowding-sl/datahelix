@@ -66,7 +66,6 @@ public class ConstraintValidationAndReadingTests {
     private static Stream<Arguments> testProvider() {
         EqualToConstraintDTO stringValueDto = new EqualToConstraintDTO();
         stringValueDto.field = "test";
-        stringValueDto.is = IS_EQUAL_TO_CONSTANT.toString();
         stringValueDto.value = "value";
 
         EqualToConstraintDTO numberValueDto = new EqualToConstraintDTO();

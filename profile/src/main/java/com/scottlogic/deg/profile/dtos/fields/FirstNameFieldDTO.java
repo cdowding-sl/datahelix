@@ -18,10 +18,10 @@ package com.scottlogic.deg.profile.dtos.fields;
 
 import com.scottlogic.deg.common.profile.DataType;
 
-public class NumericalFieldDTO extends FieldDTO
+public class FirstNameFieldDTO extends FieldDTO
 {
-    public NumericalFieldDTO()
+    public FirstNameFieldDTO()
     {
-        super(DataType.NUMERIC);
+        super(DataType.FIRST_NAME);
     }
 }

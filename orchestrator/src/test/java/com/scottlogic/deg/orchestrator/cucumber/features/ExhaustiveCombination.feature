@@ -740,15 +740,21 @@ Feature: User can create data across multiple fields for all combinations availa
     And there is a constraint:
       """
       {
-        "if": { "field": "foo2", "is": "equalTo", "value": 1 },
-        "then": { "field": "foo3", "is": "equalTo", "value": "test1" },
+      "condition": {
+        "if":  { "equalTo": { "field": "foo2", "value": 1 } },
+        "then":  { "equalTo": { "field": "foo3", "value": "test1" } },
         "else": {
-          "if": { "field": "foo2", "is": "equalTo", "value": 10 },
-          "then": { "field": "foo3", "is": "equalTo", "value": "test10" },
+        condition: {
+          "if":  { "equalTo": { "field": "foo2", "value": 10} },
+          "then":  { "equalTo": { "field": "foo3", "value": "test10"} },
           "else": {
-            "if": { "field": "foo2", "is": "equalTo", "value": 100 },
-            "then": { "field": "foo3", "is": "equalTo", "value": "test100" },
-            "else": { "field": "foo3", "is": "equalTo", "value": "other" }
+          "condition {
+            "if":  { "equalTo": { "field": "foo2", "value": 100 }},
+            "then":  { "equalTo": { "field": "foo3", "value": "test100" }},
+            "else":  { "equalTo": { "field": "foo3", "value": "other"} }
+            }
+            }
+          }
           }
         }
       }

@@ -16,9 +16,10 @@
 
 package com.scottlogic.deg.generator.reducer;
 
-import com.scottlogic.deg.common.profile.constraints.atomic.*;
+import com.scottlogic.deg.common.profile.DataType;
 import com.scottlogic.deg.common.profile.Field;
 import com.scottlogic.deg.common.profile.ProfileFields;
+import com.scottlogic.deg.common.profile.constraints.atomic.*;
 import com.scottlogic.deg.generator.decisiontree.ConstraintNode;
 import com.scottlogic.deg.generator.decisiontree.ConstraintNodeBuilder;
 import com.scottlogic.deg.generator.fieldspecs.FieldSpec;
@@ -38,15 +39,16 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.scottlogic.deg.common.profile.DataType.*;
+import static com.scottlogic.deg.common.profile.FieldBuilder.createField;
 import static com.scottlogic.deg.common.util.Defaults.*;
 import static org.hamcrest.Matchers.*;
-import static com.scottlogic.deg.common.profile.FieldBuilder.createField;
 
 class ConstraintReducerTest {
 
@@ -62,7 +64,7 @@ class ConstraintReducerTest {
     @Test
     void shouldProduceCorrectFieldSpecsForExample() {
         // ARRANGE
-        final Field quantityField = createField("quantity", NUMERIC);
+        final Field quantityField = createField("quantity", DataType.DECIMAL);
         final Field countryField = createField("country");
         final Field cityField = createField("city");
 
@@ -119,7 +121,7 @@ class ConstraintReducerTest {
 
     @Test
     void shouldReduceIsGreaterThanConstantConstraint() {
-        final Field field = createField("test0", NUMERIC);
+        final Field field = createField("test0", DataType.DECIMAL);
         ProfileFields profileFields = new ProfileFields(Collections.singletonList(field));
         Set<AtomicConstraint> constraints = Collections.singleton(
             new IsGreaterThanOrEqualToConstantConstraint(field, BigDecimal.valueOf(5)));
@@ -147,7 +149,7 @@ class ConstraintReducerTest {
 
     @Test
     void shouldReduceNegatedIsGreaterThanConstantConstraint() {
-        final Field field = createField("test0", NUMERIC);
+        final Field field = createField("test0", DataType.DECIMAL);
         ProfileFields profileFields = new ProfileFields(Collections.singletonList(field));
         Set<AtomicConstraint> constraints = Collections.singleton(
             new IsGreaterThanConstantConstraint(field, BigDecimal.valueOf(5)).negate());
@@ -173,7 +175,7 @@ class ConstraintReducerTest {
 
     @Test
     void shouldReduceIsGreaterThanOrEqualToConstantConstraint() {
-        final Field field = createField("test0", NUMERIC);
+        final Field field = createField("test0", DataType.DECIMAL);
         ProfileFields profileFields = new ProfileFields(Collections.singletonList(field));
         Set<AtomicConstraint> constraints = Collections.singleton(
             new IsGreaterThanOrEqualToConstantConstraint(field, BigDecimal.valueOf(5)));
@@ -201,7 +203,7 @@ class ConstraintReducerTest {
 
     @Test
     void shouldReduceNegatedIsGreaterThanOrEqualToConstantConstraint() {
-        final Field field = createField("test0", NUMERIC);
+        final Field field = createField("test0", DataType.DECIMAL);
         ProfileFields profileFields = new ProfileFields(Collections.singletonList(field));
         Set<AtomicConstraint> constraints = Collections.singleton(
             new IsGreaterThanConstantConstraint(field, BigDecimal.valueOf(5)).negate());
@@ -227,7 +229,7 @@ class ConstraintReducerTest {
 
     @Test
     void shouldReduceIsLessThanConstantConstraint() {
-        final Field field = createField("test0", NUMERIC);
+        final Field field = createField("test0", DataType.DECIMAL);
         ProfileFields profileFields = new ProfileFields(Collections.singletonList(field));
         Set<AtomicConstraint> constraints = Collections.singleton(
             new IsLessThanOrEqualToConstantConstraint(field, BigDecimal.valueOf(5)));
@@ -253,7 +255,7 @@ class ConstraintReducerTest {
 
     @Test
     void shouldReduceNegatedIsLessThanConstantConstraint() {
-        final Field field = createField("test0", NUMERIC);
+        final Field field = createField("test0", DataType.DECIMAL);
         ProfileFields profileFields = new ProfileFields(Collections.singletonList(field));
         Set<AtomicConstraint> constraints = Collections.singleton(
             new IsLessThanConstantConstraint(field, BigDecimal.valueOf(5)).negate());
@@ -279,7 +281,7 @@ class ConstraintReducerTest {
 
     @Test
     void shouldReduceIsLessThanOrEqualToConstantConstraint() {
-        final Field field = createField("test0", NUMERIC);
+        final Field field = createField("test0", DataType.DECIMAL);
         ProfileFields profileFields = new ProfileFields(Collections.singletonList(field));
         Set<AtomicConstraint> constraints = Collections.singleton(
             new IsLessThanOrEqualToConstantConstraint(field, BigDecimal.valueOf(5)));
@@ -305,7 +307,7 @@ class ConstraintReducerTest {
 
     @Test
     void shouldReduceNegatedIsLessThanOrEqualToConstantConstraint() {
-        final Field field = createField("test0", NUMERIC);
+        final Field field = createField("test0", DataType.DECIMAL);
         ProfileFields profileFields = new ProfileFields(Collections.singletonList(field));
         Set<AtomicConstraint> constraints = Collections.singleton(
             new IsLessThanConstantConstraint(field, BigDecimal.valueOf(5)).negate());
@@ -331,7 +333,7 @@ class ConstraintReducerTest {
 
     @Test
     void shouldreduceIsAfterConstantDateTimeConstraint() {
-        final Field field = createField("test0", DATETIME);
+        final Field field = createField("test0", DataType.DATE_TIME);
         final OffsetDateTime testTimestamp = OffsetDateTime.of(2018, 2, 4, 23, 25, 16, 0, ZoneOffset.UTC);
         ProfileFields profileFields = new ProfileFields(Collections.singletonList(field));
         Set<AtomicConstraint> constraints = Collections.singleton(
@@ -358,7 +360,7 @@ class ConstraintReducerTest {
 
     @Test
     void shouldreduceNegatedIsAfterConstantDateTimeConstraint() {
-        final Field field = createField("test0", DATETIME);
+        final Field field = createField("test0", DataType.DATE_TIME);
         final OffsetDateTime testTimestamp = OffsetDateTime.of(2018, 2, 4, 23, 25, 16,0, ZoneOffset.UTC);
         ProfileFields profileFields = new ProfileFields(Collections.singletonList(field));
         Set<AtomicConstraint> constraints = Collections.singleton(
@@ -385,7 +387,7 @@ class ConstraintReducerTest {
 
     @Test
     void shouldreduceIsAfterOrEqualToConstantDateTimeConstraint() {
-        final Field field = createField("test0", DATETIME);
+        final Field field = createField("test0", DataType.DATE_TIME);
         final OffsetDateTime testTimestamp = OffsetDateTime.of(2018, 2, 4, 23, 25, 16, 0, ZoneOffset.UTC);
         ProfileFields profileFields = new ProfileFields(Collections.singletonList(field));
         Set<AtomicConstraint> constraints = Collections.singleton(
@@ -412,7 +414,7 @@ class ConstraintReducerTest {
 
     @Test
     void shouldreduceNegatedIsAfterOrEqualToConstantDateTimeConstraint() {
-        final Field field = createField("test0", DATETIME);
+        final Field field = createField("test0", DataType.DATE_TIME);
         final OffsetDateTime testTimestamp = OffsetDateTime.of(2018, 2, 4, 23, 25, 16, 0, ZoneOffset.UTC);
         ProfileFields profileFields = new ProfileFields(Collections.singletonList(field));
         Set<AtomicConstraint> constraints = Collections.singleton(
@@ -439,7 +441,7 @@ class ConstraintReducerTest {
 
     @Test
     void shouldreduceIsBeforeConstantDateTimeConstraint() {
-        final Field field = createField("test0", DATETIME);
+        final Field field = createField("test0", DataType.DATE_TIME);
         final OffsetDateTime testTimestamp = OffsetDateTime.of(2018, 2, 4, 23, 25, 16, 0, ZoneOffset.UTC);
         ProfileFields profileFields = new ProfileFields(Collections.singletonList(field));
         Set<AtomicConstraint> constraints = Collections.singleton(
@@ -466,7 +468,7 @@ class ConstraintReducerTest {
 
     @Test
     void shouldreduceNegatedIsBeforeConstantDateTimeConstraint() {
-        final Field field = createField("test0", DATETIME);
+        final Field field = createField("test0", DataType.DATE_TIME);
         final OffsetDateTime testTimestamp = OffsetDateTime.of(2018, 2, 4, 23, 25, 16, 0, ZoneOffset.UTC);
         ProfileFields profileFields = new ProfileFields(Collections.singletonList(field));
         Set<AtomicConstraint> constraints = Collections.singleton(
@@ -493,7 +495,7 @@ class ConstraintReducerTest {
 
     @Test
     void shouldreduceIsBeforeOrEqualToConstantDateTimeConstraint() {
-        final Field field = createField("test0", DATETIME);
+        final Field field = createField("test0", DataType.DATE_TIME);
         final OffsetDateTime testTimestamp = OffsetDateTime.of(2018, 2, 4, 23, 25, 16, 0, ZoneOffset.UTC);
         ProfileFields profileFields = new ProfileFields(Collections.singletonList(field));
         Set<AtomicConstraint> constraints = Collections.singleton(
@@ -520,7 +522,7 @@ class ConstraintReducerTest {
 
     @Test
     void shouldreduceNegatedIsBeforeorEqualToConstantDateTimeConstraint() {
-        final Field field = createField("test0", DATETIME);
+        final Field field = createField("test0", DataType.DATE_TIME);
         final OffsetDateTime testTimestamp = OffsetDateTime.of(2018, 2, 4, 23, 25, 16, 0, ZoneOffset.UTC);
         ProfileFields profileFields = new ProfileFields(Collections.singletonList(field));
         Set<AtomicConstraint> constraints = Collections.singleton(
@@ -547,7 +549,7 @@ class ConstraintReducerTest {
 
     @Test
     void shouldMergeAndReduceIsAfterConstantDateTimeConstraintWithIsBeforeConstantDateTimeConstraint() {
-        final Field field = createField("test0", DATETIME);
+        final Field field = createField("test0", DataType.DATE_TIME);
         final OffsetDateTime startTimestamp = OffsetDateTime.of(2013, 11, 19, 10, 43, 12, 0, ZoneOffset.UTC);
         final OffsetDateTime endTimestamp = OffsetDateTime.of(2018, 2, 4, 23, 25, 8, 0, ZoneOffset.UTC);
         ProfileFields profileFields = new ProfileFields(Collections.singletonList(field));

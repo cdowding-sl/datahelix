@@ -1,7 +1,7 @@
 package com.scottlogic.deg.generator.fieldspecs.relations;
 
-import com.scottlogic.deg.common.profile.Field;
 import com.scottlogic.deg.common.profile.DataType;
+import com.scottlogic.deg.common.profile.Field;
 import com.scottlogic.deg.common.profile.constraintdetail.Timescale;
 import com.scottlogic.deg.generator.fieldspecs.FieldSpec;
 import com.scottlogic.deg.generator.restrictions.linear.LinearRestrictions;
@@ -13,13 +13,12 @@ import java.time.ZoneOffset;
 import static com.scottlogic.deg.common.profile.FieldBuilder.createField;
 import static com.scottlogic.deg.common.util.Defaults.ISO_MAX_DATE;
 import static com.scottlogic.deg.common.util.Defaults.ISO_MIN_DATE;
-import static com.scottlogic.deg.generator.restrictions.linear.LinearRestrictionsFactory.createDateTimeRestrictions;
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
 import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
 
 class FieldSpecRelationsTest {
-    private Field main = createField("main", DataType.DATETIME);
-    private Field other = createField("other", DataType.DATETIME);
+    private Field main = createField("main", DataType.DATE_TIME);
+    private Field other = createField("other", DataType.DATE_TIME);
 
     @Test
     public void equalTo_exactValue_returnsSame(){

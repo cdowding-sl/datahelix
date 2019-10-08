@@ -35,8 +35,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.scottlogic.deg.common.profile.FieldBuilder.createField;
-import static com.scottlogic.deg.common.profile.DataType.NUMERIC;
-import static com.scottlogic.deg.common.profile.DataType.STRING;
 import static com.scottlogic.deg.generator.config.detail.DataGenerationType.*;
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
 import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
@@ -75,7 +73,7 @@ class FieldSpecValueGeneratorTests {
             new JavaUtilRandomNumberGenerator());
 
         final Set<DataBagValue> result =
-            fieldSpecFulfiller.generate(createField(null, NUMERIC), fieldSpec).collect(Collectors.toSet());
+            fieldSpecFulfiller.generate(createField(null, DataType.DECIMAL), fieldSpec).collect(Collectors.toSet());
 
         Set<DataBagValue> expectedDataBags = new HashSet<>(
             Arrays.asList(
@@ -155,7 +153,7 @@ class FieldSpecValueGeneratorTests {
                 randomNumberGenerator
             );
 
-            fieldSpecFulfiller.generate(new Field(null, STRING, true, null, false), fieldSpec).collect(Collectors.toSet());
+            fieldSpecFulfiller.generate(new Field(null, DataType.STRING, true, null, false), fieldSpec).collect(Collectors.toSet());
 
             verify(fieldValueSource, times(1)).generateAllValues();
             verify(fieldValueSource, times(0)).generateInterestingValues();

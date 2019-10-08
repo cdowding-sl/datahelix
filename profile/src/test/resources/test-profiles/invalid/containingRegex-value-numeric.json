@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.7",
+  "schemaVersion": "0.10",
   "fields": [
     {
       "name": "field1"
@@ -9,9 +9,10 @@
     {
       "constraints": [
         {
-          "field": "field1",
-          "is": "containingRegex",
-          "value": 3
+          "containingRegex" : {
+            "field": "field1",
+            "value": 3
+          }
         }
       ]
     }

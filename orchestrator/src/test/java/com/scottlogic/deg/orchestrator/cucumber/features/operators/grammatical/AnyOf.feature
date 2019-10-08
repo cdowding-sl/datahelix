@@ -8,9 +8,9 @@ Feature: Values can be specified by using any of to set multiple constraints
     Given there is a constraint:
       """
       { "anyOf": [
-        { "field": "foo", "is": "equalTo", "value": "Test0" },
-        { "field": "foo", "is": "inSet", "values": ["Test1", "Test2", "Test3", "Test4", "Test5"] },
-        { "field": "foo", "is": "matchingRegex", "value": "[a-b]{4}" }
+        {"equalTo": { "field": "foo", "value": "Test0"} },
+        { "inSet" : { "field": "foo", "values": ["Test1", "Test2", "Test3", "Test4", "Test5"] } },
+        { "matchingRegex": { "field": "foo", "value": "[a-b]{4}" }
       ]}
       """
     And foo has type "string"
@@ -44,16 +44,16 @@ Feature: Values can be specified by using any of to set multiple constraints
     Given there is a constraint:
       """
       { "anyOf": [
-        { "field": "foo", "is": "equalTo", "value": "Test0" },
-        { "field": "foo", "is": "inSet", "values": ["Test1", "Test2", "Test3", "Test4", "Test5"] },
-        { "field": "foo", "is": "matchingRegex", "value": "[a-b]{4}" }
+        {"equalTo":  { "field": "foo", "value": "Test0"} },
+         {"inSet": { "field": "foo", "values": ["Test1", "Test2", "Test3", "Test4", "Test5"]} },
+        {"matchingRegex":  { "field": "foo", "value": "[a-b]{4}"} }
       ]}
       """
     And there is a constraint:
       """
       { "anyOf": [
-        { "field": "foo", "is": "equalTo", "value": "Test6" },
-        { "field": "foo", "is": "inSet", "values": ["Test7", "Test8", "Test9"] }
+         {"equalTo": { "field": "foo", "value": "Test6"} },
+        {"inSet":  { "field": "foo", "values": ["Test7", "Test8", "Test9"] }}
       ]}
       """
     And foo has type "string"
@@ -64,10 +64,10 @@ Feature: Values can be specified by using any of to set multiple constraints
     Given there is a constraint:
       """
       { "anyOf": [
-        { "field": "foo", "is": "ofLength", "value": 1 },
+       { "ofLength" { "field": "foo", "value": 1 }},
         { "anyOf":  [
-          { "field": "foo", "is": "ofLength", "value": 3 },
-          { "field": "foo", "is": "ofLength", "value": 5 }
+          { "ofLength" { "field": "foo", "value": 3 }},
+          { "ofLength" { "field": "foo", "value": 5 }}
         ]}
       ]}
       """
@@ -92,10 +92,10 @@ Feature: Values can be specified by using any of to set multiple constraints
     Given there is a constraint:
       """
       { "anyOf": [
-        { "field": "foo", "is": "ofLength", "value": 1 },
+        { "ofLength" { "field": "foo", "value": 1} },
         { "allOf": [
-          { "field": "foo", "is": "longerThan", "value": 3 },
-          { "field": "foo", "is": "shorterThan", "value": 5 }
+          { "longerThan" { "field": "foo", "value": 3} },
+          { "shorterThan" { "field": "foo", "value": 5 }}
         ]}
       ]}
       """
@@ -120,9 +120,9 @@ Feature: Values can be specified by using any of to set multiple constraints
     Given there is a constraint:
       """
       { "anyOf": [
-        { "field": "foo", "is": "ofLength", "value": 1 },
+        { "ofLength" { "field": "foo",  "value": 1 }},
         { "anyOf": [
-          { "field": "foo", "is": "ofLength", "value": -1 }
+          { "ofLength" { "field": "foo","value": -1} }
         ]}
       ]}
       """
@@ -135,9 +135,9 @@ Feature: Values can be specified by using any of to set multiple constraints
     Given there is a constraint:
       """
       { "anyOf": [
-        { "field": "foo", "is": "ofLength", "value": 1 },
+       { "ofLength"  { "field": "foo", "value": 1 }},
         { "allOf": [
-          { "field": "foo", "is": "ofLength", "value": -1 }
+         { "ofLength"  { "field": "foo", "value": -1 }}
         ]}
       ]}
       """
@@ -150,10 +150,10 @@ Feature: Values can be specified by using any of to set multiple constraints
     Given there is a constraint:
       """
       { "anyOf": [
-        { "field": "foo", "is": "ofLength", "value": 1 },
+        { "ofLength" { "field": "foo", "value": 1 }},
         { "allOf": [
-          { "field": "foo", "is": "longerThan", "value": 3 },
-          { "field": "foo", "is": "shorterThan", "value": 2 }
+          { "longerThan" { "field": "foo","value": 3 }},
+          { "shorterThan" { "field": "foo", "value": 2 }}
         ]}
       ]}
       """

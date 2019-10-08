@@ -24,6 +24,7 @@ import com.scottlogic.deg.common.profile.Field;
 import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
 import com.scottlogic.deg.generator.config.detail.CombinationStrategyType;
 import com.scottlogic.deg.generator.config.detail.DataGenerationType;
+import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.PredicateConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.chronological.AfterConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.chronological.AfterOrAtConstraintDTO;
@@ -71,7 +72,7 @@ public class CucumberTestState {
 
     List<List<Object>> generatedObjects;
     List<Field> profileFields;
-    List<PredicateConstraintDTO> constraints;
+    List<ConstraintDTO> constraints;
     List<Exception> testExceptions;
 
     private final List<AtomicConstraintType> contstraintsToNotViolate = new ArrayList<>();
@@ -155,7 +156,7 @@ public class CucumberTestState {
     private PredicateConstraintDTO createConstraint(String fieldName, String constraintName, Object _value)
     {
         PredicateConstraintDTO predicateConstraintDTO = null;
-        switch (ConstraintType.valueOf(this.extractConstraint(constraintName)))
+        switch (ConstraintType.fromName(this.extractConstraint(constraintName)))
         {
             case EQUAL_TO:
                 predicateConstraintDTO = new EqualToConstraintDTO(){{field = fieldName; value = _value;}};
@@ -185,16 +186,16 @@ public class CucumberTestState {
                 predicateConstraintDTO = new ShorterThanConstraintDTO(){{field = fieldName; value = (int) _value;}};
                 break;
             case GREATER_THAN:
-                predicateConstraintDTO = new GreaterThanConstraintDTO(){{field = fieldName; value = (double) _value;}};
+                predicateConstraintDTO = new GreaterThanConstraintDTO(){{field = fieldName; value = (Number) _value;}};
                 break;
             case GREATER_THAN_OR_EQUAL_TO:
-                predicateConstraintDTO = new GreaterThanOrEqualToConstraintDTO(){{field = fieldName; value = (double) _value;}};
+                predicateConstraintDTO = new GreaterThanOrEqualToConstraintDTO(){{field = fieldName; value = (Number)  _value;}};
                 break;
             case LESS_THAN:
-                predicateConstraintDTO = new LessThanConstraintDTO(){{field = fieldName; value = (double) _value;}};
+                predicateConstraintDTO = new LessThanConstraintDTO(){{field = fieldName; value = (Number) _value;}};
                 break;
             case LESS_THAN_OR_EQUAL_TO:
-                predicateConstraintDTO = new LessThanOrEqualToConstraintDTO(){{field = fieldName; value = (double) _value;}};
+                predicateConstraintDTO = new LessThanOrEqualToConstraintDTO(){{field = fieldName; value = (Number) _value;}};
                 break;
             case AFTER:
                 predicateConstraintDTO = new AfterConstraintDTO(){{field = fieldName; value = (String) _value;}};
@@ -244,13 +245,13 @@ public class CucumberTestState {
         profileFields.add(newField);
     }
 
-    public void setFieldType(String fieldName, DataType types) {
+    public void setFieldType(String fieldName, DataType type) {
         Field oldField = profileFields.stream()
             .filter(f -> f.name.equals(fieldName))
             .findFirst()
             .orElseThrow(UnsupportedOperationException::new);
 
-        Field newField = new Field(oldField.name, types, oldField.isUnique(), oldField.getFormatting(), oldField.isInternal());
+        Field newField = new Field(oldField.name, type, oldField.isUnique(), oldField.getFormatting(), oldField.isInternal());
 
         profileFields.remove(oldField);
         profileFields.add(newField);

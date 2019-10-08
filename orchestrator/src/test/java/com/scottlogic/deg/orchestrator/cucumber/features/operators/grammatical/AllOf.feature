@@ -10,10 +10,10 @@ Feature: User can specify that data must be created to conform to each of multip
       """
       { "allOf": [
         { "allOf": [
-          { "field": "foo", "is": "matchingRegex", "value": "[a-b]{2}" },
-          { "field": "foo", "is": "ofLength", "value": 2 }
+          { "matchingRegex": { "field": "foo", "value": "[a-b]{2}"} },
+          { "ofLength": {"field": "foo", "value": 2 } }
         ]},
-        { "field": "foo", "is": "shorterThan", "value": 3 }
+        { "shorterThan": {"field": "foo", "value": 3 } }
       ]}
       """
     Then the following data should be generated:
@@ -31,10 +31,10 @@ Feature: User can specify that data must be created to conform to each of multip
       """
       { "allOf": [
         { "allOf": [
-          {"field": "foo", "is": "matchingRegex", "value": "[a-k]{3}" },
-          {"field": "foo", "is": "matchingRegex", "value": "[1-5]{3}" }
+          { "matchingRegex":  {"field": "foo", "value": "[a-k]{3}" }},
+          { "matchingRegex":  {"field": "foo",  "value": "[1-5]{3}" } }
         ]},
-        { "field": "foo", "is": "longerThan", "value": 4 }
+        { "longerThan": { "field": "foo",  "value": 4 }}
       ]}
       """
     Then the following data should be generated:
@@ -47,8 +47,8 @@ Feature: User can specify that data must be created to conform to each of multip
     And there is a constraint:
       """
       { "allOf": [
-        { "field": "foo", "is": "equalTo", "value": "Test01" },
-        { "field": "foo", "is": "equalTo", "value": "Test01" }
+        { "equalTo": {  "field": "foo",  "value": "Test01" }},
+         { "equalTo": { "field": "foo", "value": "Test01" }}
       ]}
       """
     Then the following data should be generated:
@@ -61,8 +61,8 @@ Feature: User can specify that data must be created to conform to each of multip
     And there is a constraint:
       """
       { "allOf": [
-        { "field": "foo", "is": "equalTo", "value": "Test0" },
-        { "field": "foo", "is": "equalTo", "value": "5" }
+        { "equalTo": { "field": "foo", "value": "Test0" }},
+         { "equalTo": { "field": "foo", "value": "5"} }
       ]}
       """
     Then no data is created

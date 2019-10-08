@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package com.scottlogic.deg.orchestrator.cucumber.testframework.steps;
+package com.scottlogic.deg.profile.dtos.fields;
 
-import java.util.HashMap;
+import com.scottlogic.deg.common.profile.DataType;
 
-public class DateObject extends HashMap {
-    public DateObject(String date){
-        this.put("date", date);
+public class LastNameFieldDTO extends FieldDTO
+{
+    public LastNameFieldDTO()
+    {
+        super(DataType.LAST_NAME);
     }
 }

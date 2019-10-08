@@ -125,10 +125,9 @@ public class DecisionTreeFactory {
         // OR(X, Y, Z) becomes a decision node
         Collection<Constraint> subConstraints = constraintToConvert.subConstraints;
 
-        List<ConstraintNode> options = subConstraints.stream()
+        Set<ConstraintNode> options = subConstraints.stream()
             .map(this::convertConstraint)
-            .collect(Collectors.toList());
-
+            .collect(Collectors.toSet());
         return asConstraintNode(new DecisionNode(options));
     }
 

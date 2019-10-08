@@ -16,29 +16,22 @@
 
 package com.scottlogic.deg.profile.dtos.fields;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.scottlogic.deg.common.profile.DataType;
+import com.scottlogic.deg.profile.reader.InvalidProfileException;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = NumericalFieldDTO.class, name = "decimal"),
-        @JsonSubTypes.Type(value = NumericalFieldDTO.class, name = "integer"),
-        @JsonSubTypes.Type(value = TextualFieldDTO.class, name = "ISIN"),
-        @JsonSubTypes.Type(value = TextualFieldDTO.class, name = "SEDOL"),
-        @JsonSubTypes.Type(value = TextualFieldDTO.class, name = "CUSIP"),
-        @JsonSubTypes.Type(value = TextualFieldDTO.class, name = "RIC"),
-        @JsonSubTypes.Type(value = TextualFieldDTO.class, name = "firstname"),
-        @JsonSubTypes.Type(value = TextualFieldDTO.class, name = "lastname"),
-        @JsonSubTypes.Type(value = TextualFieldDTO.class, name = "fullname"),
-        @JsonSubTypes.Type(value = TextualFieldDTO.class, name = "string"),
-        @JsonSubTypes.Type(value = DateTimeFieldDTO.class, name = "datetime")
-})
-public abstract class FieldDTO
+import java.io.IOException;
+
+@JsonDeserialize(using = FieldDTO.FieldDeserializer.class)
+public class FieldDTO
 {
     private final DataType dataType;
     public String name;
-    public String type;
     public String formatting;
     public boolean unique;
     public boolean nullable = true;
@@ -51,5 +44,42 @@ public abstract class FieldDTO
     public DataType getDataType()
     {
         return dataType;
+    }
+
+    static class FieldDeserializer extends JsonDeserializer<FieldDTO>
+    {
+        @Override
+        public FieldDTO deserialize(JsonParser p, DeserializationContext context) throws IOException
+        {
+            ObjectMapper objectMapper = (ObjectMapper) p.getCodec();
+            ObjectNode object = objectMapper.readTree(p);
+            switch (DataType.fromName(object.get("type").asText()))
+            {
+                case DECIMAL:
+                    return objectMapper.treeToValue(object, DecimalFieldDTO.class);
+                case INTEGER:
+                    return objectMapper.treeToValue(object, IntegerFieldDTO.class);
+                case ISIN:
+                    return objectMapper.treeToValue(object, ISINFieldDTO.class);
+                case SEDOL:
+                    return objectMapper.treeToValue(object, SEDOLFieldDTO.class);
+                case CUSIP:
+                    return objectMapper.treeToValue(object, CUSIPFieldDTO.class);
+                case RIC:
+                    return objectMapper.treeToValue(object, RICFieldDTO.class);
+                case FIRST_NAME:
+                    return objectMapper.treeToValue(object, FirstNameFieldDTO.class);
+                case LAST_NAME:
+                    return objectMapper.treeToValue(object, LastNameFieldDTO.class);
+                case FULL_NAME:
+                    return objectMapper.treeToValue(object, FullNameFieldDTO.class);
+                case STRING:
+                    return objectMapper.treeToValue(object, StringFieldDTO.class);
+                case DATE_TIME:
+                    return objectMapper.treeToValue(object, DateTimeFieldDTO.class);
+                default:
+                    throw new InvalidProfileException("Unexpected data type: " + DataType.fromName(object.get("type").asText()));
+            }
+        }
     }
 }

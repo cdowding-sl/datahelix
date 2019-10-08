@@ -22,8 +22,6 @@ import com.scottlogic.deg.common.profile.ConstraintType;
 @JsonDeserialize(as = LessThanOrEqualToConstraintDTO.class)
 public class LessThanOrEqualToConstraintDTO extends NumericalConstraintDTO
 {
-    public double value;
-
     public LessThanOrEqualToConstraintDTO()
     {
         super(ConstraintType.LESS_THAN_OR_EQUAL_TO);

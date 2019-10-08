@@ -13,7 +13,6 @@
         {
           "containingRegex": {
             "field": "first_name",
-            "is": "",
             "value": "^(Joh?n|Mar[yk])$"
           }
         }

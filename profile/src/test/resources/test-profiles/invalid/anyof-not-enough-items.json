@@ -1,14 +1,15 @@
 {
-  "schemaVersion": "0.7",
+  "schemaVersion": "0.10",
   "rules": [
     {
       "constraints": [
         {
           "anyOf": [
             {
-              "field": "field1",
-              "is": "equalTo",
-              "value": "%ggg"
+              "equalTo" : {
+                "field": "field1",
+                "value": "%ggg"
+              }
             }
           ]
         }

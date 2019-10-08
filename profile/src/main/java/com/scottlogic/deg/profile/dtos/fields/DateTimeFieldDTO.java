@@ -22,6 +22,6 @@ public class DateTimeFieldDTO extends FieldDTO
 {
     public DateTimeFieldDTO()
     {
-        super(DataType.DATETIME);
+        super(DataType.DATE_TIME);
     }
 }

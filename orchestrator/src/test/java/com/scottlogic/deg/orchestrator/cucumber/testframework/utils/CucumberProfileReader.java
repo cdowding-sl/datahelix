@@ -59,8 +59,7 @@ public class CucumberProfileReader implements ProfileReader {
                     exceptionInMapping.set(true);
                     return null;
                 }
-            }).filter(x->!(x instanceof RemoveFromTree))
-                .collect(Collectors.toList());
+            }).collect(Collectors.toList());
 
             if (exceptionInMapping.get()){
                 Exception firstException = state.testExceptions.get(0);

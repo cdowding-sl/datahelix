@@ -2,20 +2,22 @@ package com.scottlogic.deg.profile.reader.atomic;
 
 import com.scottlogic.deg.common.ValidationException;
 import com.scottlogic.deg.common.profile.Field;
+import com.scottlogic.deg.common.profile.GenericDataType;
+import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
 import com.scottlogic.deg.common.profile.constraintdetail.ParsedDateGranularity;
 import com.scottlogic.deg.common.profile.constraintdetail.ParsedGranularity;
-import com.scottlogic.deg.common.profile.DataType;
 import com.scottlogic.deg.common.util.Defaults;
 import com.scottlogic.deg.common.util.NumberUtils;
 import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
-import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
 import com.scottlogic.deg.profile.reader.InvalidProfileException;
+
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.regex.Pattern;
+
+import static com.scottlogic.deg.common.profile.GenericDataType.*;
 import static com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType.IS_GRANULAR_TO;
 import static com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType.IS_NULL;
-import static com.scottlogic.deg.common.profile.DataType.*;
 
 public class ConstraintValueValidator {
 
@@ -42,10 +44,6 @@ public class ConstraintValueValidator {
             case IS_IN_SET:
                 validateSet(field, type, value);
                 break;
-            case IS_OF_TYPE:
-                validateOfTypes(field, value);
-                break;
-
             case MATCHES_REGEX:
             case CONTAINS_REGEX:
                 validatePattern(value);
@@ -84,11 +82,11 @@ public class ConstraintValueValidator {
         }
     }
 
-    private static void validateTypeIs(Field field, AtomicConstraintType type, DataType s) {
+    private static void validateTypeIs(Field field, AtomicConstraintType type, GenericDataType s) {
         if (field.type == null){
             throw new ValidationException("is not typed; add its type to the field definition");
         }
-        if (field.type != s){
+        if (field.type.getGenericDataType() != s){
             throw new ValidationException("is type " + field.type + " , but you are trying to apply a " + type + " constraint which requires " + s);
         }
     }

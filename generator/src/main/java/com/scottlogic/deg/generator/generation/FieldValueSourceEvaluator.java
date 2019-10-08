@@ -65,7 +65,7 @@ public class FieldValueSourceEvaluator {
     }
 
     private FieldValueSource getRestrictionSource(DataType type, FieldSpec fieldSpec) {
-        switch (type) {
+        switch (type.getGenericDataType()) {
             case DATETIME:
                 return getDateTimeSource(fieldSpec);
             case STRING:

@@ -268,7 +268,7 @@
                   "type": "string"
                 },
                 "otherField": {
-                  "$ref": "#/definitions/string"
+                  "type": "string"
                 },
                 "offset": {
                   "$ref": "#/definitions/integer"
@@ -882,9 +882,6 @@
             "field": {
               "type": "string"
             },
-            "is": {
-              "const": "inSet"
-            },
             "file": {
               "type": "string"
             }
@@ -933,24 +930,29 @@
     "inMapConstraint": {
       "type": "object",
       "required": [
-        "field",
-        "is",
-        "file",
-        "key"
+        "inMap"
       ],
       "additionalProperties": false,
       "properties": {
-        "field": {
-          "type": "string"
-        },
-        "is": {
-          "const": "inMap"
-        },
-        "file": {
-          "type": "string"
-        },
-        "key": {
-          "type": "string"
+        "inMap": {
+          "type": "object",
+          "required": [
+            "field",
+            "file",
+            "key"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "field": {
+              "type": "string"
+            },
+            "file": {
+              "type": "string"
+            },
+            "key": {
+              "type": "string"
+            }
+          }
         }
       }
     }

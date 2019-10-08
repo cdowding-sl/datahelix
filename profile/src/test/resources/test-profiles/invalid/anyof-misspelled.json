@@ -1,19 +1,21 @@
 {
-  "schemaVersion": "0.7",
+  "schemaVersion": "0.10",
   "rules": [
     {
       "constraints": [
         {
           "nanyOf": [
             {
-              "field": "field1",
-              "is": "equalTo",
-              "value": "%ggg"
+              "equalTo" : {
+                "field": "field1",
+                "value": "%ggg"
+              }
             },
             {
-              "field": "field1",
-              "is": "shorterThan",
-              "value": 19
+              "shorterThan" : {
+                "field": "field1",
+                "value": 19
+              }
             }
           ]
         }

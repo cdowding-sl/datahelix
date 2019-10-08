@@ -22,7 +22,8 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
-public class Defaults {
+public class Defaults
+{
 
     public static final long DEFAULT_MAX_ROWS = 1000;
 
