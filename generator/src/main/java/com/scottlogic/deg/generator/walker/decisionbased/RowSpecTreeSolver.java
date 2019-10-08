@@ -15,9 +15,12 @@ import com.scottlogic.deg.generator.walker.pruner.Merged;
 import com.scottlogic.deg.generator.walker.pruner.TreePruner;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.scottlogic.deg.common.util.FlatMappingSpliterator.flatMap;
 
 public class RowSpecTreeSolver {
 
@@ -35,12 +38,13 @@ public class RowSpecTreeSolver {
     }
 
     public Stream<RowSpec> createRowSpecs(DecisionTree tree) {
-        return reduceToRowNodes(tree.rootNode)
-            .map(rootNode -> toRowspec(tree.fields, rootNode));
+        return flatMap(reduceToRowNodes(tree.rootNode),
+            rootNode -> toRowspec(tree.fields, rootNode));
     }
 
-    private RowSpec toRowspec(ProfileFields fields, ConstraintNode rootNode) {
-        return constraintReducer.reduceConstraintsToRowSpec(fields, rootNode).get();
+    private Stream<RowSpec> toRowspec(ProfileFields fields, ConstraintNode rootNode) {
+        Optional<RowSpec> result = constraintReducer.reduceConstraintsToRowSpec(fields, rootNode);
+        return result.map(Stream::of).orElseGet(Stream::empty);
     }
 
     private Stream<ConstraintNode> reduceToRowNodes(ConstraintNode rootNode) {
@@ -56,7 +60,7 @@ public class RowSpecTreeSolver {
             .filter(newNode -> !newNode.isContradictory())
             .map(Merged::get);
 
-        return FlatMappingSpliterator.flatMap(
+        return flatMap(
             rootOnlyConstraintNodes,
             this::reduceToRowNodes);
     }
@@ -65,7 +69,7 @@ public class RowSpecTreeSolver {
         ConstraintNode constraintNode = rootNode.builder()
             .addDecisions(option.getDecisions())
             .addAtomicConstraints(option.getAtomicConstraints())
-            .addDelayedAtomicConstraints(option.getDelayedAtomicConstraints())
+            .addRelations(option.getRelations())
             .build();
 
         return treePruner.pruneConstraintNode(constraintNode, getFields(option));

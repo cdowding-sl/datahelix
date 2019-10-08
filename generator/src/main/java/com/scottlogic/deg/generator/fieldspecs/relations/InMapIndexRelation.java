@@ -18,25 +18,40 @@ package com.scottlogic.deg.generator.fieldspecs.relations;
 
 import com.scottlogic.deg.common.profile.Field;
 import com.scottlogic.deg.generator.fieldspecs.FieldSpec;
+import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
+import com.scottlogic.deg.generator.generation.databags.DataBagValue;
 import com.scottlogic.deg.common.profile.constraints.Constraint;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
-public class EqualToDateRelation implements FieldSpecRelations {
+public class InMapIndexRelation implements FieldSpecRelations {
     private final Field main;
     private final Field other;
+    private final DistributedList<String> underlyingList;
 
-    public EqualToDateRelation(Field main, Field other) {
+    public InMapIndexRelation(Field main, Field other, DistributedList<String> underlyingList) {
         this.main = main;
         this.other = other;
+        this.underlyingList = underlyingList;
     }
 
     @Override
     public FieldSpec reduceToRelatedFieldSpec(FieldSpec otherValue) {
-        return otherValue;
+        List<Object> whiteList = new ArrayList<>();
+
+        for (int i = 0; i < underlyingList.list().size(); i++) {
+            Object testingElement = underlyingList.list().get(i);
+            if (otherValue.permits(testingElement)) {
+                whiteList.add(BigDecimal.valueOf(i));
+            }
+        }
+        return FieldSpec.fromList(DistributedList.uniform(whiteList)).withNotNull();
     }
 
     @Override
     public FieldSpecRelations inverse() {
-        return new EqualToDateRelation(other, main);
+        return new InMapRelation(main, other, underlyingList);
     }
 
     @Override
@@ -49,8 +64,12 @@ public class EqualToDateRelation implements FieldSpecRelations {
         return other;
     }
 
+    public DistributedList<String> getUnderlyingList() {
+        return this.underlyingList;
+    }
+
     @Override
     public Constraint negate() {
-        throw new UnsupportedOperationException("equalTo relations cannot currently be negated");
+        throw new UnsupportedOperationException("in map relations cannot currently be negated");
     }
 }

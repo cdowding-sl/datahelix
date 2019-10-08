@@ -18,25 +18,31 @@ package com.scottlogic.deg.generator.fieldspecs.relations;
 
 import com.scottlogic.deg.common.profile.Field;
 import com.scottlogic.deg.generator.fieldspecs.FieldSpec;
+import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
+import com.scottlogic.deg.generator.generation.databags.DataBagValue;
 import com.scottlogic.deg.common.profile.constraints.Constraint;
 
-public class EqualToDateRelation implements FieldSpecRelations {
+import java.math.BigDecimal;
+
+public class InMapRelation implements FieldSpecRelations {
     private final Field main;
     private final Field other;
+    private final DistributedList<String> underlyingList;
 
-    public EqualToDateRelation(Field main, Field other) {
+    public InMapRelation(Field main, Field other, DistributedList<String> underlyingList) {
         this.main = main;
         this.other = other;
+        this.underlyingList = underlyingList;
     }
 
     @Override
     public FieldSpec reduceToRelatedFieldSpec(FieldSpec otherValue) {
-        return otherValue;
+        throw new UnsupportedOperationException("ReduceToRelatedFieldSpec is unsupported in InMapRelation");
     }
 
     @Override
     public FieldSpecRelations inverse() {
-        return new EqualToDateRelation(other, main);
+        return new InMapIndexRelation(other, main, underlyingList);
     }
 
     @Override
@@ -49,8 +55,12 @@ public class EqualToDateRelation implements FieldSpecRelations {
         return other;
     }
 
+    public DistributedList<String> getUnderlyingList() {
+        return this.underlyingList;
+    }
+
     @Override
     public Constraint negate() {
-        throw new UnsupportedOperationException("equalTo relations cannot currently be negated");
+        throw new UnsupportedOperationException("in map relations cannot currently be negated");
     }
 }

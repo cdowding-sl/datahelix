@@ -18,12 +18,10 @@ package com.scottlogic.deg.generator.fieldspecs.relations;
 
 import com.scottlogic.deg.common.profile.Field;
 import com.scottlogic.deg.generator.fieldspecs.FieldSpec;
-import com.scottlogic.deg.generator.restrictions.linear.Limit;
+import com.scottlogic.deg.common.profile.constraints.Constraint;
 import com.scottlogic.deg.generator.restrictions.linear.LinearRestrictions;
-import com.scottlogic.deg.generator.restrictions.linear.LinearRestrictionsFactory;
 
 import java.time.OffsetDateTime;
-
 import static com.scottlogic.deg.common.util.Defaults.ISO_MAX_DATE;
 import static com.scottlogic.deg.common.util.Defaults.ISO_MIN_DATE;
 import static com.scottlogic.deg.generator.utils.Defaults.DATETIME_MAX_LIMIT;
@@ -74,5 +72,10 @@ public class BeforeDateRelation implements FieldSpecRelations {
     @Override
     public String toString() {
         return String.format("%s is before %s%s", main(), inclusive ? "or equal to " : "", other());
+    }
+
+    @Override
+    public Constraint negate() {
+        return new AfterDateRelation(main, other, !inclusive);
     }
 }
