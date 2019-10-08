@@ -13,9 +13,10 @@
             "rule": "rule1",
             "constraints": [
                 {
-                    "field": "foo",
-                    "is": "equalTo",
-                    "value": "Generation successful"
+                    "equalTo": {
+                        "field": "foo",
+                        "value": "Generation successful"
+                    }
                 }
             ]
         }

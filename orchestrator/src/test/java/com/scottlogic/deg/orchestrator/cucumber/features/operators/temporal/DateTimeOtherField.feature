@@ -16,9 +16,10 @@ Feature: running datetimes related to otherfield datetimes
     And there is a constraint:
     """
         {
+        "isAfter"{
           "field": "bar",
-          "is": "after",
           "otherField": "foo"
+          }
         }
     """
     Then the following data should be generated:
@@ -34,9 +35,10 @@ Feature: running datetimes related to otherfield datetimes
     And there is a constraint:
       """
         {
+        "afterOrAt":{
           "field": "bar",
-          "is": "afterOrAt",
           "otherField": "foo"
+          }
         }
       """
     Then the following data should be generated:
@@ -55,8 +57,8 @@ Feature: running datetimes related to otherfield datetimes
     And there is a constraint:
       """
         {
+        "before":{
           "field": "foo",
-          "is": "before",
           "otherField": "bar"
         }
       """
@@ -72,10 +74,10 @@ Feature: running datetimes related to otherfield datetimes
     And there is a constraint:
       """
         {
+        "beforeOrAt":{
           "field": "foo",
-          "is": "beforeOrAt",
           "otherField": "bar"
-        }
+        }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -93,10 +95,10 @@ Feature: running datetimes related to otherfield datetimes
     And there is a constraint:
       """
         {
+        "equalTo":{
           "field": "foo",
-          "is": "equalTo",
           "otherField": "bar"
-        }
+        }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -107,12 +109,12 @@ Feature: running datetimes related to otherfield datetimes
     And there is a constraint:
       """
         {
+        "equalTo":{
           "field": "bar",
-          "is": "equalTo",
           "otherField": "foo",
           "offset": 3,
           "offsetUnit": "days"
-        }
+        }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -124,12 +126,12 @@ Feature: running datetimes related to otherfield datetimes
     And there is a constraint:
       """
         {
+        "equalTo":{
           "field": "foo",
-          "is": "equalTo",
           "otherField": "bar",
           "offset": -3,
           "offsetUnit": "days"
-        }
+        }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -141,12 +143,12 @@ Feature: running datetimes related to otherfield datetimes
     And there is a constraint:
       """
         {
+        "equalTo":{
           "field": "bar",
-          "is": "equalTo",
           "otherField": "foo",
           "offset": 5,
           "offsetUnit": "working days"
-        }
+        }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -159,12 +161,12 @@ Feature: running datetimes related to otherfield datetimes
     And there is a constraint:
       """
         {
+        "equalTo":{
           "field": "foo",
-          "is": "equalTo",
           "otherField": "bar",
           "offset": -5,
           "offsetUnit": "working days"
-        }
+        }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |

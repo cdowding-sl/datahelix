@@ -20,9 +20,11 @@ Feature: Values can be specified by using if, then and else constraints
     And bar has type "decimal"
     And there is a constraint:
       """
+      { "condition" :
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "a" },
-        "then": { "field": "bar", "is": "equalTo", "value": 10 }
+        "if": { "equalTo": { "field": "foo", "value": "a"} },
+        "then": { "equalTo": { "field": "bar", "value": 10 }}
+      }
       }
       """
     Then the following data should be generated:
@@ -42,9 +44,11 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "a" },
-        "then": { "field": "bar", "is": "equalTo", "value": 3 },
-        "else": { "field": "bar", "is": "equalTo", "value": 5 }
+      "condition": {
+        "if": {"equalTo": {  "field": "foo", "value": "a"} },
+        "then": {"equalTo": {  "field": "bar", "value": 3 }},
+        "else": {"equalTo": {  "field": "bar", "value": 5 }}
+      }
       }
       """
     Then the following data should be generated:
@@ -67,14 +71,15 @@ Feature: Values can be specified by using if, then and else constraints
     And bar is anything but null
     And there is a constraint:
       """
-      {
+      {"condition": {
         "if":
           { "anyOf": [
-            { "field": "foo", "is": "equalTo", "value": 1 },
-            { "field": "foo", "is": "equalTo", "value": 2 }
+            {"equalTo": {  "field": "foo",  "value": 1 }},
+            {"equalTo": {  "field": "foo", "value": 2 }}
           ]},
-        "then": { "field": "bar", "is": "equalTo", "value": "a" },
-        "else": { "field": "bar", "is": "equalTo", "value": "b" }
+        "then": {"equalTo": {  "field": "bar", "value": "a" }},
+        "else": {"equalTo": {  "field": "bar", "value": "b" }}
+      }
       }
       """
     Then the following data should be generated:
@@ -99,14 +104,15 @@ Feature: Values can be specified by using if, then and else constraints
     And bar is anything but null
     And there is a constraint:
       """
-      {
+      {"condition": {
         "if": {
           "allOf": [
-            { "field": "foo", "is": "greaterThan", "value": 1 },
-            { "field": "foo", "is": "lessThan", "value": 4 }
+            {"greaterThan": {  "field": "foo",  "value": 1 }},
+            { "lessThan": {"field": "foo", "value": 4 }}
           ]},
-        "then": { "field": "bar", "is": "equalTo", "value": "a" },
-        "else": { "field": "bar", "is": "equalTo", "value": "b" }
+        "then": {"equalTo": {  "field": "bar",  "value": "a" }},
+        "else": {"equalTo": {  "field": "bar",  "value": "b"} }
+      }
       }
       """
     Then the following data should be generated:
@@ -131,10 +137,11 @@ Feature: Values can be specified by using if, then and else constraints
     And bar is anything but null
     And there is a constraint:
       """
-      {
-        "if": { "not": { "field": "foo", "is": "equalTo", "value": 1 } },
-        "then": { "field": "bar", "is": "equalTo", "value": "a" },
-        "else": { "field": "bar", "is": "equalTo", "value": "b" }
+      {"condition": {
+        "if": { "not": {"equalTo": {  "field": "foo", "value": 1 }} },
+        "then": { "equalTo": { "field": "bar", "value": "a"} },
+        "else": { "equalTo": { "field": "bar", "value": "b"} }
+      }
       }
       """
     Then the following data should be generated:
@@ -161,13 +168,16 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "greaterThan", "value": 1 },
-        "then": {
-          "if": { "field": "foo", "is": "greaterThan", "value": 3 },
-          "then": { "field": "bar", "is": "equalTo", "value": "a" },
-          "else": { "field": "bar", "is": "equalTo", "value": "b" }
+      "condition"{
+      "if": {"greaterThan": {  "field": "foo", "value": 1} },
+        "then": { "condition": {
+          "if": {"greaterThan": {  "field": "foo", "value": 3 }},
+          "then": {"equalTo": {  "field": "bar", "value": "a" }},
+          "else": {"equalTo": {  "field": "bar",  "value": "b" }}
+          }
         },
-        "else": { "field": "bar", "is": "equalTo", "value": "c" }
+        "else": {"equalTo": {  "field": "bar", "value": "c" }}
+      }
       }
       """
     Then the following data should be generated:
@@ -193,9 +203,11 @@ Feature: Values can be specified by using if, then and else constraints
     And bar is anything but null
     And there is a constraint:
       """
-      {
-        "if": { "field": "foo", "is": "equalTo", "value": 1 },
-        "else": { "field": "bar", "is": "equalTo", "value": "a" }
+      { "condition":
+        {
+        "if": { "equalTo": { "field": "foo", "value": 1 }},
+        "else": {"equalTo": {  "field": "bar", "value": "a" }}
+        }
       }
       """
     Then the profile is invalid because "Constraint is null"
@@ -217,10 +229,11 @@ Feature: Values can be specified by using if, then and else constraints
     And bar is anything but null
     And there is a constraint:
       """
-      {
-        "if": { "field": "foo", "is": "equalTo", "value": 5 },
-        "then": { "field": "bar", "is": "equalTo", "value": "a" },
-        "else": { "field": "bar", "is": "equalTo", "value": "b" }
+      { "condition": {
+        "if": {"equalTo": {  "field": "foo", "value": 5} },
+        "then": {"equalTo": {  "field": "bar", "value": "a" }},
+        "else": {"equalTo": {  "field": "bar",  "value": "b"} }
+        }
       }
       """
     Then the following data should be generated:
@@ -246,10 +259,11 @@ Feature: Values can be specified by using if, then and else constraints
     And bar is anything but null
     And there is a constraint:
       """
-      {
-        "if": { "field": "foo", "is": "equalTo", "value": 1 },
-        "then": { "field": "bar", "is": "equalTo", "value": "X" },
-        "else": { "field": "bar", "is": "equalTo", "value": "b" }
+      { "condition":{
+        "if": {"equalTo": {  "field": "foo", "value": 1 }},
+        "then": {"equalTo": {  "field": "bar","value": "X"} },
+        "else": {"equalTo": {  "field": "bar", "value": "b" }}
+      }
       }
       """
     Then the following data should be generated:
@@ -274,10 +288,11 @@ Feature: Values can be specified by using if, then and else constraints
     And bar is anything but null
     And there is a constraint:
       """
-      {
-        "if": { "field": "foo", "is": "equalTo", "value": 1 },
-        "then": { "field": "bar", "is": "equalTo", "value": "a" },
-        "else": { "field": "bar", "is": "equalTo", "value": "X" }
+      { "condition":{
+        "if": {"equalTo": {  "field": "foo", "value": 1 }},
+        "then": {"equalTo": {  "field": "bar","value": "a"} },
+        "else": {"equalTo": {  "field": "bar", "value": "X" }}
+        }
       }
       """
     Then the following data should be generated:
@@ -301,9 +316,11 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "inSet", "values": [1, 2] },
-        "then": { "field": "bar", "is": "equalTo", "value": "a" },
-        "else": { "field": "bar", "is": "equalTo", "value": "b" }
+      "condition":{
+        "if": { "inSet":{ "field": "foo", "values": [1, 2] }},
+        "then": {"equalTo": {  "field": "bar","value": "a"} },
+        "else": {"equalTo": {  "field": "bar", "value": "b" }}
+      }
       }
       """
     Then the following data should be generated:
@@ -329,10 +346,11 @@ Feature: Values can be specified by using if, then and else constraints
     And bar is anything but null
     And there is a constraint:
       """
-      {
-        "if": { "field": "foo", "is": "equalTo", "value": 1 },
-        "then": { "field": "bar", "is": "inSet", "values": [ "a", "b" ] },
-        "else": { "field": "bar", "is": "equalTo", "value": "c" }
+      { "condition":{
+        "if": {"equalTo": { "field": "foo","value": "1"} },
+        "then": { "inSet":{ "field": "bar", "values": [a, b] }},
+        "else": {"equalTo": {  "field": "bar","value": "c"} }
+      }
       }
       """
     Then the following data should be generated:

@@ -21,13 +21,18 @@ import com.scottlogic.deg.common.profile.Field;
 import com.scottlogic.deg.common.profile.ProfileFields;
 import com.scottlogic.deg.common.profile.constraints.atomic.AtomicConstraint;
 import com.scottlogic.deg.generator.decisiontree.ConstraintNode;
-import com.scottlogic.deg.generator.fieldspecs.*;
+import com.scottlogic.deg.generator.fieldspecs.FieldSpec;
+import com.scottlogic.deg.generator.fieldspecs.FieldSpecFactory;
+import com.scottlogic.deg.generator.fieldspecs.FieldSpecMerger;
+import com.scottlogic.deg.generator.fieldspecs.RowSpec;
 import com.scottlogic.deg.generator.fieldspecs.relations.FieldSpecRelations;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class ConstraintReducer {
@@ -84,14 +89,11 @@ public class ConstraintReducer {
     }
 
     private Optional<FieldSpec> getRootFieldSpec(Field field, Iterable<AtomicConstraint> rootConstraints) {
-        final Stream<FieldSpec> rootConstraintsStream =
-            StreamSupport
+        return StreamSupport
                 .stream(rootConstraints.spliterator(), false)
-                .map(fieldSpecFactory::construct);
-
-        return rootConstraintsStream
-            .map(Optional::of)
-            .reduce(
+                .map(fieldSpecFactory::construct)
+                .map(Optional::of)
+                .reduce(
                 Optional.of(FieldSpec.empty()),
                 (optSpec1, optSpec2) -> optSpec1.flatMap(
                     spec1 -> optSpec2.flatMap(

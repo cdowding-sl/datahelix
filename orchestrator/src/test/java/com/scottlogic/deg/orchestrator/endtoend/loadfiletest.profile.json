@@ -12,9 +12,10 @@
       "rule": "file",
       "constraints": [
         {
-          "field": "foo",
-          "is": "inSet",
-          "file": "src/test/java/com/scottlogic/deg/orchestrator/endtoend/testfile.csv"
+          "inSet": {
+            "field": "foo",
+            "file": "src/test/java/com/scottlogic/deg/orchestrator/endtoend/testfile.csv"
+          }
         }
       ]
     }

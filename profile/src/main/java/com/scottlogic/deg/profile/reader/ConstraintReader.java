@@ -18,6 +18,7 @@ package com.scottlogic.deg.profile.reader;
 
 import com.google.inject.Inject;
 import com.scottlogic.deg.common.date.TemporalAdjusterGenerator;
+import com.scottlogic.deg.common.profile.Field;
 import com.scottlogic.deg.common.profile.ProfileFields;
 import com.scottlogic.deg.common.profile.constraintdetail.ParsedDateGranularity;
 import com.scottlogic.deg.common.profile.constraintdetail.ParsedGranularity;
@@ -85,17 +86,41 @@ public class ConstraintReader
         if (dto == null) throw new InvalidProfileException("Constraint is null");
         if (dto instanceof PredicateConstraintDTO)
         {
-            PredicateConstraintDTO predicateConstraintDTO = (PredicateConstraintDTO)dto;
-            if(predicateConstraintDTO.hasDependency()) return null;
+            PredicateConstraintDTO predicateConstraintDTO = (PredicateConstraintDTO) dto;
+            if (predicateConstraintDTO.hasDependency()) return null;
             switch (predicateConstraintDTO.getType())
             {
                 case EQUAL_TO:
-                    return new EqualToConstraint(profileFields.getByName(predicateConstraintDTO.field), ((EqualToConstraintDTO) predicateConstraintDTO).value);
+                    Field equalToField = profileFields.getByName(predicateConstraintDTO.field);
+                    EqualToConstraintDTO equalToConstraintDTO = (EqualToConstraintDTO) predicateConstraintDTO;
+                    switch (equalToField.type.getGenericDataType())
+                    {
+                        case DATETIME:
+                            return new EqualToConstraint(equalToField, parseDate((String) equalToConstraintDTO.value));
+                        case NUMERIC:
+                            return new EqualToConstraint(equalToField, NumberUtils.coerceToBigDecimal(equalToConstraintDTO.value));
+                        default:
+                            return new EqualToConstraint(equalToField, equalToConstraintDTO.value);
+                    }
                 case IN_SET:
                     InSetConstraintDTO inSetConstraintDTO = (InSetConstraintDTO) predicateConstraintDTO;
-                    return new IsInSetConstraint(profileFields.getByName(predicateConstraintDTO.field), inSetConstraintDTO.file != null
+                    Field inSetField = profileFields.getByName(predicateConstraintDTO.field);
+                    return new IsInSetConstraint(inSetField, inSetConstraintDTO.file != null
                             ? fileReader.setFromFile(inSetConstraintDTO.file)
-                            : DistributedList.uniform(inSetConstraintDTO.values.stream().distinct().collect(Collectors.toList())));
+                            : DistributedList.uniform(inSetConstraintDTO.values.stream().distinct()
+                            .map(value ->
+                            {
+                                switch (inSetField.type.getGenericDataType())
+                                {
+                                    case DATETIME:
+                                        return parseDate((String) value);
+                                    case NUMERIC:
+                                        return NumberUtils.coerceToBigDecimal(value);
+                                    default:
+                                        return value;
+                                }
+                            })
+                            .collect(Collectors.toList())));
                 case IN_MAP:
                     InMapConstraintDTO inMapConstraintDTO = (InMapConstraintDTO) predicateConstraintDTO;
                     return new IsInMapConstraint(profileFields.getByName(predicateConstraintDTO.field), fileReader.listFromMapFile(inMapConstraintDTO.file, inMapConstraintDTO.key));
@@ -138,17 +163,17 @@ public class ConstraintReader
                     throw new InvalidProfileException("Predicate constraint type not found: " + predicateConstraintDTO);
             }
         }
-        if(dto instanceof GrammaticalConstraintDTO)
+        if (dto instanceof GrammaticalConstraintDTO)
         {
             GrammaticalConstraintDTO grammaticalConstraintDTO = (GrammaticalConstraintDTO) dto;
-            switch(grammaticalConstraintDTO.getType())
+            switch (grammaticalConstraintDTO.getType())
             {
                 case ALL_OF:
-                    return new AndConstraint(readMany(((AllOfConstraintDTO)grammaticalConstraintDTO).constraints, profileFields));
+                    return new AndConstraint(readMany(((AllOfConstraintDTO) grammaticalConstraintDTO).constraints, profileFields));
                 case ANY_OF:
-                    return new OrConstraint(readMany(((AnyOfConstraintDTO)grammaticalConstraintDTO).constraints, profileFields));
+                    return new OrConstraint(readMany(((AnyOfConstraintDTO) grammaticalConstraintDTO).constraints, profileFields));
                 case CONDITION:
-                    ConditionalConstraintDTO conditionalConstraintDTO = (ConditionalConstraintDTO)grammaticalConstraintDTO;
+                    ConditionalConstraintDTO conditionalConstraintDTO = (ConditionalConstraintDTO) grammaticalConstraintDTO;
                     Constraint ifConstraint = read(conditionalConstraintDTO.ifConstraint, profileFields);
                     Constraint thenConstraint = read(conditionalConstraintDTO.thenConstraint, profileFields);
                     Constraint elseConstraint = conditionalConstraintDTO.elseConstraint == null ? null
@@ -185,8 +210,7 @@ public class ConstraintReader
             return temporalAccessor.isSupported(ChronoField.OFFSET_SECONDS)
                     ? OffsetDateTime.from(temporalAccessor)
                     : LocalDateTime.from(temporalAccessor).atOffset(ZoneOffset.UTC);
-        }
-        catch (DateTimeParseException exception)
+        } catch (DateTimeParseException exception)
         {
             throw new InvalidProfileException(String.format(
                     "Date string '%s' must be in ISO-8601 format: yyyy-MM-ddTHH:mm:ss.SSS[Z] between (inclusive) " +

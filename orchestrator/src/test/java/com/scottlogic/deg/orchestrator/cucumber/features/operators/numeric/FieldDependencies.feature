@@ -23,9 +23,10 @@ Feature:As a  User
     And there is a constraint:
       """
         {
+        "greaterThan":{
           "field": "bar",
-          "is": "greaterThan",
           "otherField": "foo"
+          }
         }
       """
     Then the following data should be generated:
@@ -40,9 +41,10 @@ Feature:As a  User
     And there is a constraint:
       """
         {
+        "greaterThanOrEqualTo":{
           "field": "bar",
-          "is": "greaterThanOrEqualTo",
           "otherField": "foo"
+          }
         }
       """
     Then the following data should be generated:
@@ -57,9 +59,10 @@ Feature:As a  User
     And there is a constraint:
       """
         {
+        "lessThan":{
           "field": "bar",
-          "is": "lessThan",
           "otherField": "foo"
+          }
         }
       """
     Then the following data should be generated:
@@ -74,9 +77,10 @@ Feature:As a  User
     And there is a constraint:
       """
         {
+        "lessThanOrEqualTo":{
           "field": "bar",
-          "is": "lessThanOrEqualTo",
           "otherField": "foo"
+          }
         }
       """
     Then the following data should be generated:
@@ -90,9 +94,10 @@ Feature:As a  User
     And there is a constraint:
       """
         {
+        "equalTo":{
           "field": "bar",
-          "is": "equalTo",
           "otherField": "foo"
+          }
         }
       """
     Then the following data should be generated:
@@ -107,11 +112,12 @@ Feature:As a  User
     And there is a constraint:
       """
         {
+        "equalTo":{
           "field": "bar",
-          "is": "equalTo",
           "otherField": "foo",
           "offset": 3,
           "offsetUnit": "integer"
+          }
         }
       """
     Then the following data should be generated:
@@ -125,11 +131,12 @@ Feature:As a  User
     And there is a constraint:
       """
         {
+        "equalTo":{
           "field": "bar",
-          "is": "equalTo",
           "otherField": "foo",
           "offset": -3,
           "offsetUnit": "integer"
+          }
         }
       """
     Then the following data should be generated:
@@ -144,11 +151,12 @@ Feature:As a  User
     And there is a constraint:
       """
         {
+        "greaterThan":{
           "field": "bar",
-          "is": "greaterThan",
           "otherField": "foo",
           "offset": 3,
           "offsetUnit": "integer"
+          }
         }
       """
     Then the following data should be generated:
@@ -162,11 +170,12 @@ Feature:As a  User
     And there is a constraint:
       """
         {
+        "lessThan":{
           "field": "bar",
-          "is": "lessThan",
           "otherField": "foo",
           "offset": -3,
           "offsetUnit": "integer"
+          }
         }
       """
     Then the following data should be generated:
@@ -188,9 +197,10 @@ Feature:As a  User
     And there is a constraint:
       """
         {
+        "greaterThan":{
           "field": "bar",
-          "is": "greaterThan",
           "otherField": "foo"
+          }
         }
       """
     Then the following data should be generated:
@@ -209,9 +219,10 @@ Feature:As a  User
     And there is a constraint:
       """
         {
+        "greaterThan":{
           "field": "bar",
-          "is": "greaterThan",
           "otherField": "foo"
+          }
         }
       """
     Then the following data should be generated:
