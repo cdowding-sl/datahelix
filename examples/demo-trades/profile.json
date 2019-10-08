@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.8",
+  "schemaVersion": "0.10",
   "fields": [
     {
       "name": "tradeId",
@@ -47,75 +47,200 @@
     {
       "rule": "tradeId",
       "constraints": [
-        { "field": "tradeId", "is": "greaterThanOrEqualTo", "value": 10000 },
-        { "field": "tradeId", "is": "lessThanOrEqualTo", "value": 99999 }
+        {
+          "greaterThanOrEqualTo": {
+            "field": "tradeId",
+            "value": 10000
+          }
+        },
+        {
+          "lessThanOrEqualTo": {
+            "field": "tradeId",
+            "value": 99999
+          }
+        }
       ]
     },
     {
       "rule": "stock",
       "constraints": [
-        { "field": "stock", "is": "inSet", "file": "examples/demo-trades/stockCodes.csv" }
+        {
+          "inSet": {
+            "field": "stock",
+            "file": "examples/demo-trades/stockCodes.csv"
+          }
+        }
       ]
     },
     {
       "rule": "side",
       "constraints": [
-        { "field": "side", "is": "inSet", "values": [ "BUY", "SELL" ] }
+        {
+          "inSet": {
+            "field": "side",
+            "values": [
+              "BUY",
+              "SELL"
+            ]
+          }
+        }
       ]
     },
     {
       "rule": "tradePrice",
       "constraints": [
-        { "field": "tradePrice", "is": "granularTo", "value": 0.1 },
         {
-          "if": { "field": "stock", "is": "equalTo", "value": "LLOY" },
-          "then": { "allOf": [
-            { "field": "tradePrice", "is": "greaterThan", "value": 49.3 },
-            { "field": "tradePrice", "is": "lessThan", "value": 50.0 }
-          ]}
+          "granularTo": {
+            "field": "tradePrice",
+            "value": 0.1
+          }
         },
         {
-          "if": { "field": "stock", "is": "equalTo", "value": "BARC" },
-          "then": { "allOf": [
-            { "field": "tradePrice", "is": "greaterThan", "value": 136.1 },
-            { "field": "tradePrice", "is": "lessThan", "value": 137.0 }
-          ]}
+          "condition": {
+            "if": {
+              "equalTo": {
+                "field": "stock",
+                "value": "LLOY"
+              }
+            },
+            "then": {
+              "allOf": [
+                {
+                  "greaterThan": {
+                    "field": "tradePrice",
+                    "value": 49.3
+                  }
+                },
+                {
+                  "lessThan": {
+                    "field": "tradePrice",
+                    "value": 50.0
+                  }
+                }
+              ]
+            }
+          }
         },
         {
-          "if": { "field": "stock", "is": "equalTo", "value": "BP" },
-          "then": { "allOf": [
-            { "field": "tradePrice", "is": "greaterThan", "value": 490.0 },
-            { "field": "tradePrice", "is": "lessThan", "value": 500.0 }
-          ]}
+          "if": {
+            "equalTo": {
+              "field": "stock",
+              "value": "BARC"
+            }
+          },
+          "then": {
+            "allOf": [
+              {
+                "greaterThan": {
+                  "field": "tradePrice",
+                  "value": 136.1
+                }
+              },
+              {
+                "lessThan": {
+                  "field": "tradePrice",
+                  "value": 137.0
+                }
+              }
+            ]
+          }
+        },
+        {
+          "condition": {
+            "if": {
+              "equalTo": {
+                "field": "stock",
+                "value": "BP"
+              }
+            },
+            "then": {
+              "allOf": [
+                {
+                  "greaterThan": {
+                    "field": "tradePrice",
+                    "value": 490.0
+                  }
+                },
+                {
+                  "lessThan": {
+                    "field": "tradePrice",
+                    "value": 500.0
+                  }
+                }
+              ]
+            }
+          }
         }
       ]
     },
     {
       "rule": "volume",
       "constraints": [
-        { "field": "volume", "is": "greaterThanOrEqualTo", "value": 1 },
-        { "field": "volume", "is": "lessThanOrEqualTo", "value": 20 }
+        {
+          "greaterThanOrEqualTo": {
+            "field": "volume",
+            "value": 1
+          }
+        },
+        {
+          "lessThanOrEqualTo": {
+            "field": "volume",
+            "value": 20
+          }
+        }
       ]
     },
     {
       "rule": "tradeDatetime",
       "constraints": [
-        { "field": "tradeDatetime", "is": "granularTo", "value": "millis" },
-        { "field": "tradeDatetime", "is": "after", "value": { "date": "2019-09-02T09:30:00.000" } },
-        { "field": "tradeDatetime", "is": "before", "value": { "date": "2019-09-02T16:30:00.000" } }
+        {
+          "granularTo": {
+            "field": "tradeDatetime",
+            "value": "millis"
+          }
+        },
+        {
+          "after": {
+            "field": "tradeDatetime",
+            "value": "2019-09-02T09:30:00.000"
+          }
+        },
+        {
+          "before": {
+            "field": "tradeDatetime",
+            "value": "2019-09-02T16:30:00.000"
+          }
+        }
       ]
     },
     {
       "rule": "tradeDate",
       "constraints": [
-        { "field": "tradeDate", "is": "granularTo", "value": "days" },
-        { "field": "tradeDate", "is": "equalTo", "value": { "date": "2019-09-02T00:00:00.000" } }
+        {
+          "granularTo": {
+            "field": "tradeDate",
+            "value": "days"
+          }
+        },
+        {
+          "equalTo": {
+            "field": "tradeDate",
+            "value": "2019-09-02T00:00:00.000"
+          }
+        }
       ]
     },
     {
       "rule": "settlementDate",
       "constraints": [
-        { "field": "settlementDate", "is": "equalTo", "otherField": "tradeDate", "offset": 5, "offsetUnit": "working days" }
+        {
+          "equalTo": {
+            "field": "settlementDate",
+            "otherField": "tradeDate",
+            "offset": 5,
+            "offsetUnit": "working days"
+          }
+        }
       ]
     }
   ]

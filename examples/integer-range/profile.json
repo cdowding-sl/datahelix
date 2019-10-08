@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.8",
+  "schemaVersion": "0.10",
   "fields": [
     {
       "name": "an_integer",
@@ -11,14 +11,16 @@
     {
       "constraints": [
         {
-          "field": "an_integer",
-          "is": "greaterThanOrEqualTo",
-          "value": 1
+          "greaterThanOrEqualTo": {
+            "field": "an_integer",
+            "value": 1
+          }
         },
         {
-          "field": "an_integer",
-          "is": "lessThanOrEqualTo",
-          "value": 4
+          "lessThanOrEqualTo": {
+            "field": "an_integer",
+            "value": 4
+          }
         }
       ]
     }

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.8",
+  "schemaVersion": "0.10",
   "fields": [
     {
       "name": "a",
@@ -13,14 +13,16 @@
         {
           "anyOf": [
             {
-              "field": "a",
-              "is": "equalTo",
-              "value": "foo"
+              "equalTo": {
+                "field": "a",
+                "value": "foo"
+              }
             },
             {
-              "field": "a",
-              "is": "equalTo",
-              "value": "foo"
+              "equalTo": {
+                "field": "a",
+                "value": "foo"
+              }
             }
           ]
         }

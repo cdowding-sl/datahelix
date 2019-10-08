@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.8",
+  "schemaVersion": "0.10",
   "fields": [
     {
       "name": "first_name",
@@ -11,9 +11,10 @@
     {
       "constraints": [
         {
-          "field": "first_name",
-          "is": "shorterThan",
-          "value": 200
+          "shorterThan": {
+            "field": "first_name",
+            "value": 200
+          }
         }
       ]
     }

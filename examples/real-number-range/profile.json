@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.8",
+  "schemaVersion": "0.10",
   "fields": [
     {
       "name": "a_number",
@@ -11,19 +11,22 @@
     {
       "constraints": [
         {
-          "field": "a_number",
-          "is": "granularTo",
-          "value": 0.01
+          "granularTo": {
+            "field": "a_number",
+            "value": 0.01
+          }
         },
         {
-          "field": "a_number",
-          "is": "greaterThanOrEqualTo",
-          "value": 1
+          "greaterThanOrEqualTo": {
+            "field": "a_number",
+            "value": 1
+          }
         },
         {
-          "field": "a_number",
-          "is": "lessThanOrEqualTo",
-          "value": 4
+          "lessThanOrEqualTo": {
+            "field": "a_number",
+            "value": 4
+          }
         }
       ]
     }

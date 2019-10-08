@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.8",
+  "schemaVersion": "0.10",
   "fields": [
     {
       "name": "tradeId",
@@ -37,42 +37,100 @@
     {
       "rule": "tradeId",
       "constraints": [
-        { "field": "tradeId", "is": "greaterThanOrEqualTo", "value": 10000 },
-        { "field": "tradeId", "is": "lessThanOrEqualTo", "value": 99999 }
+        {
+          "greaterThanOrEqualTo": {
+            "field": "tradeId",
+            "value": 10000
+          }
+        },
+        {
+          "lessThanOrEqualTo": {
+            "field": "tradeId",
+            "value": 99999
+          }
+        }
       ]
     },
     {
       "rule": "stock",
       "constraints": [
-        { "field": "stock", "is": "inSet", "file": "examples/demo-trades/stockCodes.csv" }
+        {
+          "inSet": {
+            "field": "stock",
+            "file": "examples/demo-trades/stockCodes.csv"
+          }
+        }
       ]
     },
     {
       "rule": "side",
       "constraints": [
-        { "field": "side", "is": "inSet", "values": [ "BUY", "SELL" ] }
+        {
+          "inSet": {
+            "field": "side",
+            "values": [
+              "BUY",
+              "SELL"
+            ]
+          }
+        }
       ]
     },
     {
       "rule": "tradePrice",
       "constraints": [
-        { "field": "tradePrice", "is": "granularTo", "value": 0.01 },
-        { "field": "tradePrice", "is": "greaterThan", "value": 140.0 },
-        { "field": "tradePrice", "is": "lessThan", "value": 150.0 }
+        {
+          "granularTo": {
+            "field": "tradePrice",
+            "value": 0.01
+          }
+        },
+        {
+          "greaterThan": {
+            "field": "tradePrice",
+            "value": 140.0
+          }
+        },
+        {
+          "lessThan": {
+            "field": "tradePrice",
+            "value": 150.0
+          }
+        }
       ]
     },
     {
       "rule": "volume",
       "constraints": [
-        { "field": "volume", "is": "greaterThanOrEqualTo", "value": 1 },
-        { "field": "volume", "is": "lessThanOrEqualTo", "value": 200 }
+        {
+          "greaterThanOrEqualTo": {
+            "field": "volume",
+            "value": 1
+          }
+        },
+        {
+          "lessThanOrEqualTo": {
+            "field": "volume",
+            "value": 200
+          }
+        }
       ]
     },
     {
       "rule": "tradeDatetime",
       "constraints": [
-        { "field": "tradeDatetime", "is": "after", "value": { "date": "2019-09-02T09:30:00.000" } },
-        { "field": "tradeDatetime", "is": "before", "value": { "date": "2019-09-02T16:30:00.000" } }
+        {
+          "after": {
+            "field": "tradeDatetime",
+            "value": "2019-09-02T09:30:00.000"
+          }
+        },
+        {
+          "before": {
+            "field": "tradeDatetime",
+            "value": "2019-09-02T16:30:00.000"
+          }
+        }
       ]
     }
   ]

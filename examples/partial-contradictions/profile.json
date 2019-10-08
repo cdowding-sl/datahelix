@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.8",
+  "schemaVersion": "0.10",
   "fields": [
     {
       "name": "Column 1",
@@ -17,31 +17,34 @@
                 {
                   "allOf": [
                     {
-                      "field": "Column 1",
-                      "is": "equalTo",
-                      "value": "I am a string!"
+                      "equalTo": {
+                        "field": "Column 1",
+                        "value": "I am a string!"
+                      }
                     },
                     {
                       "not": {
-                        "field": "Column 1",
-                        "is": "null"
+                        "null": {
+                          "field": "Column 1"
+                        }
                       }
                     }
                   ]
                 },
                 {
-                  "not":
-                  {
+                  "not": {
                     "allOf": [
                       {
-                        "field": "Column 1",
-                        "is": "equalTo",
-                        "value": "I am a string!"
+                        "equalTo": {
+                          "field": "Column 1",
+                          "value": "I am a string!"
+                        }
                       },
                       {
                         "not": {
-                          "field": "Column 1",
-                          "is": "null"
+                          "null": {
+                            "field": "Column 1"
+                          }
                         }
                       }
                     ]
@@ -50,9 +53,10 @@
               ]
             },
             {
-              "field": "Column 1",
-              "is": "equalTo",
-              "value": "The one option that can produce data."
+              "equalTo": {
+                "field": "Column 1",
+                "value": "The one option that can produce data."
+              }
             }
           ]
         }
