@@ -16,7 +16,7 @@
 
 package com.scottlogic.deg.generator.decisiontree;
 
-import com.scottlogic.deg.common.profile.Field;
+import com.scottlogic.deg.generator.profile.Field;
 import org.junit.jupiter.api.Test;
 
 import static com.scottlogic.deg.generator.builders.TestConstraintNodeBuilder.constraintNode;

@@ -18,13 +18,12 @@
 package com.scottlogic.deg.generator.generation.grouped;
 
 import com.google.inject.Inject;
-import com.scottlogic.deg.common.profile.Field;
+import com.scottlogic.deg.generator.profile.Field;
 import com.scottlogic.deg.generator.config.detail.CombinationStrategyType;
 import com.scottlogic.deg.generator.fieldspecs.FieldSpec;
 import com.scottlogic.deg.generator.fieldspecs.FieldSpecGroup;
 import com.scottlogic.deg.generator.fieldspecs.FieldSpecMerger;
 import com.scottlogic.deg.generator.fieldspecs.relations.FieldSpecRelations;
-import com.scottlogic.deg.generator.fieldspecs.relations.InMapRelation;
 import com.scottlogic.deg.generator.generation.FieldSpecValueGenerator;
 import com.scottlogic.deg.generator.generation.databags.*;
 import java.util.*;

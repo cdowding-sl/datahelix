@@ -1,8 +1,8 @@
 package com.scottlogic.deg.generator.fieldspecs;
 
 import com.google.common.collect.ImmutableMap;
-import com.scottlogic.deg.common.profile.Field;
-import com.scottlogic.deg.common.profile.ProfileFields;
+import com.scottlogic.deg.generator.profile.Field;
+import com.scottlogic.deg.generator.profile.ProfileFields;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

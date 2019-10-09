@@ -22,7 +22,6 @@ import com.scottlogic.deg.common.profile.GenericDataType;
 import com.scottlogic.deg.common.profile.Profile;
 import com.scottlogic.deg.common.profile.Rule;
 import com.scottlogic.deg.common.profile.constraints.Constraint;
-import com.scottlogic.deg.common.profile.constraints.atomic.*;
 import com.scottlogic.deg.common.profile.constraints.grammatical.AndConstraint;
 import com.scottlogic.deg.common.profile.constraints.grammatical.ConditionalConstraint;
 import com.scottlogic.deg.common.profile.constraints.grammatical.OrConstraint;
@@ -35,7 +34,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Iterator;

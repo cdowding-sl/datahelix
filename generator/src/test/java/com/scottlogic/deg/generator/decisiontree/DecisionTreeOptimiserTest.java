@@ -16,8 +16,8 @@
 
 package com.scottlogic.deg.generator.decisiontree;
 
-import com.scottlogic.deg.common.profile.Field;
-import com.scottlogic.deg.common.profile.ProfileFields;
+import com.scottlogic.deg.generator.profile.Field;
+import com.scottlogic.deg.generator.profile.ProfileFields;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;

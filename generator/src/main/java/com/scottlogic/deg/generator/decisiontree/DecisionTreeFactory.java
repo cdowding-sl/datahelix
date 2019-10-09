@@ -17,14 +17,14 @@
 package com.scottlogic.deg.generator.decisiontree;
 
 import com.scottlogic.deg.generator.fieldspecs.relations.FieldSpecRelations;
-import com.scottlogic.deg.common.profile.Profile;
-import com.scottlogic.deg.common.profile.Rule;
-import com.scottlogic.deg.common.profile.constraints.Constraint;
-import com.scottlogic.deg.common.profile.constraints.atomic.AtomicConstraint;
-import com.scottlogic.deg.common.profile.constraints.grammatical.AndConstraint;
-import com.scottlogic.deg.common.profile.constraints.grammatical.ConditionalConstraint;
-import com.scottlogic.deg.common.profile.constraints.grammatical.NegatedGrammaticalConstraint;
-import com.scottlogic.deg.common.profile.constraints.grammatical.OrConstraint;
+import com.scottlogic.deg.generator.profile.Profile;
+import com.scottlogic.deg.generator.profile.Rule;
+import com.scottlogic.deg.generator.profile.constraints.Constraint;
+import com.scottlogic.deg.generator.profile.constraints.atomic.AtomicConstraint;
+import com.scottlogic.deg.generator.profile.constraints.grammatical.AndConstraint;
+import com.scottlogic.deg.generator.profile.constraints.grammatical.ConditionalConstraint;
+import com.scottlogic.deg.generator.profile.constraints.grammatical.NegatedGrammaticalConstraint;
+import com.scottlogic.deg.generator.profile.constraints.grammatical.OrConstraint;
 
 import java.util.*;
 import java.util.stream.Collectors;

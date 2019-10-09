@@ -16,13 +16,12 @@
 
 package com.scottlogic.deg.generator.restrictions;
 
-import com.scottlogic.deg.common.profile.constraintdetail.Timescale;
+import com.scottlogic.deg.generator.profile.constraintdetail.Timescale;
 import com.scottlogic.deg.common.util.Defaults;
 import com.scottlogic.deg.generator.restrictions.linear.Limit;
 import com.scottlogic.deg.generator.restrictions.linear.LinearRestrictions;
 import com.scottlogic.deg.generator.restrictions.linear.LinearRestrictionsFactory;
 import org.junit.Assert;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;

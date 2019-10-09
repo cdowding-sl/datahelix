@@ -1,12 +1,11 @@
 package com.scottlogic.deg.generator.fieldspecs.relations;
 
-import com.scottlogic.deg.common.profile.Field;
+import com.scottlogic.deg.generator.profile.Field;
 import com.scottlogic.deg.generator.fieldspecs.FieldSpec;
 import com.scottlogic.deg.generator.generation.databags.DataBagValue;
 import com.scottlogic.deg.generator.profile.constraints.Constraint;
 
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 public class NotEqualToRelation implements FieldSpecRelations {
     private final Field main;

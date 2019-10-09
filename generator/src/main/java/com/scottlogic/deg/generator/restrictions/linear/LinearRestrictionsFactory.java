@@ -1,7 +1,7 @@
 package com.scottlogic.deg.generator.restrictions.linear;
 
-import com.scottlogic.deg.common.profile.constraintdetail.Granularity;
-import com.scottlogic.deg.common.profile.constraintdetail.Timescale;
+import com.scottlogic.deg.generator.profile.constraintdetail.Granularity;
+import com.scottlogic.deg.generator.profile.constraintdetail.Timescale;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;

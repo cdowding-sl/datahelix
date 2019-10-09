@@ -16,8 +16,8 @@
 
 package com.scottlogic.deg.generator.generation;
 
-import com.scottlogic.deg.common.profile.Field;
-import com.scottlogic.deg.common.profile.ProfileFields;
+import com.scottlogic.deg.generator.profile.Field;
+import com.scottlogic.deg.generator.profile.ProfileFields;
 import com.scottlogic.deg.generator.builders.TestConstraintNodeBuilder;
 import com.scottlogic.deg.generator.decisiontree.ConstraintNode;
 import com.scottlogic.deg.generator.decisiontree.ConstraintNodeBuilder;

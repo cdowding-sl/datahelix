@@ -16,7 +16,7 @@
 
 package com.scottlogic.deg.generator.decisiontree;
 
-import com.scottlogic.deg.common.profile.ProfileFields;
+import com.scottlogic.deg.generator.profile.ProfileFields;
 
 public class DecisionTree {
     public final ConstraintNode rootNode;

@@ -1,9 +1,9 @@
 package com.scottlogic.deg.generator.fieldspecs.relations;
 
-import com.scottlogic.deg.common.profile.DataType;
-import com.scottlogic.deg.common.profile.Field;
+import com.scottlogic.deg.generator.profile.DataType;
+import com.scottlogic.deg.generator.profile.Field;
 import com.scottlogic.deg.generator.fieldspecs.FieldSpec;
-import com.scottlogic.deg.common.profile.constraintdetail.Timescale;
+import com.scottlogic.deg.generator.profile.constraintdetail.Timescale;
 import com.scottlogic.deg.common.util.defaults.DateTimeDefaults;
 import com.scottlogic.deg.generator.restrictions.linear.LinearRestrictions;
 import org.junit.jupiter.api.Test;

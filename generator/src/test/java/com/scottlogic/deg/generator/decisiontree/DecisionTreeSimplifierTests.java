@@ -16,11 +16,11 @@
 
 package com.scottlogic.deg.generator.decisiontree;
 
-import com.scottlogic.deg.common.profile.Field;
-import com.scottlogic.deg.common.profile.ProfileFields;
-import com.scottlogic.deg.common.profile.constraints.atomic.AtomicConstraint;
-import com.scottlogic.deg.common.profile.constraints.atomic.IsInSetConstraint;
-import com.scottlogic.deg.common.profile.constraints.atomic.IsNullConstraint;
+import com.scottlogic.deg.generator.profile.Field;
+import com.scottlogic.deg.generator.profile.ProfileFields;
+import com.scottlogic.deg.generator.profile.constraints.atomic.AtomicConstraint;
+import com.scottlogic.deg.generator.profile.constraints.atomic.IsInSetConstraint;
+import com.scottlogic.deg.generator.profile.constraints.atomic.IsNullConstraint;
 import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
 import com.scottlogic.deg.generator.fieldspecs.whitelist.WeightedElement;
 import com.scottlogic.deg.generator.utils.SetUtils;

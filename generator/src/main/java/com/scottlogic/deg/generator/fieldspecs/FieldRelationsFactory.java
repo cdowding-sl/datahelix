@@ -1,11 +1,11 @@
 package com.scottlogic.deg.profile.reader.atomic;
 
 import com.scottlogic.deg.common.ValidationException;
-import com.scottlogic.deg.common.profile.DataType;
-import com.scottlogic.deg.common.profile.Field;
-import com.scottlogic.deg.common.profile.ProfileFields;
-import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
-import com.scottlogic.deg.common.profile.constraintdetail.Granularity;
+import com.scottlogic.deg.generator.profile.DataType;
+import com.scottlogic.deg.generator.profile.Field;
+import com.scottlogic.deg.generator.profile.ProfileFields;
+import com.scottlogic.deg.generator.profile.constraintdetail.AtomicConstraintType;
+import com.scottlogic.deg.generator.profile.constraintdetail.Granularity;
 import com.scottlogic.deg.generator.fieldspecs.relations.*;
 
 public class RelationsFactory {

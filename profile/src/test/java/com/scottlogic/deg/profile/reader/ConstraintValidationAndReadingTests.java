@@ -19,7 +19,6 @@ package com.scottlogic.deg.profile.reader;
 import com.scottlogic.deg.common.profile.Field;
 import com.scottlogic.deg.common.profile.ProfileFields;
 import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
-import com.scottlogic.deg.common.profile.constraints.atomic.*;
 import com.scottlogic.deg.common.util.Defaults;
 import com.scottlogic.deg.profile.InvalidProfileException;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.general.EqualToConstraintDTO;
@@ -40,7 +39,6 @@ import java.util.stream.Stream;
 
 import static com.scottlogic.deg.common.profile.DataType.*;
 import static com.scottlogic.deg.common.profile.FieldBuilder.createField;
-import static com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType.*;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

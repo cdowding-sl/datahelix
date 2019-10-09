@@ -16,14 +16,14 @@
 
 package com.scottlogic.deg.orchestrator.violation;
 
-import com.scottlogic.deg.common.profile.constraints.atomic.IsStringShorterThanConstraint;
-import com.scottlogic.deg.common.profile.constraints.atomic.StringHasLengthConstraint;
+import com.scottlogic.deg.generator.profile.constraints.atomic.IsStringShorterThanConstraint;
+import com.scottlogic.deg.generator.profile.constraints.atomic.StringHasLengthConstraint;
 import com.scottlogic.deg.orchestrator.violate.AtomicConstraintTypeMapper;
 import com.scottlogic.deg.generator.violations.filters.ConstraintTypeViolationFilter;
 import com.scottlogic.deg.generator.violations.filters.ViolationFilter;
 import com.scottlogic.deg.orchestrator.violate.ViolateConfigSource;
 import com.scottlogic.deg.orchestrator.violate.ViolationFiltersProvider;
-import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
+import com.scottlogic.deg.generator.profile.constraintdetail.AtomicConstraintType;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

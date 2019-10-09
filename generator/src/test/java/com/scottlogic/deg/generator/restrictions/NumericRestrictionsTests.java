@@ -16,7 +16,7 @@
 
 package com.scottlogic.deg.generator.restrictions;
 
-import com.scottlogic.deg.common.profile.constraintdetail.NumericGranularityFactory;
+import com.scottlogic.deg.generator.profile.constraintdetail.NumericGranularityFactory;
 import com.scottlogic.deg.generator.restrictions.linear.Limit;
 import com.scottlogic.deg.generator.restrictions.linear.LinearRestrictions;
 import com.scottlogic.deg.generator.restrictions.linear.LinearRestrictionsFactory;
@@ -25,7 +25,6 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static com.scottlogic.deg.common.util.Defaults.DEFAULT_NUMERIC_GRANULARITY;
 import static com.scottlogic.deg.generator.utils.Defaults.NUMERIC_MAX_LIMIT;
 import static com.scottlogic.deg.generator.utils.Defaults.NUMERIC_MIN_LIMIT;
 import static org.hamcrest.core.IsEqual.equalTo;

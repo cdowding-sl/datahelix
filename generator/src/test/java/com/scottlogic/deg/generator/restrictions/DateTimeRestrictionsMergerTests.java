@@ -16,10 +16,9 @@
 
 package com.scottlogic.deg.generator.restrictions;
 
-import com.scottlogic.deg.common.profile.constraintdetail.Timescale;
+import com.scottlogic.deg.generator.profile.constraintdetail.Timescale;
 import com.scottlogic.deg.generator.restrictions.linear.*;
 import org.junit.Assert;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
@@ -29,7 +28,6 @@ import java.util.Optional;
 import static com.scottlogic.deg.common.util.Defaults.ISO_MAX_DATE;
 import static com.scottlogic.deg.generator.utils.Defaults.*;
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
-import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNot.not;

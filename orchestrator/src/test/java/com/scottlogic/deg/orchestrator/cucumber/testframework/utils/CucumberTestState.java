@@ -18,10 +18,10 @@ package com.scottlogic.deg.orchestrator.cucumber.testframework.utils;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.scottlogic.deg.common.profile.ConstraintType;
-import com.scottlogic.deg.common.profile.DataType;
-import com.scottlogic.deg.common.profile.Field;
-import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
+import com.scottlogic.deg.generator.profile.ConstraintType;
+import com.scottlogic.deg.generator.profile.DataType;
+import com.scottlogic.deg.generator.profile.Field;
+import com.scottlogic.deg.generator.profile.constraintdetail.AtomicConstraintType;
 import com.scottlogic.deg.generator.config.detail.CombinationStrategyType;
 import com.scottlogic.deg.generator.config.detail.DataGenerationType;
 import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;

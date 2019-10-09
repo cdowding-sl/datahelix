@@ -16,18 +16,13 @@
 
 package com.scottlogic.deg.generator.fieldspecs.relations;
 
-import com.scottlogic.deg.common.date.TemporalAdjusterGenerator;
-import com.scottlogic.deg.common.profile.Field;
-import com.scottlogic.deg.common.profile.constraintdetail.Granularity;
+import com.scottlogic.deg.generator.profile.Field;
+import com.scottlogic.deg.generator.profile.constraintdetail.Granularity;
 import com.scottlogic.deg.generator.fieldspecs.FieldSpec;
 import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
 import com.scottlogic.deg.generator.generation.databags.DataBagValue;
-import com.scottlogic.deg.common.profile.constraints.Constraint;
-import com.scottlogic.deg.generator.restrictions.linear.Limit;
+import com.scottlogic.deg.generator.profile.constraints.Constraint;
 import com.scottlogic.deg.generator.restrictions.linear.LinearRestrictions;
-import com.scottlogic.deg.generator.restrictions.linear.LinearRestrictionsFactory;
-
-import java.time.OffsetDateTime;
 
 public class EqualToOffsetRelation<T extends Comparable<T>> implements FieldSpecRelations {
     private final Field main;

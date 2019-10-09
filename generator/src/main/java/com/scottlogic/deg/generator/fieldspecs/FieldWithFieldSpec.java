@@ -16,7 +16,7 @@
 
 package com.scottlogic.deg.generator.fieldspecs;
 
-import com.scottlogic.deg.common.profile.Field;
+import com.scottlogic.deg.generator.profile.Field;
 
 public final class FieldWithFieldSpec {
 

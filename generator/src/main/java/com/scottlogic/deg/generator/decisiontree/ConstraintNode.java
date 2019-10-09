@@ -17,7 +17,7 @@
 package com.scottlogic.deg.generator.decisiontree;
 
 import com.scottlogic.deg.generator.fieldspecs.relations.FieldSpecRelations;
-import com.scottlogic.deg.common.profile.constraints.atomic.AtomicConstraint;
+import com.scottlogic.deg.generator.profile.constraints.atomic.AtomicConstraint;
 import java.util.*;
 
 public class ConstraintNode implements Node {
