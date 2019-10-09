@@ -29,6 +29,7 @@ import com.scottlogic.deg.common.profile.constraints.grammatical.ConditionalCons
 import com.scottlogic.deg.common.profile.constraints.grammatical.OrConstraint;
 import com.scottlogic.deg.common.util.NumberUtils;
 import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
+import com.scottlogic.deg.profile.InvalidProfileException;
 import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.grammatical.AllOfConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.grammatical.AnyOfConstraintDTO;
@@ -74,7 +75,7 @@ public class ConstraintReader
         this.fileReader = fileReader;
     }
 
-    Set<Constraint> readMany(Collection<ConstraintDTO> constraints, ProfileFields fields)
+    Set<Constraint> read(Collection<ConstraintDTO> constraints, ProfileFields fields)
     {
         return constraints.stream()
                 .map(subConstraintDto -> read(subConstraintDto, fields))
@@ -88,6 +89,7 @@ public class ConstraintReader
         if (dto instanceof PredicateConstraintDTO)
         {
             PredicateConstraintDTO predicateConstraintDTO = (PredicateConstraintDTO) dto;
+            //TODO
             if (predicateConstraintDTO.hasDependency()) return null;
             switch (predicateConstraintDTO.getType())
             {
@@ -170,9 +172,9 @@ public class ConstraintReader
             switch (grammaticalConstraintDTO.getType())
             {
                 case ALL_OF:
-                    return new AndConstraint(readMany(((AllOfConstraintDTO) grammaticalConstraintDTO).constraints, profileFields));
+                    return new AndConstraint(read(((AllOfConstraintDTO) grammaticalConstraintDTO).constraints, profileFields));
                 case ANY_OF:
-                    return new OrConstraint(readMany(((AnyOfConstraintDTO) grammaticalConstraintDTO).constraints, profileFields));
+                    return new OrConstraint(read(((AnyOfConstraintDTO) grammaticalConstraintDTO).constraints, profileFields));
                 case CONDITION:
                     ConditionalConstraintDTO conditionalConstraintDTO = (ConditionalConstraintDTO) grammaticalConstraintDTO;
                     Constraint ifConstraint = read(conditionalConstraintDTO.ifConstraint, profileFields);

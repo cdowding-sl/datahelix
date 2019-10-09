@@ -35,7 +35,7 @@ import com.scottlogic.deg.profile.dtos.constraints.predicate.numerical.GreaterTh
 import com.scottlogic.deg.profile.dtos.constraints.predicate.numerical.LessThanConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.numerical.LessThanOrEqualToConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.textual.*;
-import com.scottlogic.deg.profile.reader.InvalidProfileException;
+import com.scottlogic.deg.profile.InvalidProfileException;
 
 import java.io.IOException;
 

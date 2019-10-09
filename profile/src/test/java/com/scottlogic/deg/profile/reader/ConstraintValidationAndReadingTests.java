@@ -21,6 +21,7 @@ import com.scottlogic.deg.common.profile.ProfileFields;
 import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
 import com.scottlogic.deg.common.profile.constraints.atomic.*;
 import com.scottlogic.deg.common.util.Defaults;
+import com.scottlogic.deg.profile.InvalidProfileException;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.general.EqualToConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.general.InSetConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.general.NotConstraintDTO;

@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.scottlogic.deg.common.profile.DataType;
-import com.scottlogic.deg.profile.reader.InvalidProfileException;
+import com.scottlogic.deg.profile.InvalidProfileException;
 
 import java.io.IOException;
 

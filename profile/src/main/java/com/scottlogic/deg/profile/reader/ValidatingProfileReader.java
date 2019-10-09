@@ -19,6 +19,7 @@ import com.google.inject.Inject;
 import com.scottlogic.deg.common.profile.Field;
 import com.scottlogic.deg.common.profile.Profile;
 import com.scottlogic.deg.common.profile.ProfileFields;
+import com.scottlogic.deg.profile.InvalidProfileException;
 import com.scottlogic.deg.profile.guice.ProfileConfigSource;
 import com.scottlogic.deg.profile.services.ConfigValidator;
 import com.scottlogic.deg.profile.services.ProfileSchemaLoader;

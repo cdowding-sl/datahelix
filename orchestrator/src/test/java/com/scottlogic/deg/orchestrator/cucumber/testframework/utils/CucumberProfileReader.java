@@ -22,6 +22,7 @@ import com.scottlogic.deg.common.profile.Profile;
 import com.scottlogic.deg.common.profile.ProfileFields;
 import com.scottlogic.deg.common.profile.Rule;
 import com.scottlogic.deg.common.profile.constraints.Constraint;
+import com.scottlogic.deg.profile.InvalidProfileException;
 import com.scottlogic.deg.profile.reader.*;
 import com.scottlogic.deg.common.profile.RuleInformation;
 import com.scottlogic.deg.profile.reader.FileReader;

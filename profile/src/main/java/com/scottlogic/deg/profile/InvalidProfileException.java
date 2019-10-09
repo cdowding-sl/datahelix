@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.scottlogic.deg.profile.reader;
+package com.scottlogic.deg.profile;
 
 import com.scottlogic.deg.common.ValidationException;
 

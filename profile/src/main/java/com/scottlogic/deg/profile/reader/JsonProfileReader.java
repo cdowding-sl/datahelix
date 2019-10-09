@@ -20,6 +20,7 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.scottlogic.deg.common.profile.*;
 import com.scottlogic.deg.common.profile.constraints.Constraint;
+import com.scottlogic.deg.profile.InvalidProfileException;
 import com.scottlogic.deg.profile.dtos.ProfileDTO;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.general.NullConstraintDTO;
 import com.scottlogic.deg.profile.serialisation.ProfileSerialiser;
@@ -73,7 +74,7 @@ public class JsonProfileReader implements ProfileReader
         }
 
         Collection<Rule> rules = profileDTO.rules.stream()
-                .map(r -> new Rule(new RuleInformation(r.rule), constraintReader.readMany(r.constraints, profileFields)))
+                .map(r -> new Rule(new RuleInformation(r.rule), constraintReader.read(r.constraints, profileFields)))
                 .collect(Collectors.toList());
 
         Collection<Constraint> nullableConstraints = profileDTO.fields.stream()
