@@ -17,8 +17,8 @@
 package com.scottlogic.deg.profile.reader;
 
 
-import com.scottlogic.deg.common.profile.DataType;
 import com.scottlogic.deg.common.profile.Field;
+import com.scottlogic.deg.common.profile.GenericDataType;
 import com.scottlogic.deg.common.profile.Profile;
 import com.scottlogic.deg.common.profile.Rule;
 import com.scottlogic.deg.common.profile.constraints.Constraint;
@@ -164,7 +164,7 @@ public class JsonProfileReaderTests {
         expectFields(
             field -> {
                 Assert.assertThat(field.name, equalTo("foo"));
-                Assert.assertEquals(field.getType(), DataType.STRING);
+                Assert.assertEquals(field.type.getGenericDataType(), GenericDataType.STRING);
             });
     }
 
@@ -241,7 +241,7 @@ public class JsonProfileReaderTests {
         expectFields(
             field -> {
                 Assert.assertThat(field.name, equalTo("foo"));
-                Assert.assertEquals(field.getType(), DataType.STRING);
+                Assert.assertEquals(field.type.getGenericDataType(), GenericDataType.STRING);
             });
     }
 
@@ -1040,10 +1040,10 @@ public class JsonProfileReaderTests {
 
         expectFields(
             field -> {
-                Assert.assertThat(field.type, equalTo(DataType.NUMERIC));
+                Assert.assertThat(field.type.getGenericDataType(), equalTo(GenericDataType.NUMERIC));
             },
             field -> {
-                Assert.assertThat(field.type, equalTo(DataType.STRING));
+                Assert.assertThat(field.type.getGenericDataType(), equalTo(GenericDataType.STRING));
             }
         );
         expectRules();
@@ -1070,10 +1070,10 @@ public class JsonProfileReaderTests {
 
         expectFields(
             field -> {
-                Assert.assertThat(field.type, equalTo(DataType.NUMERIC));
+                Assert.assertThat(field.type.getGenericDataType(), equalTo(GenericDataType.NUMERIC));
             },
             field -> {
-                Assert.assertThat(field.type, equalTo(DataType.STRING));
+                Assert.assertThat(field.type.getGenericDataType(), equalTo(GenericDataType.STRING));
             }
         );
     }
@@ -1104,10 +1104,10 @@ public class JsonProfileReaderTests {
 
         expectFields(
             field -> {
-                Assert.assertThat(field.type, equalTo(DataType.NUMERIC));
+                Assert.assertThat(field.type.getGenericDataType(), equalTo(GenericDataType.NUMERIC));
             },
             field -> {
-                Assert.assertThat(field.type, equalTo(DataType.STRING));
+                Assert.assertThat(field.type.getGenericDataType(), equalTo(GenericDataType.STRING));
             }
         );
     }
@@ -1136,10 +1136,10 @@ public class JsonProfileReaderTests {
 
         expectFields(
             field -> {
-                Assert.assertThat(field.type, equalTo(DataType.NUMERIC));
+                Assert.assertThat(field.type.getGenericDataType(), equalTo(GenericDataType.NUMERIC));
             },
             field -> {
-                Assert.assertThat(field.type, equalTo(DataType.STRING));
+                Assert.assertThat(field.type.getGenericDataType(), equalTo(GenericDataType.STRING));
             }
         );
     }
@@ -1233,7 +1233,7 @@ public class JsonProfileReaderTests {
             field -> {
                 Assert.assertEquals("foobar.csv", field.name);
                 Assert.assertTrue(field.isInternal());
-                Assert.assertEquals(DataType.NUMERIC, field.type);
+                Assert.assertEquals(GenericDataType.NUMERIC, field.type);
             }
         );
     }

@@ -64,10 +64,10 @@ Feature: Values can be specified by using any of to set multiple constraints
     Given there is a constraint:
       """
       { "anyOf": [
-       { "ofLength" { "field": "foo", "value": 1 }},
+       { "ofLength": { "field": "foo", "value": 1 }},
         { "anyOf":  [
-          { "ofLength" { "field": "foo", "value": 3 }},
-          { "ofLength" { "field": "foo", "value": 5 }}
+          { "ofLength": { "field": "foo", "value": 3 }},
+          { "ofLength": { "field": "foo", "value": 5 }}
         ]}
       ]}
       """
@@ -92,10 +92,10 @@ Feature: Values can be specified by using any of to set multiple constraints
     Given there is a constraint:
       """
       { "anyOf": [
-        { "ofLength" { "field": "foo", "value": 1} },
+        { "ofLength": { "field": "foo", "value": 1} },
         { "allOf": [
-          { "longerThan" { "field": "foo", "value": 3} },
-          { "shorterThan" { "field": "foo", "value": 5 }}
+          { "longerThan": { "field": "foo", "value": 3} },
+          { "shorterThan": { "field": "foo", "value": 5 }}
         ]}
       ]}
       """
@@ -120,9 +120,9 @@ Feature: Values can be specified by using any of to set multiple constraints
     Given there is a constraint:
       """
       { "anyOf": [
-        { "ofLength" { "field": "foo",  "value": 1 }},
+        { "ofLength": { "field": "foo",  "value": 1 }},
         { "anyOf": [
-          { "ofLength" { "field": "foo","value": -1} }
+          { "ofLength": { "field": "foo","value": -1} }
         ]}
       ]}
       """
@@ -150,10 +150,10 @@ Feature: Values can be specified by using any of to set multiple constraints
     Given there is a constraint:
       """
       { "anyOf": [
-        { "ofLength" { "field": "foo", "value": 1 }},
+        { "ofLength": { "field": "foo", "value": 1 }},
         { "allOf": [
-          { "longerThan" { "field": "foo","value": 3 }},
-          { "shorterThan" { "field": "foo", "value": 2 }}
+          { "longerThan": { "field": "foo","value": 3 }},
+          { "shorterThan": { "field": "foo", "value": 2 }}
         ]}
       ]}
       """

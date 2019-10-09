@@ -60,7 +60,7 @@
       "const": "0.10"
     },
     "dataType": {
-      "oneOf": [
+      "anyOf": [
         {
           "$ref": "#/definitions/datetime"
         },
@@ -229,7 +229,7 @@
       ],
       "properties": {
         "equalTo": {
-          "anyOf": [
+          "oneOf": [
             {
               "type": "object",
               "required": [
@@ -242,17 +242,7 @@
                   "type": "string"
                 },
                 "value": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/definitions/datetime"
-                    },
-                    {
-                      "$ref": "#/definitions/numeric"
-                    },
-                    {
-                      "$ref": "#/definitions/string"
-                    }
-                  ]
+                  "$ref": "#/definitions/dataType"
                 }
               }
             },
@@ -577,7 +567,7 @@
       ],
       "properties": {
         "after": {
-          "anyOf": [
+          "oneOf": [
             {
               "type": "object",
               "required": [
@@ -628,7 +618,7 @@
       ],
       "properties": {
         "afterOrAt": {
-          "anyOf": [
+          "oneOf": [
             {
               "type": "object",
               "required": [
@@ -679,7 +669,7 @@
       ],
       "properties": {
         "before": {
-          "anyOf": [
+          "oneOf": [
             {
               "type": "object",
               "required": [
@@ -730,7 +720,7 @@
       ],
       "properties": {
         "beforeOrAt": {
-          "anyOf": [
+          "oneOf": [
             {
               "type": "object",
               "required": [
@@ -852,7 +842,7 @@
       "additionalProperties": false,
       "properties": {
         "null": {
-          "type": "string",
+          "type": "object",
           "required": [
             "field"
           ],

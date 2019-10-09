@@ -1480,7 +1480,7 @@ Feature: User can specify that a field value belongs to a set of predetermined o
     And there is a constraint:
       """
       { "anyOf": [
-        { "inSet" { "field": "foo", "values": [ "Test 1", "Test 2" ] } },
+        { "inSet": { "field": "foo", "values": [ "Test 1", "Test 2" ] } },
         { "inSet": { "field": "foo", "values": [ "Test 3", "Test 4" ] } }
       ]}
       """
@@ -1497,8 +1497,8 @@ Feature: User can specify that a field value belongs to a set of predetermined o
     And there is a constraint:
       """
       { "allOf": [
-        { "inSet" { "field": "foo", "values": [ "Test 1", "Test 2" ] } },
-        { "inSet" { "field": "foo", "values": [ "Test 1", "Test 2" ] } }
+        { "inSet": { "field": "foo", "values": [ "Test 1", "Test 2" ] } },
+        { "inSet": { "field": "foo", "values": [ "Test 1", "Test 2" ] } }
       ]}
       """
     Then the following data should be generated:
@@ -1513,8 +1513,8 @@ Feature: User can specify that a field value belongs to a set of predetermined o
     And there is a constraint:
       """
       { "allOf": [
-       { "inSet" { "field": "foo", "values": [ "Test 1", "Test 2" ] } },
-        { "inSet" { "field": "foo", "values": [ "Test 3", "Test 4" ] } }
+       { "inSet": { "field": "foo", "values": [ "Test 1", "Test 2" ] } },
+        { "inSet": { "field": "foo", "values": [ "Test 3", "Test 4" ] } }
       ]}
       """
     Then the following data should be generated:
@@ -1538,7 +1538,7 @@ Feature: User can specify that a field value belongs to a set of predetermined o
       {
       "condition" :
        {
-        "if": { "inSet" { "field": "foo", "values": [ "Test 1", "Test 2" ] } },
+        "if": { "inSet": { "field": "foo", "values": [ "Test 1", "Test 2" ] } },
         "then": {"equalTo": { "field": "price", "value": 1 } },
         "else": {"equalTo": { "field": "price", "value": 2 } }
         }

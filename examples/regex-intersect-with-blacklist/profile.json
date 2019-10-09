@@ -23,8 +23,8 @@
           }
         },
         {
+          "not": {
           "equalTo": {
-            "not": {
               "field": "first_name",
               "value": "Mary"
             }
