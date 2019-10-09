@@ -16,31 +16,35 @@
 
 package com.scottlogic.deg.generator.generation;
 
-import com.scottlogic.deg.generator.profile.Field;
-import com.scottlogic.deg.generator.profile.ProfileFields;
+import com.scottlogic.deg.common.profile.Field;
+import com.scottlogic.deg.common.profile.ProfileFields;
 import com.scottlogic.deg.generator.builders.TestConstraintNodeBuilder;
 import com.scottlogic.deg.generator.decisiontree.ConstraintNode;
 import com.scottlogic.deg.generator.decisiontree.ConstraintNodeBuilder;
 import com.scottlogic.deg.generator.decisiontree.DecisionTree;
 import com.scottlogic.deg.generator.decisiontree.NodeMarking;
-import com.scottlogic.deg.generator.fieldspecs.*;
+import com.scottlogic.deg.generator.fieldspecs.FieldSpec;
+import com.scottlogic.deg.generator.fieldspecs.FieldSpecHelper;
+import com.scottlogic.deg.generator.fieldspecs.FieldSpecMerger;
+import com.scottlogic.deg.generator.fieldspecs.RowSpecMerger;
 import com.scottlogic.deg.generator.reducer.ConstraintReducer;
-import com.scottlogic.deg.generator.restrictions.StringRestrictionsFactory;
 import com.scottlogic.deg.generator.validators.ContradictionDecisionTreeValidator;
 import com.scottlogic.deg.generator.walker.pruner.Merged;
 import com.scottlogic.deg.generator.walker.pruner.TreePruner;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.*;
 
+import static com.scottlogic.deg.common.profile.FieldBuilder.createField;
 import static com.scottlogic.deg.generator.builders.TestConstraintNodeBuilder.constraintNode;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.contains;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
-import static com.scottlogic.deg.common.profile.FieldBuilder.createField;
 
 class UpfrontTreePrunerTests {
     private String partialContradictionSubstring = "partially contradictory"; // Implementation Detail
@@ -204,10 +208,7 @@ class UpfrontTreePrunerTests {
     @Nested
     class integration_tests {
         private DataGeneratorMonitor monitor = Mockito.mock(DataGeneratorMonitor.class);
-        private ConstraintReducer constraintReducer = new ConstraintReducer(
-            new FieldSpecFactory(
-                new StringRestrictionsFactory()),
-            new FieldSpecMerger());
+        private ConstraintReducer constraintReducer = new ConstraintReducer(new FieldSpecMerger());
         private TreePruner treePruner = new TreePruner(
             new FieldSpecMerger(),
             constraintReducer,

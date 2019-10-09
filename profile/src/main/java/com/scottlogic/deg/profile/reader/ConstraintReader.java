@@ -17,24 +17,25 @@
 package com.scottlogic.deg.profile.reader;
 
 import com.google.inject.Inject;
-import com.scottlogic.deg.common.date.TemporalAdjusterGenerator;
+import com.scottlogic.deg.common.profile.DataType;
 import com.scottlogic.deg.common.profile.Field;
 import com.scottlogic.deg.common.profile.ProfileFields;
-import com.scottlogic.deg.common.profile.constraintdetail.ParsedDateGranularity;
-import com.scottlogic.deg.common.profile.constraintdetail.ParsedGranularity;
-import com.scottlogic.deg.common.profile.constraints.Constraint;
-import com.scottlogic.deg.common.profile.constraints.atomic.*;
-import com.scottlogic.deg.common.profile.constraints.grammatical.AndConstraint;
-import com.scottlogic.deg.common.profile.constraints.grammatical.ConditionalConstraint;
-import com.scottlogic.deg.common.profile.constraints.grammatical.OrConstraint;
+import com.scottlogic.deg.common.profile.constraintdetail.DateTimeGranularity;
+import com.scottlogic.deg.common.profile.constraintdetail.Granularity;
+import com.scottlogic.deg.common.profile.constraintdetail.NumericGranularityFactory;
 import com.scottlogic.deg.common.util.NumberUtils;
+import com.scottlogic.deg.common.util.defaults.DateTimeDefaults;
+import com.scottlogic.deg.common.util.defaults.NumericDefaults;
+import com.scottlogic.deg.generator.fieldspecs.relations.*;
 import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
+import com.scottlogic.deg.generator.profile.constraints.Constraint;
+import com.scottlogic.deg.generator.profile.constraints.atomic.*;
+import com.scottlogic.deg.generator.profile.constraints.grammatical.AndConstraint;
+import com.scottlogic.deg.generator.profile.constraints.grammatical.ConditionalConstraint;
+import com.scottlogic.deg.generator.profile.constraints.grammatical.OrConstraint;
 import com.scottlogic.deg.profile.InvalidProfileException;
 import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
-import com.scottlogic.deg.profile.dtos.constraints.grammatical.AllOfConstraintDTO;
-import com.scottlogic.deg.profile.dtos.constraints.grammatical.AnyOfConstraintDTO;
-import com.scottlogic.deg.profile.dtos.constraints.grammatical.ConditionalConstraintDTO;
-import com.scottlogic.deg.profile.dtos.constraints.grammatical.GrammaticalConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.grammatical.*;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.PredicateConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.chronological.AfterConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.chronological.AfterOrAtConstraintDTO;
@@ -82,38 +83,35 @@ public class ConstraintReader
                 .collect(Collectors.toSet());
     }
 
-
     public Constraint read(ConstraintDTO dto, ProfileFields profileFields)
     {
         if (dto == null) throw new InvalidProfileException("Constraint is null");
         if (dto instanceof PredicateConstraintDTO)
         {
             PredicateConstraintDTO predicateConstraintDTO = (PredicateConstraintDTO) dto;
-            //TODO
-            if (predicateConstraintDTO.hasDependency()) return null;
+            Field field = profileFields.getByName(predicateConstraintDTO.field);
+            if (predicateConstraintDTO.getDependency() != null) return readRealations(predicateConstraintDTO, profileFields);
             switch (predicateConstraintDTO.getType())
             {
                 case EQUAL_TO:
-                    Field equalToField = profileFields.getByName(predicateConstraintDTO.field);
                     EqualToConstraintDTO equalToConstraintDTO = (EqualToConstraintDTO) predicateConstraintDTO;
-                    switch (equalToField.type.getGenericDataType())
+                    switch (field.type.getGenericDataType())
                     {
                         case DATETIME:
-                            return new EqualToConstraint(equalToField, parseDate((String) equalToConstraintDTO.value));
+                            return new EqualToConstraint(field, parseDate((String) equalToConstraintDTO.value));
                         case NUMERIC:
-                            return new EqualToConstraint(equalToField, NumberUtils.coerceToBigDecimal(equalToConstraintDTO.value));
+                            return new EqualToConstraint(field, NumberUtils.coerceToBigDecimal(equalToConstraintDTO.value));
                         default:
-                            return new EqualToConstraint(equalToField, equalToConstraintDTO.value);
+                            return new EqualToConstraint(field, equalToConstraintDTO.value);
                     }
                 case IN_SET:
                     InSetConstraintDTO inSetConstraintDTO = (InSetConstraintDTO) predicateConstraintDTO;
-                    Field inSetField = profileFields.getByName(predicateConstraintDTO.field);
-                    return new IsInSetConstraint(inSetField, inSetConstraintDTO.file != null
+                    return new IsInSetConstraint(field, inSetConstraintDTO.file != null
                             ? fileReader.setFromFile(inSetConstraintDTO.file)
                             : DistributedList.uniform(inSetConstraintDTO.values.stream().distinct()
                             .map(value ->
                             {
-                                switch (inSetField.type.getGenericDataType())
+                                switch (field.type.getGenericDataType())
                                 {
                                     case DATETIME:
                                         return parseDate((String) value);
@@ -126,7 +124,7 @@ public class ConstraintReader
                             .collect(Collectors.toList())));
                 case IN_MAP:
                     InMapConstraintDTO inMapConstraintDTO = (InMapConstraintDTO) predicateConstraintDTO;
-                    return new IsInMapConstraint(profileFields.getByName(predicateConstraintDTO.field), fileReader.listFromMapFile(inMapConstraintDTO.file, inMapConstraintDTO.key));
+                    return new InMapRelation(field, profileFields.getByName(inMapConstraintDTO.file), fileReader.listFromMapFile(inMapConstraintDTO.file, inMapConstraintDTO.key));
                 case NULL:
                     return new IsNullConstraint(profileFields.getByName(predicateConstraintDTO.field));
                 case MATCHES_REGEX:
@@ -158,10 +156,8 @@ public class ConstraintReader
                 case GRANULAR_TO:
                     GranularToConstraintDTO granularToConstraintDTO = (GranularToConstraintDTO) predicateConstraintDTO;
                     return granularToConstraintDTO.value instanceof Number
-                            ? new IsGranularToNumericConstraint(profileFields.getByName(predicateConstraintDTO.field), ParsedGranularity.parse(granularToConstraintDTO.value))
-                            : new IsGranularToDateConstraint(profileFields.getByName(predicateConstraintDTO.field), ParsedDateGranularity.parse((String) granularToConstraintDTO.value));
-                case NOT:
-                    return read(((NotConstraintDTO) predicateConstraintDTO).constraint, profileFields).negate();
+                            ? new IsGranularToNumericConstraint(profileFields.getByName(predicateConstraintDTO.field), NumericGranularityFactory.create(granularToConstraintDTO.value))
+                            : new IsGranularToDateConstraint(profileFields.getByName(predicateConstraintDTO.field), getDateTimeGranularity((String) granularToConstraintDTO.value));
                 default:
                     throw new InvalidProfileException("Predicate constraint type not found: " + predicateConstraintDTO);
             }
@@ -181,7 +177,8 @@ public class ConstraintReader
                     Constraint thenConstraint = read(conditionalConstraintDTO.thenConstraint, profileFields);
                     Constraint elseConstraint = conditionalConstraintDTO.elseConstraint == null ? null
                             : read(conditionalConstraintDTO.elseConstraint, profileFields);
-                    return new ConditionalConstraint(ifConstraint, thenConstraint, elseConstraint);
+                    return new ConditionalConstraint(ifConstraint, thenConstraint, elseConstraint);case NOT:
+                return read(((NotConstraintDTO) grammaticalConstraintDTO).constraint, profileFields).negate();
                 default:
                     throw new InvalidProfileException("Grammatical constraint type not found: " + grammaticalConstraintDTO);
             }
@@ -193,7 +190,7 @@ public class ConstraintReader
     {
         switch (field.type) {
             case INTEGER:
-                return Optional.of(new IsGranularToNumericConstraint(field, new ParsedGranularity(BigDecimal.ONE)));
+                return Optional.of(new IsGranularToNumericConstraint(field, NumericGranularityFactory.create(BigDecimal.ONE)));
             case ISIN:
                 return Optional.of(new MatchesStandardConstraint(field, StandardConstraintTypes.ISIN));
             case SEDOL:
@@ -213,11 +210,56 @@ public class ConstraintReader
         }
     }
 
-    private TemporalAdjusterGenerator getOffsetUnit(EqualToConstraintDTO dto)
+    public FieldSpecRelations readRealations(PredicateConstraintDTO dto, ProfileFields fields){
+        Field main = fields.getByName(dto.field);
+        Field other = fields.getByName(dto.getDependency());
+
+        switch (dto.getType())
+        {
+            case EQUAL_TO:
+                Granularity offsetGranularity = getOffsetUnit(main.type, ((EqualToConstraintDTO)dto).offsetUnit);
+                if (offsetGranularity != null){
+                    return new EqualToOffsetRelation(main, other, offsetGranularity, ((EqualToConstraintDTO)dto).offset);
+                }
+                return new EqualToRelation(main, other);
+            case AFTER:
+                return new AfterRelation(main, other, false, DateTimeDefaults.get());
+            case AFTER_OR_AT:
+                return new AfterRelation(main, other, true, DateTimeDefaults.get());
+            case BEFORE:
+                return new BeforeRelation(main, other, false, DateTimeDefaults.get());
+            case BEFORE_OR_AT:
+                return new BeforeRelation(main, other, true, DateTimeDefaults.get());
+            case GREATER_THAN:
+                return new AfterRelation(main, other, false, NumericDefaults.get());
+            case GREATER_THAN_OR_EQUAL_TO:
+                return new AfterRelation(main, other, true, NumericDefaults.get());
+            case LESS_THAN:
+                return new BeforeRelation(main, other, false, NumericDefaults.get());
+            case LESS_THAN_OR_EQUAL_TO:
+                return new BeforeRelation(main, other, true, NumericDefaults.get());
+            default:                throw new InvalidProfileException("Unexpected relation data type " + dto.getType());
+        }
+    }
+
+    private Granularity getOffsetUnit(DataType type, String offsetUnit)
     {
-        String offsetUnitUpperCase = dto.offsetUnit.toUpperCase();
+        if (offsetUnit == null) return null;
+        switch (type.getGenericDataType())
+        {
+            case NUMERIC:
+                return NumericGranularityFactory.create(offsetUnit);
+            case DATETIME:
+                return getDateTimeGranularity(offsetUnit);
+            default:
+                return null;
+        }
+    }
+
+    private DateTimeGranularity getDateTimeGranularity(String granularity) {
+        String offsetUnitUpperCase = granularity.toUpperCase();
         boolean workingDay = offsetUnitUpperCase.equals("WORKING DAYS");
-        return new TemporalAdjusterGenerator(Enum.valueOf(ChronoUnit.class, workingDay ? "DAYS" : offsetUnitUpperCase), workingDay);
+        return new DateTimeGranularity(ChronoUnit.valueOf(ChronoUnit.class, workingDay ? "DAYS" : offsetUnitUpperCase), workingDay);
     }
 
     private static OffsetDateTime parseDate(String value)

@@ -22,73 +22,73 @@ import java.util.regex.Pattern;
 import static com.scottlogic.deg.common.util.Defaults.*;
 
 public class StringRestrictionsFactory {
-    public StringRestrictions forStringMatching(Pattern pattern, boolean negate) {
+    public static StringRestrictions forStringMatching(Pattern pattern, boolean negate) {
         return new TextualRestrictions(
-            0,
-            MAX_STRING_LENGTH,
-            negate
-                ? Collections.emptySet()
-                : Collections.singleton(pattern),
-            Collections.emptySet(),
-            Collections.emptySet(),
-            negate
-                ? Collections.singleton(pattern)
-                : Collections.emptySet(),
-            Collections.emptySet()
+                0,
+                MAX_STRING_LENGTH,
+                negate
+                        ? Collections.emptySet()
+                        : Collections.singleton(pattern),
+                Collections.emptySet(),
+                Collections.emptySet(),
+                negate
+                        ? Collections.singleton(pattern)
+                        : Collections.emptySet(),
+                Collections.emptySet()
         );
     }
 
-    public StringRestrictions forStringContaining(Pattern pattern, boolean negate) {
+    public static StringRestrictions forStringContaining(Pattern pattern, boolean negate) {
         return new TextualRestrictions(
-            0,
-            MAX_STRING_LENGTH,
-            Collections.emptySet(),
-            negate
-                ? Collections.emptySet()
-                : Collections.singleton(pattern),
-            Collections.emptySet(),
-            Collections.emptySet(),
-            negate
-                ? Collections.singleton(pattern)
-                : Collections.emptySet()
+                0,
+                MAX_STRING_LENGTH,
+                Collections.emptySet(),
+                negate
+                        ? Collections.emptySet()
+                        : Collections.singleton(pattern),
+                Collections.emptySet(),
+                Collections.emptySet(),
+                negate
+                        ? Collections.singleton(pattern)
+                        : Collections.emptySet()
         );
     }
 
-    public StringRestrictions forLength(int length, boolean negate) {
+    public static StringRestrictions forLength(int length, boolean negate) {
         return new TextualRestrictions(
-            negate ? 0 : length,
-            negate ? MAX_STRING_LENGTH : length,
-            Collections.emptySet(),
-            Collections.emptySet(),
-            negate
-                ? Collections.singleton(length)
-                : Collections.emptySet(),
-            Collections.emptySet(),
-            Collections.emptySet()
+                negate ? 0 : length,
+                negate ? MAX_STRING_LENGTH : length,
+                Collections.emptySet(),
+                Collections.emptySet(),
+                negate
+                        ? Collections.singleton(length)
+                        : Collections.emptySet(),
+                Collections.emptySet(),
+                Collections.emptySet()
         );
     }
 
-    public StringRestrictions forMinLength(int length){
+    public static StringRestrictions forMinLength(int length){
         return new TextualRestrictions(
-            length,
-            MAX_STRING_LENGTH,
-            Collections.emptySet(),
-            Collections.emptySet(),
-            Collections.emptySet(),
-            Collections.emptySet(),
-            Collections.emptySet()
+                length,
+                MAX_STRING_LENGTH,
+                Collections.emptySet(),
+                Collections.emptySet(),
+                Collections.emptySet(),
+                Collections.emptySet(),
+                Collections.emptySet()
         );
     }
 
-    public StringRestrictions forMaxLength(int length){
+    public static StringRestrictions forMaxLength(int length){
         return new TextualRestrictions(
-            0,
-            length,
-            Collections.emptySet(),
-            Collections.emptySet(),
-            Collections.emptySet(),
-            Collections.emptySet(),
-            Collections.emptySet()
+                0,
+                length,
+                Collections.emptySet(),
+                Collections.emptySet(),
+                Collections.emptySet(),
+                Collections.emptySet(),
+                Collections.emptySet()
         );
     }
 }

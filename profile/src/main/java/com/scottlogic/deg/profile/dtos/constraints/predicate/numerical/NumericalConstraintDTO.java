@@ -29,8 +29,8 @@ public abstract class NumericalConstraintDTO extends PredicateConstraintDTO
     }
 
     @Override
-    public boolean hasDependency()
+    public String getDependency()
     {
-        return false;
+        return null;
     }
 }

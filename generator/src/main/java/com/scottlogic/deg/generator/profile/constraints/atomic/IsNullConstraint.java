@@ -16,12 +16,12 @@
 
 package com.scottlogic.deg.generator.profile.constraints.atomic;
 
-import com.scottlogic.deg.generator.profile.Field;
+import com.scottlogic.deg.common.profile.Field;
+import com.scottlogic.deg.generator.fieldspecs.FieldSpec;
 
 import java.util.Objects;
 
-public class IsNullConstraint implements AtomicConstraint
-{
+public class IsNullConstraint implements AtomicConstraint {
     public final Field field;
 
     public IsNullConstraint(Field field) {
@@ -36,6 +36,16 @@ public class IsNullConstraint implements AtomicConstraint
     @Override
     public Field getField() {
         return field;
+    }
+
+    @Override
+    public AtomicConstraint negate() {
+        return new NotNullConstraint(field);
+    }
+
+    @Override
+    public FieldSpec toFieldSpec() {
+        return FieldSpec.nullOnly();
     }
 
     @Override

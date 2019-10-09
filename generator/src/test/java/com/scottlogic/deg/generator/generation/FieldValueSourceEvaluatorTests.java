@@ -16,8 +16,8 @@
 
 package com.scottlogic.deg.generator.generation;
 
-import com.scottlogic.deg.generator.profile.constraintdetail.NumericGranularity;
-import com.scottlogic.deg.generator.profile.DataType;
+import com.scottlogic.deg.common.profile.constraintdetail.NumericGranularity;
+import com.scottlogic.deg.common.profile.DataType;
 import com.scottlogic.deg.generator.fieldspecs.FieldSpec;
 import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
 import com.scottlogic.deg.generator.generation.fieldvaluesources.FieldValueSource;
@@ -37,7 +37,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static com.scottlogic.deg.generator.profile.DataType.STRING;
+import static com.scottlogic.deg.common.profile.DataType.STRING;
 import static com.scottlogic.deg.generator.restrictions.linear.LinearRestrictionsFactory.createNumericRestrictions;
 import static com.scottlogic.deg.generator.utils.Defaults.NUMERIC_MAX_LIMIT;
 import static com.scottlogic.deg.generator.utils.Defaults.NUMERIC_MIN_LIMIT;

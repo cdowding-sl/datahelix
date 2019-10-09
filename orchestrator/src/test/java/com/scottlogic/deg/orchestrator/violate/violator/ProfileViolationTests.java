@@ -16,9 +16,9 @@
 
 package com.scottlogic.deg.orchestrator.violate.violator;
 
-import com.scottlogic.deg.generator.profile.Field;
+import com.scottlogic.deg.common.profile.Field;
 import com.scottlogic.deg.generator.profile.Profile;
-import com.scottlogic.deg.generator.profile.ProfileFields;
+import com.scottlogic.deg.common.profile.ProfileFields;
 import com.scottlogic.deg.generator.profile.Rule;
 import com.scottlogic.deg.generator.profile.constraints.Constraint;
 import com.scottlogic.deg.generator.profile.constraints.atomic.*;
@@ -94,7 +94,6 @@ public class ProfileViolationTests {
             Arguments.of(IsBeforeConstantDateTimeConstraint.class, sampleDate.minusDays(1)),
             Arguments.of(IsBeforeOrEqualToConstantDateTimeConstraint.class, sampleDate.plusDays(2)),
 
-            Arguments.of(IsGranularToNumericConstraint.class, new ParsedGranularity(BigDecimal.ONE)),
             Arguments.of(IsGreaterThanConstantConstraint.class, BigDecimal.valueOf(100)),
             Arguments.of(IsGreaterThanOrEqualToConstantConstraint.class, BigDecimal.valueOf(200)),
             Arguments.of(IsLessThanConstantConstraint.class, BigDecimal.valueOf(300)),

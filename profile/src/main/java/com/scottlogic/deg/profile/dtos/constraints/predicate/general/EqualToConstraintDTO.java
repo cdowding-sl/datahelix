@@ -33,8 +33,8 @@ public class EqualToConstraintDTO extends GeneralConstraintDTO
     }
 
     @Override
-    public boolean hasDependency()
+    public String getDependency()
     {
-        return otherField != null;
+        return  otherField;
     }
 }

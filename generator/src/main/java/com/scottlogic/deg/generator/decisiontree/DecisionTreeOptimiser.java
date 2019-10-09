@@ -17,7 +17,6 @@
 package com.scottlogic.deg.generator.decisiontree;
 
 import com.scottlogic.deg.generator.profile.constraints.atomic.AtomicConstraint;
-import com.scottlogic.deg.generator.profile.constraints.atomic.NotConstraint;
 
 import java.util.*;
 import java.util.function.Function;
@@ -59,8 +58,8 @@ public class DecisionTreeOptimiser {
         AtomicConstraint negatedMostProlificConstraint = mostProlificAtomicConstraint.negate();
 
         List<DecisionNode> factorisableDecisionNodes = rootNode.getDecisions().stream()
-            .filter(node -> this.decisionIsFactorisable(node, mostProlificAtomicConstraint, negatedMostProlificConstraint))
-            .collect(Collectors.toList());
+                .filter(node -> this.decisionIsFactorisable(node, mostProlificAtomicConstraint, negatedMostProlificConstraint))
+                .collect(Collectors.toList());
         if (factorisableDecisionNodes.size() < 2){
             return rootNode;
         }
@@ -85,27 +84,27 @@ public class DecisionTreeOptimiser {
 
         // Add new decision node
         DecisionNode factorisedDecisionNode = new DecisionNode(
-            Stream.concat(
-                Stream.of(
-                    optimiseLevelOfTree(factorisingConstraintNode),
-                    optimiseLevelOfTree(negatedFactorisingConstraintNode)),
-                otherOptions.stream())
-            .collect(Collectors.toSet()));
+                Stream.concat(
+                        Stream.of(
+                                optimiseLevelOfTree(factorisingConstraintNode),
+                                optimiseLevelOfTree(negatedFactorisingConstraintNode)),
+                        otherOptions.stream())
+                        .collect(Collectors.toSet()));
 
         return rootNode.builder()
-            .removeDecisions(decisionsToRemove)
-            .addDecision(factorisedDecisionNode).build();
+                .removeDecisions(decisionsToRemove)
+                .addDecision(factorisedDecisionNode).build();
     }
 
     private boolean constraintNodeContainsNegatedConstraints(ConstraintNode node, Set<AtomicConstraint> constraints){
         return node.getAtomicConstraints().stream()
-            .map(AtomicConstraint::negate)
-            .allMatch(constraints::contains);
+                .map(AtomicConstraint::negate)
+                .allMatch(constraints::contains);
     }
 
     private ConstraintNode addOptionsAsDecisionUnderConstraintNode(
-        ConstraintNode newNode,
-        Set<ConstraintNode> optionsToAdd) {
+            ConstraintNode newNode,
+            Set<ConstraintNode> optionsToAdd) {
         if (optionsToAdd.isEmpty()) {
             return newNode;
         }
@@ -113,30 +112,25 @@ public class DecisionTreeOptimiser {
         return newNode.builder().addDecision(new DecisionNode(optionsToAdd)).build();
     }
 
-    private int disfavourNotConstraints(Map.Entry<AtomicConstraint, List<AtomicConstraint>> entry){
-        return entry.getKey() instanceof NotConstraint ? 1 : 0;
-    }
-
     private AtomicConstraint getMostProlificAtomicConstraint(Collection<DecisionNode> decisions) {
         Map<AtomicConstraint, List<AtomicConstraint>> decisionConstraints =
                 decisions.stream()
-                    .flatMap(dn -> dn.getOptions().stream())
-                    .flatMap(option -> option.getAtomicConstraints().stream())
-                    .collect(Collectors.groupingBy(Function.identity()));
+                        .flatMap(dn -> dn.getOptions().stream())
+                        .flatMap(option -> option.getAtomicConstraints().stream())
+                        .collect(Collectors.groupingBy(Function.identity()));
 
         Comparator<Map.Entry<AtomicConstraint, List<AtomicConstraint>>> comparator = Comparator
-            .comparing(entry -> entry.getValue().size());
+                .comparing(entry -> entry.getValue().size());
         comparator = comparator.reversed()
-            .thenComparing(this::disfavourNotConstraints)
-            .thenComparing(entry -> entry.getKey().toString());
+                .thenComparing(entry -> entry.getKey().toString());
 
         return decisionConstraints.entrySet()
-            .stream()
-            .filter(constraint -> constraint.getValue().size() > 1) // where the number of occurrences > 1
-            .sorted(comparator)
-            .map(entry -> getConstraint(entry.getValue()))
-            .findFirst()
-            .orElse(null); //otherwise return null
+                .stream()
+                .filter(constraint -> constraint.getValue().size() > 1) // where the number of occurrences > 1
+                .sorted(comparator)
+                .map(entry -> getConstraint(entry.getValue()))
+                .findFirst()
+                .orElse(null); //otherwise return null
     }
 
     private AtomicConstraint getConstraint(List<AtomicConstraint> identicalAtomicConstraints) {
@@ -146,20 +140,20 @@ public class DecisionTreeOptimiser {
     private boolean decisionIsFactorisable(DecisionNode decision, AtomicConstraint factorisingConstraint, AtomicConstraint negatedFactorisingConstraint){
         // The decision should contain ONE option with the MPC
         boolean optionWithMPCExists = decision.getOptions().stream()
-            .filter(option -> atomicConstraintExists(option, factorisingConstraint))
-            .count() == 1;
+                .filter(option -> atomicConstraintExists(option, factorisingConstraint))
+                .count() == 1;
 
         // The decision should contain ONE separate option with the negated MPC (which is atomic).
         boolean optionWithNegatedMPCExists = decision.getOptions().stream()
-            .filter(option -> atomicConstraintExists(option, negatedFactorisingConstraint) && option.getAtomicConstraints().size() == 1)
-            .count() == 1;
+                .filter(option -> atomicConstraintExists(option, negatedFactorisingConstraint) && option.getAtomicConstraints().size() == 1)
+                .count() == 1;
 
         return optionWithMPCExists && optionWithNegatedMPCExists;
     }
 
     private boolean atomicConstraintExists(ConstraintNode atomicConstraints, AtomicConstraint constraint) {
         return atomicConstraints.getAtomicConstraints().stream()
-            .anyMatch(c -> c.equals(constraint));
+                .anyMatch(c -> c.equals(constraint));
     }
 
     class DecisionAnalyser {
@@ -216,10 +210,10 @@ public class DecisionTreeOptimiser {
 
 
         private void markOptionForFactorisation(
-            AtomicConstraint factorisingConstraint,
-            ConstraintNode node,
-            Set<ConstraintNode> options,
-            Set<AtomicConstraint> constraints) {
+                AtomicConstraint factorisingConstraint,
+                ConstraintNode node,
+                Set<ConstraintNode> options,
+                Set<AtomicConstraint> constraints) {
             ConstraintNode newOption = node.builder().removeAtomicConstraint(factorisingConstraint).build();
             if (!newOption.getAtomicConstraints().isEmpty()) {
                 options.add(newOption);

@@ -16,8 +16,8 @@
 
 package com.scottlogic.deg.generator.generation.databags;
 
-import com.scottlogic.deg.generator.profile.Field;
-import com.scottlogic.deg.generator.profile.ProfileFields;
+import com.scottlogic.deg.common.profile.Field;
+import com.scottlogic.deg.common.profile.ProfileFields;
 import com.scottlogic.deg.generator.builders.DataBagBuilder;
 import com.scottlogic.deg.generator.fieldspecs.FieldSpec;
 import com.scottlogic.deg.generator.fieldspecs.RowSpec;

@@ -18,7 +18,6 @@ package com.scottlogic.deg.generator.profile.constraints.grammatical;
 
 import com.scottlogic.deg.generator.profile.constraints.Constraint;
 
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;

@@ -27,8 +27,8 @@ public abstract class GeneralConstraintDTO extends PredicateConstraintDTO
     }
 
     @Override
-    public boolean hasDependency()
+    public String getDependency()
     {
-        return false;
+        return null;
     }
 }

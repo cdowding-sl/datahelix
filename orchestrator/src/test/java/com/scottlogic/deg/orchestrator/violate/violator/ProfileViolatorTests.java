@@ -16,9 +16,9 @@
 
 package com.scottlogic.deg.orchestrator.violate.violator;
 
-import com.scottlogic.deg.generator.profile.Field;
+import com.scottlogic.deg.common.profile.Field;
 import com.scottlogic.deg.generator.profile.Profile;
-import com.scottlogic.deg.generator.profile.ProfileFields;
+import com.scottlogic.deg.common.profile.ProfileFields;
 import com.scottlogic.deg.generator.profile.Rule;
 import com.scottlogic.deg.generator.profile.constraints.Constraint;
 import com.scottlogic.deg.generator.profile.constraints.atomic.IsGreaterThanConstantConstraint;

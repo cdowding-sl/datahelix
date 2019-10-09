@@ -31,7 +31,7 @@ public class FileReader
                 .collect(Collectors.toList()));
     }
 
-    public DistributedList<Object> listFromMapFile(String file, String key) {
+    public DistributedList<String> listFromMapFile(String file, String key) {
         InputStream streamFromPath = createStreamFromPath(appendPath(file));
 
         DistributedList<String> names = CsvInputStreamReader.retrieveLines(streamFromPath, key);
@@ -39,7 +39,7 @@ public class FileReader
 
         return new DistributedList<>(
             names.distributedList().stream()
-                .map(holder -> new WeightedElement<>((Object) holder.element(), holder.weight()))
+                .map(holder -> new WeightedElement<>(holder.element(), holder.weight()))
                 .collect(Collectors.toList()));
     }
 

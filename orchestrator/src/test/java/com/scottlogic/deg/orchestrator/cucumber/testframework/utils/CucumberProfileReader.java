@@ -19,7 +19,7 @@ package com.scottlogic.deg.orchestrator.cucumber.testframework.utils;
 import com.google.gson.JsonParseException;
 import com.google.inject.Inject;
 import com.scottlogic.deg.generator.profile.Profile;
-import com.scottlogic.deg.generator.profile.ProfileFields;
+import com.scottlogic.deg.common.profile.ProfileFields;
 import com.scottlogic.deg.generator.profile.Rule;
 import com.scottlogic.deg.generator.profile.constraints.Constraint;
 import com.scottlogic.deg.profile.InvalidProfileException;

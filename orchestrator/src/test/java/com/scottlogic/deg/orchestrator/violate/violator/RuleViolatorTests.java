@@ -21,7 +21,7 @@ import com.scottlogic.deg.generator.profile.constraints.grammatical.ConditionalC
 import com.scottlogic.deg.generator.profile.constraints.grammatical.OrConstraint;
 import com.scottlogic.deg.generator.profile.Rule;
 import com.scottlogic.deg.generator.profile.constraints.Constraint;
-import com.scottlogic.deg.generator.profile.constraintdetail.UnviolatableConstraintException;
+import com.scottlogic.deg.common.profile.constraintdetail.UnviolatableConstraintException;
 import com.scottlogic.deg.generator.profile.constraints.atomic.AtomicConstraint;
 import com.scottlogic.deg.generator.profile.constraints.atomic.IsLessThanConstantConstraint;
 import com.scottlogic.deg.generator.profile.constraints.atomic.ViolatedAtomicConstraint;

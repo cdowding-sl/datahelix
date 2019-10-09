@@ -15,8 +15,7 @@
  */
 
 package com.scottlogic.deg.generator.restrictions;
-
-import com.scottlogic.deg.generator.profile.constraintdetail.Timescale;
+import com.scottlogic.deg.common.profile.constraintdetail.DateTimeGranularity;
 import com.scottlogic.deg.common.util.Defaults;
 import com.scottlogic.deg.generator.restrictions.linear.Limit;
 import com.scottlogic.deg.generator.restrictions.linear.LinearRestrictions;
@@ -31,9 +30,8 @@ import static com.scottlogic.deg.common.util.Defaults.ISO_MAX_DATE;
 import static com.scottlogic.deg.common.util.Defaults.ISO_MIN_DATE;
 import static com.scottlogic.deg.generator.utils.Defaults.DATETIME_MAX_LIMIT;
 import static com.scottlogic.deg.generator.utils.Defaults.DATETIME_MIN_LIMIT;
-import static org.hamcrest.core.Is.is;
+import static java.time.temporal.ChronoUnit.*;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.hamcrest.core.IsNot.not;
 
 class DateTimeRestrictionsTests {
 
@@ -42,7 +40,7 @@ class DateTimeRestrictionsTests {
     private static final OffsetDateTime MAX = granularToMillis(Defaults.ISO_MAX_DATE);
 
     private static OffsetDateTime granularToMillis(OffsetDateTime date) {
-        return Timescale.MILLIS.trimToGranularity(date);
+        return new DateTimeGranularity(MILLIS).trimToGranularity(date);
     }
 
     @Test
@@ -57,8 +55,8 @@ class DateTimeRestrictionsTests {
     @Test
     public void matchShouldReturnTrueIfGivenDateIsGreaterThanMin(){
         LinearRestrictions<OffsetDateTime> restrictions = LinearRestrictionsFactory.createDateTimeRestrictions(
-            new Limit<>(OffsetDateTime.MIN, true),
-            DATETIME_MAX_LIMIT
+                new Limit<>(OffsetDateTime.MIN, true),
+                DATETIME_MAX_LIMIT
         );
 
         boolean result = restrictions.match(MAX);
@@ -69,8 +67,8 @@ class DateTimeRestrictionsTests {
     @Test
     public void matchShouldReturnTrueIfGivenDateIsLessThanMax(){
         LinearRestrictions<OffsetDateTime> restrictions = LinearRestrictionsFactory.createDateTimeRestrictions(
-            DATETIME_MIN_LIMIT,
-            new Limit<>(OffsetDateTime.MAX, true)
+                DATETIME_MIN_LIMIT,
+                new Limit<>(OffsetDateTime.MAX, true)
         );
 
         boolean result = restrictions.match(MIN);
@@ -81,8 +79,8 @@ class DateTimeRestrictionsTests {
     @Test
     public void matchShouldReturnTrueIfGivenDateIsEqualToMinWhenInclusive(){
         LinearRestrictions<OffsetDateTime> restrictions = LinearRestrictionsFactory.createDateTimeRestrictions(
-            new Limit<>(OffsetDateTime.MIN, true),
-            DATETIME_MAX_LIMIT
+                new Limit<>(OffsetDateTime.MIN, true),
+                DATETIME_MAX_LIMIT
         );
         boolean result = restrictions.match(MIN);
 
@@ -92,8 +90,8 @@ class DateTimeRestrictionsTests {
     @Test
     public void matchShouldReturnTrueIfGivenDateIsEqualToMaxWhenInclusive(){
         LinearRestrictions<OffsetDateTime> restrictions = LinearRestrictionsFactory.createDateTimeRestrictions(
-            DATETIME_MIN_LIMIT,
-            new Limit<>(OffsetDateTime.MAX, true)
+                DATETIME_MIN_LIMIT,
+                new Limit<>(OffsetDateTime.MAX, true)
         );
 
         boolean result = restrictions.match(MAX);
@@ -104,8 +102,8 @@ class DateTimeRestrictionsTests {
     @Test
     public void matchShouldReturnFalseIfGivenDateIsEqualToMaxWhenExclusive(){
         LinearRestrictions<OffsetDateTime> restrictions = LinearRestrictionsFactory.createDateTimeRestrictions(
-            DATETIME_MIN_LIMIT,
-            new Limit<>(OffsetDateTime.MAX, false)
+                DATETIME_MIN_LIMIT,
+                new Limit<>(OffsetDateTime.MAX, false)
         );
 
         boolean result = restrictions.match(OffsetDateTime.MAX);
@@ -117,8 +115,8 @@ class DateTimeRestrictionsTests {
     public void matchShouldReturnFalseIfGivenDateIsBeforeMin(){
         OffsetDateTime limit = OffsetDateTime.of(2001, 02, 03, 04, 05, 06, 0, ZoneOffset.UTC);
         LinearRestrictions<OffsetDateTime> restrictions = LinearRestrictionsFactory.createDateTimeRestrictions(
-            new Limit<>(limit, false),
-            DATETIME_MAX_LIMIT
+                new Limit<>(limit, false),
+                DATETIME_MAX_LIMIT
         );
 
         boolean result = restrictions.match(limit.minusSeconds(1));
@@ -131,8 +129,8 @@ class DateTimeRestrictionsTests {
 
         OffsetDateTime limit = OffsetDateTime.of(2001, 02, 03, 04, 05, 06, 0, ZoneOffset.UTC);
         LinearRestrictions<OffsetDateTime> restrictions = LinearRestrictionsFactory.createDateTimeRestrictions(
-            DATETIME_MAX_LIMIT,
-            new Limit<>(limit, false)
+                DATETIME_MAX_LIMIT,
+                new Limit<>(limit, false)
         );
 
         boolean result = restrictions.match(limit.plusSeconds(1));
@@ -145,8 +143,8 @@ class DateTimeRestrictionsTests {
         OffsetDateTime min = OffsetDateTime.of(2001, 02, 03, 04, 05, 06, 0, ZoneOffset.UTC);
         OffsetDateTime max = min.plusHours(1);
         LinearRestrictions<OffsetDateTime> restrictions = LinearRestrictionsFactory.createDateTimeRestrictions(
-            new Limit<>(min, false),
-            new Limit<>(max, false)
+                new Limit<>(min, false),
+                new Limit<>(max, false)
         );
 
         boolean result = restrictions.match(min.plusMinutes(1));
@@ -159,8 +157,8 @@ class DateTimeRestrictionsTests {
 
         OffsetDateTime min = OffsetDateTime.of(2001, 02, 03, 04, 05, 06, 0, ZoneOffset.UTC);
         LinearRestrictions<OffsetDateTime> restrictions = LinearRestrictionsFactory.createDateTimeRestrictions(
-            new Limit<>(min, true),
-            new Limit<>(min, true)
+                new Limit<>(min, true),
+                new Limit<>(min, true)
         );
 
         boolean result = restrictions.match(min);
@@ -173,8 +171,8 @@ class DateTimeRestrictionsTests {
 
         OffsetDateTime min = OffsetDateTime.of(2001, 02, 03, 04, 05, 06, 0, ZoneOffset.UTC);
         LinearRestrictions<OffsetDateTime> restrictions = LinearRestrictionsFactory.createDateTimeRestrictions(
-            new Limit<>(min, false),
-            new Limit<>(min, false)
+                new Limit<>(min, false),
+                new Limit<>(min, false)
         );
 
         boolean result = restrictions.match(min);
@@ -184,7 +182,7 @@ class DateTimeRestrictionsTests {
 
     @Test
     public void matchShouldReturnFalseIfGranularityIsCoarserThanResult() {
-        LinearRestrictions<OffsetDateTime> restrictions = LinearRestrictionsFactory.createDateTimeRestrictions(DATETIME_MIN_LIMIT, DATETIME_MAX_LIMIT, Timescale.MINUTES);
+        LinearRestrictions<OffsetDateTime> restrictions = LinearRestrictionsFactory.createDateTimeRestrictions(DATETIME_MIN_LIMIT, DATETIME_MAX_LIMIT, new DateTimeGranularity(MINUTES));
         OffsetDateTime time = OffsetDateTime.of(2000, 01, 03, 04, 05, 06, 0, ZoneOffset.UTC);
 
         Assert.assertFalse(restrictions.match(time));
@@ -192,7 +190,7 @@ class DateTimeRestrictionsTests {
 
     @Test
     public void matchShouldReturnTrueIfGranularityIsTheSameAsResult() {
-        LinearRestrictions<OffsetDateTime> restrictions = LinearRestrictionsFactory.createDateTimeRestrictions(DATETIME_MIN_LIMIT, DATETIME_MAX_LIMIT, Timescale.MINUTES);
+        LinearRestrictions<OffsetDateTime> restrictions = LinearRestrictionsFactory.createDateTimeRestrictions(DATETIME_MIN_LIMIT, DATETIME_MAX_LIMIT, new DateTimeGranularity(MINUTES));
         OffsetDateTime time = OffsetDateTime.of(2000, 01, 03, 04, 05, 00, 0, ZoneOffset.UTC);
 
         Assert.assertTrue(restrictions.match(time));
@@ -200,7 +198,7 @@ class DateTimeRestrictionsTests {
 
     @Test
     public void matchShouldReturnTrueIfGranularityIsTheSameAsResultMonths() {
-        LinearRestrictions<OffsetDateTime> restrictions = LinearRestrictionsFactory.createDateTimeRestrictions(DATETIME_MIN_LIMIT, DATETIME_MAX_LIMIT,  Timescale.MONTHS);
+        LinearRestrictions<OffsetDateTime> restrictions = LinearRestrictionsFactory.createDateTimeRestrictions(DATETIME_MIN_LIMIT, DATETIME_MAX_LIMIT,  new DateTimeGranularity(MONTHS));
         OffsetDateTime time = OffsetDateTime.of(2000, 03, 01, 00, 00, 00, 0, ZoneOffset.UTC);
 
         Assert.assertTrue(restrictions.match(time));
@@ -208,7 +206,7 @@ class DateTimeRestrictionsTests {
 
     @Test
     public void matchShouldReturnTrueIfGranularityIsTheSameAsResultYears() {
-        LinearRestrictions<OffsetDateTime> restrictions = LinearRestrictionsFactory.createDateTimeRestrictions(DATETIME_MIN_LIMIT, DATETIME_MAX_LIMIT,  Timescale.YEARS);
+        LinearRestrictions<OffsetDateTime> restrictions = LinearRestrictionsFactory.createDateTimeRestrictions(DATETIME_MIN_LIMIT, DATETIME_MAX_LIMIT,  new DateTimeGranularity(YEARS));
         OffsetDateTime time = OffsetDateTime.of(2005, 01, 01, 00, 00, 00, 0, ZoneOffset.UTC);
 
         Assert.assertTrue(restrictions.match(time));
@@ -216,8 +214,8 @@ class DateTimeRestrictionsTests {
 
     @Test
     public void limitsShouldBeCappedAtTheMaximumValueAllowedForDateTime() {
-       Limit<OffsetDateTime>limit = new Limit<>(OffsetDateTime.MAX,true);
-        LinearRestrictions<OffsetDateTime> restrictions = LinearRestrictionsFactory.createDateTimeRestrictions(DATETIME_MIN_LIMIT, limit,  Timescale.YEARS);
+        Limit<OffsetDateTime>limit = new Limit<>(OffsetDateTime.MAX,true);
+        LinearRestrictions<OffsetDateTime> restrictions = LinearRestrictionsFactory.createDateTimeRestrictions(DATETIME_MIN_LIMIT, limit,  new DateTimeGranularity(YEARS));
 
         Assert.assertEquals(restrictions.getMax(), ISO_MAX_DATE);
 
@@ -225,8 +223,8 @@ class DateTimeRestrictionsTests {
 
     @Test
     public void limitsShouldBeCappedAtTheMinimumValueAllowedForDateTime() {
-       Limit<OffsetDateTime>limit = new Limit<>(OffsetDateTime.MIN,true);
-        LinearRestrictions<OffsetDateTime> restrictions = LinearRestrictionsFactory.createDateTimeRestrictions(limit, DATETIME_MAX_LIMIT,  Timescale.YEARS);
+        Limit<OffsetDateTime>limit = new Limit<>(OffsetDateTime.MIN,true);
+        LinearRestrictions<OffsetDateTime> restrictions = LinearRestrictionsFactory.createDateTimeRestrictions(limit, DATETIME_MAX_LIMIT,  new DateTimeGranularity(YEARS));
 
         Assert.assertEquals(restrictions.getMin(), ISO_MIN_DATE);
     }

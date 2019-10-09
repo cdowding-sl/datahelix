@@ -28,5 +28,5 @@ public abstract class PredicateConstraintDTO extends ConstraintDTO
         super(type);
     }
 
-    public abstract boolean hasDependency();
+    public abstract String getDependency();
 }

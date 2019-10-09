@@ -17,7 +17,7 @@
 
 package com.scottlogic.deg.generator.generation.grouped;
 
-import com.scottlogic.deg.generator.profile.Field;
+import com.scottlogic.deg.common.profile.Field;
 
 import java.util.List;
 

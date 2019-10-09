@@ -16,8 +16,8 @@
 
 package com.scottlogic.deg.generator.restrictions;
 
-import com.scottlogic.deg.generator.profile.constraintdetail.NumericGranularity;
-import com.scottlogic.deg.generator.profile.constraintdetail.NumericGranularityFactory;
+import com.scottlogic.deg.common.profile.constraintdetail.NumericGranularity;
+import com.scottlogic.deg.common.profile.constraintdetail.NumericGranularityFactory;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

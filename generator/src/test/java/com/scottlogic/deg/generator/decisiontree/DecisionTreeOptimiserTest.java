@@ -16,8 +16,9 @@
 
 package com.scottlogic.deg.generator.decisiontree;
 
-import com.scottlogic.deg.generator.profile.Field;
-import com.scottlogic.deg.generator.profile.ProfileFields;
+import com.scottlogic.deg.common.profile.Field;
+import com.scottlogic.deg.common.profile.ProfileFields;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -41,22 +42,22 @@ class DecisionTreeOptimiserTest {
     public void optimise_circularDependency(){
 
         ConstraintNode original = constraintNode()
-            .withDecision(
-                constraintNode()
-                    .where(A).isNull()
-                    .where(B).isNull(),
-                constraintNode()
-                    .where(A).isNotNull())
-            .withDecision(
-                constraintNode()
-                    .where(B).isNull()
-                    .where(A).isNull(),
-                constraintNode()
-                    .where(B).isNotNull())
-            .build();
+                .withDecision(
+                        constraintNode()
+                                .where(A).isNull()
+                                .where(B).isNull(),
+                        constraintNode()
+                                .where(A).isNotNull())
+                .withDecision(
+                        constraintNode()
+                                .where(B).isNull()
+                                .where(A).isNull(),
+                        constraintNode()
+                                .where(B).isNotNull())
+                .build();
 
         ConstraintNode actual = optimiser.optimiseTree(new DecisionTree(original, new ProfileFields(Collections.EMPTY_LIST)))
-            .getRootNode();
+                .getRootNode();
 
         assertThat(actual, sameBeanAs(original));
     }
@@ -64,106 +65,107 @@ class DecisionTreeOptimiserTest {
     @Test
     public void optimise_oneCommonIf(){
         ConstraintNode original = constraintNode()
-            .where(A).isInSet("a1", "a2")
-            .where(B).isInSet("b1", "b2")
-            .where(C).isInSet("c1", "c2")
-            .where(D).isInSet("d1", "d2")
-            .where(E).isInSet("e1", "e2")
-            .withDecision(
-                constraintNode()
-                    .where(A).isInSet("a1")
-                    .withDecision(
+                .where(A).isInSet("a1", "a2")
+                .where(B).isInSet("b1", "b2")
+                .where(C).isInSet("c1", "c2")
+                .where(D).isInSet("d1", "d2")
+                .where(E).isInSet("e1", "e2")
+                .withDecision(
                         constraintNode()
-                            .where(B).isInSet("b1")
-                            .where(D).isInSet("d1"),
+                                .where(A).isInSet("a1")
+                                .withDecision(
+                                        constraintNode()
+                                                .where(B).isInSet("b1")
+                                                .where(D).isInSet("d1"),
+                                        constraintNode()
+                                                .where(B).isNotInSet("b1"))
+                                .withDecision(
+                                        constraintNode()
+                                                .where(C).isInSet("c1")
+                                                .where(E).isInSet("e1"),
+                                        constraintNode()
+                                                .where(C).isNotInSet("c1")),
                         constraintNode()
-                            .where(B).isNotInSet("b1"))
-                    .withDecision(
-                        constraintNode()
-                            .where(C).isInSet("c1")
-                            .where(E).isInSet("e1"),
-                        constraintNode()
-                            .where(C).isNotInSet("c1")),
-                constraintNode()
-                    .where(A).isNotInSet("a1"))
-            .build();
+                                .where(A).isNotInSet("a1"))
+                .build();
 
         ConstraintNode actual = optimiser.optimiseTree(new DecisionTree(original, new ProfileFields(Collections.EMPTY_LIST)))
-            .getRootNode();
+                .getRootNode();
 
         assertThat(actual, sameBeanAs(original));
     }
 
+    @Disabled ("what???")
     @Test
     public void optimise_oneCommonIfTwoFields() {
         ConstraintNode original = constraintNode()
-            .where(A).isInSet("a1", "a2")
-            .where(B).isInSet("b1", "b2")
-            .where(C).isInSet("c1", "c2")
-            .where(D).isInSet("d1", "d2")
-            .where(E).isInSet("e1", "e2")
-            .where(F).isInSet("f1", "f2")
-            .withDecision(
-                constraintNode()
-                    .where(A).isInSet("a1")
-                    .where(B).isInSet("b1")
-                    .where(C).isInSet("c1")
-                    .where(E).isInSet("e1"),
-                constraintNode()
-                    .where(A).isNotInSet("a1"),
-                constraintNode()
-                    .where(B).isNotInSet("b1"),
-                constraintNode()
-                    .where(C).isNotInSet("c1"))
-            .withDecision(
-                constraintNode()
-                    .where(A).isInSet("a1")
-                    .where(B).isInSet("b1")
-                    .where(D).isInSet("d1")
-                    .where(F).isInSet("f1"),
-                constraintNode()
-                    .where(A).isNotInSet("a1"),
-                constraintNode()
-                    .where(B).isNotInSet("b1"),
-                constraintNode()
-                    .where(D).isNotInSet("d1"))
-            .build();
+                .where(A).isInSet("a1", "a2")
+                .where(B).isInSet("b1", "b2")
+                .where(C).isInSet("c1", "c2")
+                .where(D).isInSet("d1", "d2")
+                .where(E).isInSet("e1", "e2")
+                .where(F).isInSet("f1", "f2")
+                .withDecision(
+                        constraintNode()
+                                .where(A).isInSet("a1")
+                                .where(B).isInSet("b1")
+                                .where(C).isInSet("c1")
+                                .where(E).isInSet("e1"),
+                        constraintNode()
+                                .where(A).isNotInSet("a1"),
+                        constraintNode()
+                                .where(B).isNotInSet("b1"),
+                        constraintNode()
+                                .where(C).isNotInSet("c1"))
+                .withDecision(
+                        constraintNode()
+                                .where(A).isInSet("a1")
+                                .where(B).isInSet("b1")
+                                .where(D).isInSet("d1")
+                                .where(F).isInSet("f1"),
+                        constraintNode()
+                                .where(A).isNotInSet("a1"),
+                        constraintNode()
+                                .where(B).isNotInSet("b1"),
+                        constraintNode()
+                                .where(D).isNotInSet("d1"))
+                .build();
 
         ConstraintNode actual = optimiser.optimiseTree(new DecisionTree(original, new ProfileFields(Collections.EMPTY_LIST)))
-            .getRootNode();
+                .getRootNode();
 
 
         ConstraintNode expected = constraintNode()
-            .where(A).isInSet("a1", "a2")
-            .where(B).isInSet("b1", "b2")
-            .where(C).isInSet("c1", "c2")
-            .where(D).isInSet("d1", "d2")
-            .where(E).isInSet("e1", "e2")
-            .where(F).isInSet("f1", "f2")
-            .withDecision(
-                constraintNode()
-                    .where(A).isInSet("a1")
-                    .withDecision(
+                .where(A).isInSet("a1", "a2")
+                .where(B).isInSet("b1", "b2")
+                .where(C).isInSet("c1", "c2")
+                .where(D).isInSet("d1", "d2")
+                .where(E).isInSet("e1", "e2")
+                .where(F).isInSet("f1", "f2")
+                .withDecision(
                         constraintNode()
-                            .where(B).isInSet("b1")
-                            .withDecision(
-                                constraintNode()
-                                    .where(C).isInSet("c1")
-                                    .where(E).isInSet("e1"),
-                                constraintNode()
-                                    .where(C).isNotInSet("c1")
-                            )
-                            .withDecision(
-                                constraintNode()
-                                    .where(D).isInSet("d1")
-                                    .where(F).isInSet("f1"),
-                                constraintNode()
-                                    .where(D).isNotInSet("d1")),
+                                .where(A).isInSet("a1")
+                                .withDecision(
+                                        constraintNode()
+                                                .where(B).isInSet("b1")
+                                                .withDecision(
+                                                        constraintNode()
+                                                                .where(C).isInSet("c1")
+                                                                .where(E).isInSet("e1"),
+                                                        constraintNode()
+                                                                .where(C).isNotInSet("c1")
+                                                )
+                                                .withDecision(
+                                                        constraintNode()
+                                                                .where(D).isInSet("d1")
+                                                                .where(F).isInSet("f1"),
+                                                        constraintNode()
+                                                                .where(D).isNotInSet("d1")),
+                                        constraintNode()
+                                                .where(B).isNotInSet("b1")),
                         constraintNode()
-                            .where(B).isNotInSet("b1")),
-                constraintNode()
-                    .where(A).isNotInSet("a1")
-            ).build();
+                                .where(A).isNotInSet("a1")
+                ).build();
 
         assertThat(actual, sameBeanAs(expected));
     }

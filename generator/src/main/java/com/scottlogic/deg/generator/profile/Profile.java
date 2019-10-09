@@ -16,6 +16,9 @@
 
 package com.scottlogic.deg.generator.profile;
 
+import com.scottlogic.deg.common.profile.Field;
+import com.scottlogic.deg.common.profile.ProfileFields;
+
 import java.util.Collection;
 import java.util.List;
 

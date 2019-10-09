@@ -16,10 +16,10 @@
 
 package com.scottlogic.deg.generator.fieldspecs.relations;
 
-import com.scottlogic.deg.generator.profile.Field;
-import com.scottlogic.deg.common.profile.Types;
-import com.scottlogic.deg.generator.profile.constraintdetail.DateTimeGranularity;
-import com.scottlogic.deg.generator.profile.constraintdetail.Granularity;
+import com.scottlogic.deg.common.profile.DataType;
+import com.scottlogic.deg.common.profile.Field;
+import com.scottlogic.deg.common.profile.constraintdetail.DateTimeGranularity;
+import com.scottlogic.deg.common.profile.constraintdetail.Granularity;
 import com.scottlogic.deg.common.util.defaults.DateTimeDefaults;
 import com.scottlogic.deg.generator.fieldspecs.FieldSpec;
 import com.scottlogic.deg.generator.generation.databags.DataBagValue;
@@ -35,8 +35,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BeforeDateRelationTest {
 
-    private final Field a = new Field("a", Types.DATETIME, false, "", false);
-    private final Field b = new Field("b", Types.DATETIME, false, "", false);
+    private final Field a = new Field("a", DataType.DATE_TIME, false, "", false);
+    private final Field b = new Field("b", DataType.DATE_TIME, false, "", false);
 
     @Test
     public void testReduceToFieldSpec_withNotNull_reducesToSpec() {

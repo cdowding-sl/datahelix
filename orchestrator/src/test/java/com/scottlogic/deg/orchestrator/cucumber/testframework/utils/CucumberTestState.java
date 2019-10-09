@@ -18,13 +18,14 @@ package com.scottlogic.deg.orchestrator.cucumber.testframework.utils;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.scottlogic.deg.generator.profile.ConstraintType;
-import com.scottlogic.deg.generator.profile.DataType;
-import com.scottlogic.deg.generator.profile.Field;
-import com.scottlogic.deg.generator.profile.constraintdetail.AtomicConstraintType;
+import com.scottlogic.deg.common.profile.ConstraintType;
+import com.scottlogic.deg.common.profile.DataType;
+import com.scottlogic.deg.common.profile.Field;
+import com.scottlogic.deg.common.profile.constraintdetail.AtomicConstraintType;
 import com.scottlogic.deg.generator.config.detail.CombinationStrategyType;
 import com.scottlogic.deg.generator.config.detail.DataGenerationType;
 import com.scottlogic.deg.profile.dtos.constraints.ConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.grammatical.NotConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.PredicateConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.chronological.AfterConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.chronological.AfterOrAtConstraintDTO;
@@ -223,7 +224,7 @@ public class CucumberTestState {
             .collect(Collectors.joining());
     }
 
-    private void addConstraintToList(PredicateConstraintDTO constraintDTO) {
+    private void addConstraintToList(ConstraintDTO constraintDTO) {
         this.constraints.add(constraintDTO);
     }
 

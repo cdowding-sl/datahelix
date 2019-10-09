@@ -31,8 +31,8 @@ public abstract class ChronologicalConstraintDTO extends PredicateConstraintDTO
     }
 
     @Override
-    public boolean hasDependency()
+    public String getDependency()
     {
-        return otherField != null;
+        return otherField;
     }
 }

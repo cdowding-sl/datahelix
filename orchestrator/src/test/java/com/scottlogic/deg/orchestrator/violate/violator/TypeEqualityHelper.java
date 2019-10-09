@@ -19,7 +19,6 @@ package com.scottlogic.deg.orchestrator.violate.violator;
 import com.scottlogic.deg.generator.profile.Profile;
 import com.scottlogic.deg.generator.profile.Rule;
 import com.scottlogic.deg.generator.profile.constraints.Constraint;
-import com.scottlogic.deg.generator.profile.constraints.atomic.NotConstraint;
 import com.scottlogic.deg.generator.profile.constraints.grammatical.AndConstraint;
 import com.scottlogic.deg.generator.profile.constraints.grammatical.ConditionalConstraint;
 import com.scottlogic.deg.generator.profile.constraints.grammatical.OrConstraint;
@@ -44,9 +43,9 @@ public class TypeEqualityHelper {
     public static void assertProfileListsAreEquivalent(List<Profile> actualProfileList,
                                                        List<Profile> expectedProfileList) {
         assertThat(
-            "The lists of profiles do not serialize to the same values. Use the \"<Click to see difference> option\"",
-            actualProfileList,
-            sameBeanAs(expectedProfileList)
+                "The lists of profiles do not serialize to the same values. Use the \"<Click to see difference> option\"",
+                actualProfileList,
+                sameBeanAs(expectedProfileList)
         );
         assertListProfileTypeEquality(actualProfileList, expectedProfileList);
     }
@@ -59,9 +58,9 @@ public class TypeEqualityHelper {
      */
     public static void assertListProfileTypeEquality(List<Profile> expectedProfileList, List<Profile> actualProfileList) {
         Assert.assertEquals("Profile list lengths do not match. Expected: " + expectedProfileList.size()
-            + ", Actual: " + actualProfileList.size(),
-            expectedProfileList.size(),
-            actualProfileList.size()
+                        + ", Actual: " + actualProfileList.size(),
+                expectedProfileList.size(),
+                actualProfileList.size()
         );
         for (int i = 0; i < expectedProfileList.size(); i++) {
             assertProfileTypeEquality(expectedProfileList.get(i), actualProfileList.get(i));
@@ -78,9 +77,9 @@ public class TypeEqualityHelper {
         ArrayList<Rule> expectedRules = new ArrayList<>(expectedProfile.getRules());
         ArrayList<Rule> actualRules = new ArrayList<>(actualProfile.getRules());
         Assert.assertEquals("Rule list lengths do not match. Expected: " + expectedRules.size()
-                + ", Actual: " + actualRules.size(),
-            expectedRules.size(),
-            actualRules.size()
+                        + ", Actual: " + actualRules.size(),
+                expectedRules.size(),
+                actualRules.size()
         );
         for (int i = 0; i < expectedRules.size(); i++) {
             assertRuleTypeEquality(expectedRules.get(i), actualRules.get(i));
@@ -108,9 +107,9 @@ public class TypeEqualityHelper {
     public static void assertConstraintListTypeEquality(List<Constraint> expectedConstraintList,
                                                         List<Constraint> actualConstraintList) {
         Assert.assertEquals("Constraint list lengths do not match. Expected: " + expectedConstraintList.size()
-                + ", Actual: " + actualConstraintList.size(),
-            expectedConstraintList.size(),
-            actualConstraintList.size()
+                        + ", Actual: " + actualConstraintList.size(),
+                expectedConstraintList.size(),
+                actualConstraintList.size()
         );
         for (int i = 0; i < expectedConstraintList.size(); i++) {
             assertConstraintTypeEquality(expectedConstraintList.get(i), actualConstraintList.get(i));
@@ -130,15 +129,10 @@ public class TypeEqualityHelper {
             return;
         }
         Assert.assertEquals("Class types do not match for constraints. Expected: "
-                + expectedConstraint.getClass() + " but was: " + actualConstraint.getClass(),
-            expectedConstraint.getClass(),
-            actualConstraint.getClass());
-        if (expectedConstraint instanceof NotConstraint){
-            assertConstraintTypeEquality(
-                ((NotConstraint)expectedConstraint).negatedConstraint,
-                ((NotConstraint)actualConstraint).negatedConstraint);
-        }
-        else if (expectedConstraint instanceof AndConstraint) {
+                        + expectedConstraint.getClass() + " but was: " + actualConstraint.getClass(),
+                expectedConstraint.getClass(),
+                actualConstraint.getClass());
+        if (expectedConstraint instanceof AndConstraint) {
             ArrayList<Constraint> expectedConstraints = new ArrayList<>(((AndConstraint) expectedConstraint).getSubConstraints());
             ArrayList<Constraint> actualConstraints = new ArrayList<>(((AndConstraint) actualConstraint).getSubConstraints());
             assertConstraintListTypeEquality(expectedConstraints, actualConstraints);
@@ -152,14 +146,14 @@ public class TypeEqualityHelper {
             ConditionalConstraint expectedConditionalConstraint = (ConditionalConstraint) expectedConstraint;
             ConditionalConstraint actualConditionalConstraint = (ConditionalConstraint) actualConstraint;
             assertConstraintTypeEquality(
-                expectedConditionalConstraint.condition,
-                actualConditionalConstraint.condition);
+                    expectedConditionalConstraint.condition,
+                    actualConditionalConstraint.condition);
             assertConstraintTypeEquality(
-                expectedConditionalConstraint.whenConditionIsFalse,
-                actualConditionalConstraint.whenConditionIsFalse);
+                    expectedConditionalConstraint.whenConditionIsFalse,
+                    actualConditionalConstraint.whenConditionIsFalse);
             assertConstraintTypeEquality(
-                expectedConditionalConstraint.whenConditionIsTrue,
-                actualConditionalConstraint.whenConditionIsTrue);
+                    expectedConditionalConstraint.whenConditionIsTrue,
+                    actualConditionalConstraint.whenConditionIsTrue);
         }
     }
 }

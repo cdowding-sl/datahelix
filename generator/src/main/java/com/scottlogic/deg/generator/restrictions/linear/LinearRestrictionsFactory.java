@@ -1,7 +1,6 @@
 package com.scottlogic.deg.generator.restrictions.linear;
 
-import com.scottlogic.deg.generator.profile.constraintdetail.Granularity;
-import com.scottlogic.deg.generator.profile.constraintdetail.Timescale;
+import com.scottlogic.deg.common.profile.constraintdetail.Granularity;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -14,7 +13,7 @@ public class LinearRestrictionsFactory {
         return createDateTimeRestrictions(min, max, DEFAULT_DATETIME_GRANULARITY);
     }
 
-    public static LinearRestrictions<OffsetDateTime> createDateTimeRestrictions(Limit<OffsetDateTime> min, Limit<OffsetDateTime> max, Timescale granularity) {
+    public static LinearRestrictions<OffsetDateTime> createDateTimeRestrictions(Limit<OffsetDateTime> min, Limit<OffsetDateTime> max, Granularity<OffsetDateTime> granularity) {
         OffsetDateTime inclusiveMin = getInclusiveMin(min, granularity, ISO_MIN_DATE);
         OffsetDateTime inclusiveMax = getInclusiveMax(max, granularity, ISO_MAX_DATE);
         return new LinearRestrictions<>(inclusiveMin, inclusiveMax, granularity);
@@ -36,8 +35,8 @@ public class LinearRestrictionsFactory {
         }
 
         return min.isInclusive()
-            ? min.getValue()
-            : granularity.getNext(granularity.trimToGranularity(min.getValue()));
+                ? min.getValue()
+                : granularity.getNext(granularity.trimToGranularity(min.getValue()));
     }
 
     private static <T extends Comparable<? super T>> T getInclusiveMax(Limit<T> max, Granularity<T> granularity, T actualMax) {
@@ -46,7 +45,7 @@ public class LinearRestrictionsFactory {
         }
 
         return max.isInclusive()
-            ? max.getValue()
-            : granularity.getPrevious(max.getValue());
+                ? max.getValue()
+                : granularity.getPrevious(max.getValue());
     }
 }

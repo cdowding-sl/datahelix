@@ -1,7 +1,7 @@
 package com.scottlogic.deg.generator.walker.decisionbased;
 
-import com.scottlogic.deg.generator.profile.Field;
-import com.scottlogic.deg.generator.profile.ProfileFields;
+import com.scottlogic.deg.common.profile.Field;
+import com.scottlogic.deg.common.profile.ProfileFields;
 import com.scottlogic.deg.generator.builders.TestConstraintNodeBuilder;
 import com.scottlogic.deg.generator.decisiontree.ConstraintNode;
 import com.scottlogic.deg.generator.decisiontree.DecisionTree;
@@ -25,18 +25,11 @@ class RowSpecTreeSolverTests {
     private Field fieldA = createField("A");
     private Field fieldB = createField("B");
     private ProfileFields profileFields = new ProfileFields(Arrays.asList(fieldA, fieldB));
-    private ConstraintReducer constraintReducer;
-    private TreePruner pruner;
-    private OptionPicker optionPicker;
-    private RowSpecTreeSolver rowSpecTreeSolver;
-
-    @BeforeEach
-    void setup() {
-        constraintReducer = new ConstraintReducer(new FieldSpecFactory(new StringRestrictionsFactory()), new FieldSpecMerger());
-        pruner = new TreePruner(new FieldSpecMerger(), constraintReducer, new FieldSpecHelper());
-        optionPicker = new SequentialOptionPicker();
-        rowSpecTreeSolver = new RowSpecTreeSolver(constraintReducer, pruner, optionPicker);
-    }
+    private FieldSpecMerger fieldSpecMerger = new FieldSpecMerger();
+    private ConstraintReducer constraintReducer = new ConstraintReducer(fieldSpecMerger);
+    private TreePruner pruner = new TreePruner(fieldSpecMerger, constraintReducer, new FieldSpecHelper());
+    private OptionPicker optionPicker = new SequentialOptionPicker();
+    private RowSpecTreeSolver rowSpecTreeSolver = new RowSpecTreeSolver(constraintReducer, pruner, optionPicker);
 
     @Test
     void createRowSpecs_whenRootNodeHasNoDecisions_returnsRowSpecOfRoot() {
@@ -80,12 +73,12 @@ class RowSpecTreeSolverTests {
     void createRowSpecs_whenRootNodeHasSomeDecisions_returnsRowSpecOfRoot() {
         //Arrange
         ConstraintNode root = TestConstraintNodeBuilder.constraintNode()
-            .withDecision(
-                TestConstraintNodeBuilder.constraintNode()
-                    .where(fieldB).isNull(),
-                TestConstraintNodeBuilder.constraintNode()
-                    .where(fieldB).isInSet(1, 2, 3))
-            .build();
+                .withDecision(
+                        TestConstraintNodeBuilder.constraintNode()
+                                .where(fieldB).isNull(),
+                        TestConstraintNodeBuilder.constraintNode()
+                                .where(fieldB).isInSet(1, 2, 3))
+                .build();
         DecisionTree tree = new DecisionTree(root, profileFields);
 
         //Act
