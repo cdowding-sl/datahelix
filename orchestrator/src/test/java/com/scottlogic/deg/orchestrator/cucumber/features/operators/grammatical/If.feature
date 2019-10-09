@@ -21,8 +21,7 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       { "condition" :
-      {
-        "if": { "equalTo": { "field": "foo", "value": "a"} },
+       { "if": { "equalTo": { "field": "foo", "value": "a"} },
         "then": { "equalTo": { "field": "bar", "value": 10 }}
       }
       }
@@ -44,8 +43,7 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-      "condition": {
-        "if": {"equalTo": {  "field": "foo", "value": "a"} },
+       "condition": { "if": {"equalTo": {  "field": "foo", "value": "a"} },
         "then": {"equalTo": {  "field": "bar", "value": 3 }},
         "else": {"equalTo": {  "field": "bar", "value": 5 }}
       }
@@ -104,8 +102,8 @@ Feature: Values can be specified by using if, then and else constraints
     And bar is anything but null
     And there is a constraint:
       """
-      {"condition": {
-        "if": {
+      {
+       "condition": { "if": {
           "allOf": [
             {"greaterThan": {  "field": "foo",  "value": 1 }},
             { "lessThan": {"field": "foo", "value": 4 }}
@@ -137,8 +135,8 @@ Feature: Values can be specified by using if, then and else constraints
     And bar is anything but null
     And there is a constraint:
       """
-      {"condition": {
-        "if": { "not": {"equalTo": {  "field": "foo", "value": 1 }} },
+      {
+       "condition": { "if": { "not": {"equalTo": {  "field": "foo", "value": 1 }},
         "then": { "equalTo": { "field": "bar", "value": "a"} },
         "else": { "equalTo": { "field": "bar", "value": "b"} }
       }
@@ -168,14 +166,13 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-      "condition"{
-      "if": {"greaterThan": {  "field": "foo", "value": 1} },
-        "then": { "condition": {
-          "if": {"greaterThan": {  "field": "foo", "value": 3 }},
+
+     "condition": { "if": {"greaterThan": {  "field": "foo", "value": 1} },
+        "then": {
+         "condition": { "if": {"greaterThan": {  "field": "foo", "value": 3 }},
           "then": {"equalTo": {  "field": "bar", "value": "a" }},
           "else": {"equalTo": {  "field": "bar",  "value": "b" }}
-          }
-        },
+        }},
         "else": {"equalTo": {  "field": "bar", "value": "c" }}
       }
       }
@@ -203,8 +200,8 @@ Feature: Values can be specified by using if, then and else constraints
     And bar is anything but null
     And there is a constraint:
       """
-      { "condition":
-        {
+      {
+       "condition": {
         "if": { "equalTo": { "field": "foo", "value": 1 }},
         "else": {"equalTo": {  "field": "bar", "value": "a" }}
         }
@@ -229,8 +226,8 @@ Feature: Values can be specified by using if, then and else constraints
     And bar is anything but null
     And there is a constraint:
       """
-      { "condition": {
-        "if": {"equalTo": {  "field": "foo", "value": 5} },
+      {
+       "condition": { "if": {"equalTo": {  "field": "foo", "value": 5} },
         "then": {"equalTo": {  "field": "bar", "value": "a" }},
         "else": {"equalTo": {  "field": "bar",  "value": "b"} }
         }
@@ -259,8 +256,8 @@ Feature: Values can be specified by using if, then and else constraints
     And bar is anything but null
     And there is a constraint:
       """
-      { "condition":{
-        "if": {"equalTo": {  "field": "foo", "value": 1 }},
+      {
+       "condition": { "if": {"equalTo": {  "field": "foo", "value": 1 }},
         "then": {"equalTo": {  "field": "bar","value": "X"} },
         "else": {"equalTo": {  "field": "bar", "value": "b" }}
       }
@@ -288,8 +285,9 @@ Feature: Values can be specified by using if, then and else constraints
     And bar is anything but null
     And there is a constraint:
       """
-      { "condition":{
-        "if": {"equalTo": {  "field": "foo", "value": 1 }},
+      {
+       "condition": {
+       "if": {"equalTo": {  "field": "foo", "value": 1 }},
         "then": {"equalTo": {  "field": "bar","value": "a"} },
         "else": {"equalTo": {  "field": "bar", "value": "X" }}
         }
@@ -316,7 +314,7 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-      "condition":{
+       "condition": {
         "if": { "inSet":{ "field": "foo", "values": [1, 2] }},
         "then": {"equalTo": {  "field": "bar","value": "a"} },
         "else": {"equalTo": {  "field": "bar", "value": "b" }}
@@ -346,8 +344,9 @@ Feature: Values can be specified by using if, then and else constraints
     And bar is anything but null
     And there is a constraint:
       """
-      { "condition":{
-        "if": {"equalTo": { "field": "foo","value": "1"} },
+      {
+       "condition": {
+       "if": {"equalTo": { "field": "foo","value": "1"} },
         "then": { "inSet":{ "field": "bar", "values": [a, b] }},
         "else": {"equalTo": {  "field": "bar","value": "c"} }
       }
@@ -378,9 +377,11 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 1 },
-        "then": { "field": "bar", "is": "equalTo", "value": "b" },
-        "else": { "field": "bar", "is": "inSet", "values": [ "a", "c" ] }
+       "condition": {
+       "if": { "equalTo":{ "field": "foo", "value": 1} },
+        "then": { "equalTo":{ "field": "bar", "value": "b"} },
+        "else": { "inSet":{ "field": "bar", "values": [ "a", "c" ]} }
+        }
       }
       """
     Then the following data should be generated:
@@ -410,10 +411,11 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "inSet", "values": [ 8, 9 ] },
-        "then": { "field": "bar", "is": "equalTo", "value": "a" },
-        "else": { "field": "bar", "is": "equalTo", "value": "b" }
-      }
+       "condition": {
+        "if": { "inSet": { "field": "foo", "values": [ 8, 9 ] }},
+        "then": { "equalTo":{ "field": "bar", "value": "a" }},
+        "else": { "equalTo": { "field": "bar", "value": "b" }}
+      }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -439,9 +441,11 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 1 },
-        "then": { "field": "bar", "is": "inSet", "value": [ "X", "Y" ] },
-        "else": { "field": "bar", "is": "equalTo", "value": "c" }
+       "condition": {
+       "if": { "equalTo": {"field": "foo","value": 1 }},
+        "then": { "inSet":{  "field": "bar", "value": [ "X", "Y" ]} },
+        "else": { "equalTo": {"field": "bar",  "value": "c" }}
+        }
       }
       """
     Then the profile is invalid because "Field \[bar\]: Couldn't recognise 'values' property, it must not contain 'null'"
@@ -464,9 +468,11 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 1 },
-        "then": { "field": "bar", "is": "equalTo", "value": "a" },
-        "else": { "field": "bar", "is": "inSet", "values": [ "X", "Y" ] }
+      "condition": {
+      "if": { "equalTo": {"field": "foo", "value": 1} },
+        "then": { "equalTo": {"field": "bar", "value": "a"} },
+        "else": {"inSet":{ "field": "bar", "values": [ "X", "Y" ] }}
+        }
       }
       """
     Then the following data should be generated:
@@ -486,9 +492,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "null" },
-        "then": { "field": "bar", "is": "equalTo", "value": "b" },
-        "else": { "field": "bar", "is": "equalTo", "value": "c" }
+       "condition": { "if": {"null" : { "field": "foo" }}},
+        "then": {"equalTo": { "field": "bar", "value": "b" }},
+        "else": { "equalTo": {"field": "bar", "value": "c" }
+        }
       }
       """
     Then the following data should be generated:
@@ -511,9 +518,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 2 },
-        "then": { "field": "bar", "is": "null" },
-        "else": { "field": "bar", "is": "equalTo", "value": "c" }
+       "condition": { "if": { "equalTo": {"field": "foo", "value": 2 }},
+        "then": {"null":{ "field": "bar" }},
+        "else": {"equalTo": { "field": "bar", "value": "c" }}
+        }
       }
       """
     Then the following data should be generated:
@@ -536,9 +544,11 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 2 },
-        "then": { "field": "bar", "is": "equalTo", "value": "b" },
-        "else": { "field": "bar", "is": "null" }
+      "condition": {
+      "if": {"equalTo": { "field": "foo", "value": 2 }},
+        "then": { "equalTo": {"field": "bar",  "value": "b" }},
+        "else": {"null":{ "field": "bar"}}
+        }
       }
       """
     Then the following data should be generated:
@@ -565,9 +575,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "null" },
-        "then": { "field": "bar", "is": "equalTo", "value": "a" },
-        "else": { "field": "bar", "is": "equalTo", "value": "b" }
+       "condition": { "if": {"null": { "field": "foo"}}},
+        "then": { "equalTo": {"field": "bar", "value": "a" }},
+        "else": { "equalTo": {"field": "bar", "value": "b" }}
+        }
       }
       """
     Then the following data should be generated:
@@ -594,9 +605,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 1},
-        "then": { "field": "bar", "is": "null" },
-        "else": { "field": "bar", "is": "equalTo", "value": "a" }
+       "condition": { "if": { "equalTo": {"field": "foo", "value": 1}},
+        "then": {"null":{ "field": "bar"}},
+        "else": { "equalTo": {"field": "bar",  "value": "a" }}
+        }
       }
       """
     Then the following data should be generated:
@@ -622,9 +634,11 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 1},
-        "then": { "field": "bar", "is": "equalTo", "value": "a" },
-        "else": { "field": "bar", "is": "null" }
+       "condition": {
+       "if": { "equalTo": {"field": "foo", "value": 1}},
+        "then": {"equalTo": { "field": "bar", "value": "a" }},
+        "else": {"null":{ "field": "bar"}}
+        }
       }
       """
     Then the following data should be generated:
@@ -649,9 +663,11 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "matchingRegex", "value": "[a-z]{1}" },
-        "then": { "field": "bar", "is": "equalTo", "value": "AA" },
-        "else": { "field": "bar", "is": "equalTo", "value": "10" }
+       "condition":
+       { "if": { "matchingRegex" : {"field": "foo", "value": "[a-z]{1}" }},
+        "then": {"equalTo": { "field": "bar",  "value": "AA" }},
+        "else": { "equalTo": {"field": "bar", "value": "10" }}
+        }
       }
       """
     Then the following data should be generated:
@@ -679,9 +695,11 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "1" },
-        "then": { "field": "bar", "is": "matchingRegex", "value": "[A-Z]{2}" },
-        "else": { "field": "bar", "is": "equalTo", "value": "10" }
+       "condition": { "if":
+       {"equalTo": { "field": "foo", "value": "1" }},
+        "then": {"matchingRegex":{ "field": "bar", "value": "[A-Z]{2}" }},
+        "else": {"equalTo": { "field": "bar", "value": "10" }}
+        }
       }
       """
     Then the following data should be generated:
@@ -710,9 +728,11 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "1" },
-        "then": { "field": "bar", "is": "equalTo", "value": "AA" },
-        "else": { "field": "bar", "is": "matchingRegex", "value": "[0-9]{2}" }
+       "condition": {
+        "if": { "equalTo": {"field": "foo","value": "1" }},
+        "then": { "equalTo": {"field": "bar", "value": "AA" }},
+        "else": {"matchingRegex":{ "field": "bar","value": "[0-9]{2}" }}
+        }
       }
       """
     Then the following data should be generated:
@@ -743,9 +763,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "matchingRegex", "value": "[0-9]{10}" },
-        "then": { "field": "bar", "is": "equalTo", "value": "AA" },
-        "else": { "field": "bar", "is": "equalTo", "value": "10" }
+       "condition": { "if": {"matchingRegex":{ "field": "foo", "value": "[0-9]{10}" }},
+        "then": {"equalTo": { "field": "bar", "value": "AA" }},
+        "else": {"equalTo": { "field": "bar", "value": "10" }}
+        }
       }
       """
     Then the following data should be generated:
@@ -773,9 +794,11 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "a" },
-        "then": { "field": "bar", "is": "matchingRegex", "value": "[😁-😡]{1}"},
-        "else": { "field": "bar", "is": "equalTo", "value": "10" }
+       "condition": {
+        "if": { "equalTo": {"field": "foo", "value": "a" }},
+        "then": {"matchingRegex":{ "field": "bar", "value": "[😁-😡]{1}"}},
+        "else": { "equalTo": {"field": "bar", "value": "10" }
+        }
       }
       """
     Then the following data should be generated:
@@ -802,9 +825,11 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "a" },
-        "then": { "field": "bar", "is": "equalTo", "value": "BB"},
-        "else": { "field": "bar", "is": "matchingRegex", "value": "[😁-😡]{1}"}
+      "condition": {
+       "if": { "equalTo": {"field": "foo", "value": "a" }},
+        "then": { "equalTo": {"field": "bar", "value": "BB"}},
+        "else": {"matchingRegex":{ "field": "bar", "value": "[😁-😡]{1}"}}
+        }
       }
       """
     Then the following data should be generated:
@@ -829,9 +854,12 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "containingRegex", "value": "[1]{1}" },
-        "then": { "field": "bar", "is": "equalTo", "value": "AA" },
-        "else": { "field": "bar", "is": "equalTo", "value": "10" }
+      "condition": 
+        {
+       "if": {"containingRegex": { "field": "foo", "value": "[1]{1}" }},
+        "then": { "equalTo": {"field": "bar",  "value": "AA" }},
+        "else": { "equalTo": {"field": "bar",  "value": "10" }}
+        }
       }
       """
     Then the following data should be generated:
@@ -859,9 +887,11 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "1" },
-        "then": { "field": "bar", "is": "containingRegex", "value": "[0]{1}" },
-        "else": { "field": "bar", "is": "equalTo", "value": "AA" }
+      "condition": {
+       "if": { "equalTo": {"field": "foo", "value": "1" }},
+        "then": {"containingRegex":{ "field": "bar", "value": "[0]{1}" }},
+        "else": { "equalTo": {"field": "bar", "value": "AA" }}
+        }
       }
       """
     Then the following data should be generated:
@@ -890,9 +920,12 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "1" },
-        "then": { "field": "bar", "is": "equalTo", "value": "BB" },
-        "else": { "field": "bar", "is": "containingRegex", "value": "[0]{1}" }
+       "condition":
+       {
+       "if": {"equalTo": { "field": "foo", "value": "1" }},
+        "then": {"equalTo": { "field": "bar", "value": "BB" }},
+        "else": {"containingRegex":{ "field": "bar", "value": "[0]{1}" }}
+        }
       }
       """
     Then the following data should be generated:
@@ -923,9 +956,11 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "containingRegex", "value": "[🚫]{1}" },
-        "then": { "field": "bar", "is": "equalTo", "value": "AA" },
-        "else": { "field": "bar", "is": "equalTo", "value": "10" }
+      "condition": {
+      "if": { "containingRegex":{"field": "foo", "value": "[🚫]{1}" }},
+        "then": {"equalTo": { "field": "bar", "value": "AA" }},
+        "else": { "equalTo": {"field": "bar", "value": "10" }}
+        }
       }
       """
     Then the following data should be generated:
@@ -953,9 +988,11 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "1" },
-        "then": { "field": "bar", "is": "containingRegex", "value": "[🚫]{1}" },
-        "else": { "field": "bar", "is": "equalTo", "value": "10" }
+      "condition": {
+      "if": {"equalTo": { "field": "foo", "value": "1" }},
+        "then": {"containingRegex":{ "field": "bar", "value": "[🚫]{1}" }},
+        "else": { "equalTo": {"field": "bar", "value": "10" }}
+        }
       }
       """
     Then the following data should be generated:
@@ -982,9 +1019,11 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "1" },
-        "then": { "field": "bar", "is": "equalTo", "value": "10" },
-        "else": { "field": "bar", "is": "containingRegex", "value": "[🚫]{1}" }
+      "condition": {
+       "if": {"equalTo": { "field": "foo", "value": "1" }},
+        "then": {"equalTo": { "field": "bar", "value": "10" }},
+        "else": {"containingRegex":{ "field": "bar", "value": "[🚫]{1}" }}
+        }
       }
       """
     Then the following data should be generated:
@@ -1009,9 +1048,11 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "ofLength", "value": 2 },
-        "then": { "field": "bar", "is": "equalTo", "value": "1" },
-        "else": { "field": "bar", "is": "equalTo", "value": "4444" }
+      "condition": {
+      "if": {  "ofLength":{"field": "foo","value": 2 }},
+        "then": { "equalTo": {"field": "bar", "value": "1" }},
+        "else": { "equalTo": {"field": "bar", "value": "4444" }}
+        }
       }
       """
     Then the following data should be generated:
@@ -1039,9 +1080,11 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "bb" },
-        "then": { "field": "bar", "is": "ofLength", "value": 3 },
-        "else": { "field": "bar", "is": "equalTo", "value": "1" }
+      "condition": {
+       "if": { "equalTo": {"field": "foo", "value": "bb" }},
+        "then": {"ofLength":{ "field": "bar", "value": 3 }},
+        "else": {"equalTo": { "field": "bar", "value": "1" }}
+        }
       }
       """
     Then the following data should be generated:
@@ -1069,9 +1112,11 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "a" },
-        "then": { "field": "bar", "is": "equalTo", "value": "1" },
-        "else": { "field": "bar", "is": "ofLength", "value": 4 }
+      "condition": {
+      "if": { "equalTo": {"field": "foo", "value": "a" }},
+        "then": {"equalTo": { "field": "bar", "value": "1" }},
+        "else": {"ofLength":{ "field": "bar", "value": 4 }}
+        }
       }
       """
     Then the following data should be generated:
@@ -1099,10 +1144,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "ofLength", "value": 7 },
-        "then": { "field": "bar", "is": "equalTo", "value": "1" },
-        "else": { "field": "bar", "is": "equalTo", "value": "4444" }
-      }
+       "condition": { "if": {  "ofLength":{"field": "foo", "value": 7 }},
+        "then": { "equalTo": {"field": "bar", "value": "1" }},
+        "else": {"equalTo": { "field": "bar", "value": "4444"}}
+          }}
       """
     Then the following data should be generated:
       | foo    | bar    |
@@ -1129,10 +1174,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "a" },
-        "then": { "field": "bar", "is": "ofLength", "value": 10 },
-        "else": { "field": "bar", "is": "equalTo", "value": "4444" }
-      }
+       "condition": { "if": { "equalTo": {"field": "foo", "value": "a" }},
+        "then": {"ofLength":{ "field": "bar", "value": 10 }},
+        "else": {"equalTo": { "field": "bar", "value": "4444"}}
+          }}
       """
     Then the following data should be generated:
       | foo    | bar    |
@@ -1158,10 +1203,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "a" },
-        "then": { "field": "bar", "is": "equalTo", "value": "1" },
-        "else": { "field": "bar", "is": "ofLength", "value": 10 }
-      }
+       "condition": { "if": {"equalTo": { "field": "foo", "value": "a" }},
+        "then": { "equalTo": {"field": "bar", "value": "1" }},
+        "else": {"ofLength":{ "field": "bar", "value": 10}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -1185,10 +1230,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "longerThan", "value": 2 },
-        "then": { "field": "bar", "is": "equalTo", "value": "1" },
-        "else": { "field": "bar", "is": "equalTo", "value": "4444" }
-      }
+       "condition": { "if": { "longerThan": {"field": "foo", "value": 2 }},
+        "then": {"equalTo": { "field": "bar", "value": "1" }},
+        "else": { "equalTo": {"field": "bar", "value": "4444"}}
+          }}
       """
     Then the following data should be generated:
       | foo    | bar    |
@@ -1215,10 +1260,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "bb" },
-        "then": { "field": "bar", "is": "longerThan", "value": 2 },
-        "else": { "field": "bar", "is": "equalTo", "value": "1" }
-      }
+       "condition": { "if": {"equalTo": { "field": "foo", "value": "bb" }},
+        "then": {"longerThan":{ "field": "bar", "value": 2 }},
+        "else": { "equalTo": {"field": "bar", "value": "1"}}
+          }}
       """
     Then the following data should be generated:
       | foo    | bar    |
@@ -1246,10 +1291,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "dddd" },
-        "then": { "field": "bar", "is": "equalTo", "value": "1" },
-        "else": { "field": "bar", "is": "longerThan", "value": 2  }
-      }
+       "condition": { "if": {"equalTo": { "field": "foo", "value": "dddd" }},
+        "then": { "equalTo": {"field": "bar", "value": "1" }},
+        "else": {"longerThan":{ "field": "bar", "value": 2 }}
+          }}
       """
     Then the following data should be generated:
       | foo    | bar    |
@@ -1279,10 +1324,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "longerThan", "value": 25 },
-        "then": { "field": "bar", "is": "equalTo", "value": "1" },
-        "else": { "field": "bar", "is": "equalTo", "value": "4444" }
-      }
+       "condition": { "if": {"longerThan":{ "field": "foo", "value": 25 }},
+        "then": {"equalTo": { "field": "bar", "value": "1" }},
+        "else": { "equalTo": {"field": "bar", "value": "4444"}}
+          }}
       """
     Then the following data should be generated:
       | foo    | bar    |
@@ -1309,10 +1354,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "a" },
-        "then": { "field": "bar", "is": "longerThan", "value": 100 },
-        "else": { "field": "bar", "is": "equalTo", "value": "4444" }
-      }
+       "condition": { "if": {"equalTo": { "field": "foo", "value": "a" }},
+        "then": {"longerThan":{ "field": "bar", "value": 100 }},
+        "else": { "equalTo": {"field": "bar", "value": "4444"}}
+          }}
       """
     Then the following data should be generated:
       | foo    | bar    |
@@ -1338,10 +1383,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "a" },
-        "then": { "field": "bar", "is": "equalTo", "value": "1" },
-        "else": { "field": "bar", "is": "longerThan", "value": 100 }
-      }
+       "condition": { "if": { "equalTo": {"field": "foo", "value": "a" }},
+        "then": {"equalTo": { "field": "bar", "value": "1" }},
+        "else": {"longerThan":{ "field": "bar", "value": 100}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -1365,10 +1410,11 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "shorterThan", "value": 3 },
-        "then": { "field": "bar", "is": "equalTo", "value": "1" },
-        "else": { "field": "bar", "is": "equalTo", "value": "4444" }
-      }
+       "condition": { 
+       "if": {  "shorterThan":{"field": "foo", "value": 3 }},
+        "then": {"equalTo": { "field": "bar", "value": "1" }},
+        "else": { "equalTo": {"field": "bar", "value": "4444"}}
+          }}
       """
     Then the following data should be generated:
       | foo    | bar    |
@@ -1395,9 +1441,11 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "ccc" },
-        "then": { "field": "bar", "is": "shorterThan", "value": 3 },
-        "else": { "field": "bar", "is": "equalTo", "value": "333" }
+       "condition": { 
+       "if": { "equalTo": {"field": "foo", "value": "ccc" }},
+        "then": {"shorterThan":{ "field": "bar", "value": 3 }},
+        "else": { "equalTo": {"field": "bar", "value": "333" }
+      }
       }
       """
     Then the following data should be generated:
@@ -1426,10 +1474,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "dddd" },
-        "then": { "field": "bar", "is": "equalTo", "value": "4444" },
-        "else": { "field": "bar", "is": "shorterThan", "value": 4 }
-      }
+       "condition": { "if": { "equalTo": {"field": "foo", "value": "dddd" }},
+        "then": { "equalTo": {"field": "bar", "value": "4444" }},
+        "else": {"shorterThan":{ "field": "bar", "value": 4}}
+          }}
       """
     Then the following data should be generated:
       | foo    | bar    |
@@ -1462,10 +1510,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "shorterThan", "value": 1 },
-        "then": { "field": "bar", "is": "equalTo", "value": "1" },
-        "else": { "field": "bar", "is": "equalTo", "value": "4444" }
-      }
+       "condition": { "if": {"shorterThan":{ "field": "foo", "value": 1 }},
+        "then": { "equalTo": {"field": "bar", "value": "1" }},
+        "else": { "equalTo": {"field": "bar", "value": "4444"}}
+          }}
       """
     Then the following data should be generated:
       | foo    | bar    |
@@ -1492,10 +1540,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "dddd" },
-        "then": { "field": "bar", "is": "shorterThan", "value": 1 },
-        "else": { "field": "bar", "is": "equalTo", "value": "4444" }
-      }
+       "condition": { "if": { "equalTo": {"field": "foo", "value": "dddd" }},
+        "then": {"shorterThan":{ "field": "bar", "value": 1 }},
+        "else": { "equalTo": {"field": "bar", "value": "4444"}}
+          }}
       """
     Then the following data should be generated:
       | foo   | bar    |
@@ -1521,10 +1569,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "dddd" },
-        "then": { "field": "bar", "is": "equalTo", "value": "4444" },
-        "else": { "field": "bar", "is": "shorterThan", "value": 1 }
-      }
+       "condition": { "if": {"equalTo": { "field": "foo", "value": "dddd" }},
+        "then": {"equalTo": { "field": "bar", "value": "4444" }},
+        "else": {"shorterThan":{ "field": "bar", "value": 1}}
+          }}
       """
     Then the following data should be generated:
       | foo    | bar    |
@@ -1548,10 +1596,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "bb" },
-        "then": { "field": "bar", "is": "ofType", "value": "ISIN" },
-        "else": { "field": "bar", "is": "equalTo", "value": "333" }
-      }
+       "condition": { "if": {"equalTo": { "field": "foo", "value": "bb" }},
+        "then": {"ofType":{ "field": "bar", "value": "ISIN" }},
+        "else": { "equalTo": {"field": "bar", "value": "333"}}
+          }}
       """
     Then the following data should be generated:
       | foo            | bar            |
@@ -1578,10 +1626,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "bb" },
-        "then": { "field": "bar", "is": "equalTo", "value": "22" },
-        "else": { "field": "bar", "is": "ofType", "value": "ISIN" }
-      }
+       "condition": { "if": {"equalTo": { "field": "foo", "value": "bb" }},
+        "then": { "equalTo": {"field": "bar", "value": "22" }},
+        "else": {"ofType":{ "field": "bar", "value": "ISIN"}}
+          }}
       """
     Then the following data should be generated:
       | foo            | bar            |
@@ -1608,10 +1656,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "ccc" },
-        "then": { "field": "bar", "is": "ofType", "value": "ISIN" },
-        "else": { "field": "bar", "is": "equalTo", "value": "333" }
-      }
+       "condition": { "if": { "equalTo": {"field": "foo", "value": "ccc" }},
+        "then": {"ofType":{ "field": "bar", "value": "ISIN" }},
+        "else": {"equalTo": { "field": "bar", "value": "333"}}
+          }}
       """
     Then the following data should be generated:
       | foo    | bar   |
@@ -1637,10 +1685,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "ccc" },
-        "then": { "field": "bar", "is": "equalTo", "value": "333" },
-        "else": { "field": "bar", "is": "ofType", "value": "ISIN" }
-      }
+       "condition": { "if": { "equalTo": {"field": "foo", "value": "ccc" }},
+        "then": { "equalTo": {"field": "bar", "value": "333" }},
+        "else": {"ofType":{ "field": "bar", "value": "ISIN"}}
+          }}
       """
     Then the following data should be generated:
       | foo   | bar   |
@@ -1664,10 +1712,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "greaterThan", "value": 29 },
-        "then": { "field": "bar", "is": "equalTo", "value": 22 },
-        "else": { "field": "bar", "is": "equalTo", "value": 1 }
-      }
+       "condition": { "if": { "greaterThan":{"field": "foo", "value": 29 }},
+        "then": {"equalTo": { "field": "bar", "value": 22 }},
+        "else": { "equalTo": {"field": "bar", "value": 1}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -1694,10 +1742,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 40 },
-        "then": { "field": "bar", "is": "greaterThan", "value": 20 },
-        "else": { "field": "bar", "is": "equalTo", "value": 1 }
-      }
+       "condition": { "if": {"equalTo": { "field": "foo", "value": 40 }},
+        "then": {"greaterThan":{ "field": "bar", "value": 20 }},
+        "else": { "equalTo": {"field": "bar", "value": 1}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar  |
@@ -1726,10 +1774,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 40 },
-        "then": { "field": "bar", "is": "equalTo", "value": 1 },
-        "else": { "field": "bar", "is": "greaterThan", "value": 300 }
-      }
+       "condition": { "if": { "equalTo": {"field": "foo", "value": 40 }},
+        "then": {"equalTo": { "field": "bar", "value": 1 }},
+        "else": {"greaterThan":{ "field": "bar", "value": 300}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar  |
@@ -1759,10 +1807,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "greaterThan", "value": 8000 },
-        "then": { "field": "bar", "is": "equalTo", "value": 22 },
-        "else": { "field": "bar", "is": "equalTo", "value": 1 }
-      }
+       "condition": { "if": {"greaterThan":{ "field": "foo", "value": 8000 }},
+        "then": {"equalTo": { "field": "bar", "value": 22 }},
+        "else": {"equalTo": { "field": "bar", "value": 1}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -1789,10 +1837,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 40 },
-        "then": { "field": "bar", "is": "greaterThan", "value": 8000 },
-        "else": { "field": "bar", "is": "equalTo", "value": 1 }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value": 40 }},
+        "then": {"greaterThan":{ "field": "bar", "value": 8000 }},
+        "else": {"equalTo":{ "field": "bar", "value": 1}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -1818,10 +1866,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 40 },
-        "then": { "field": "bar", "is": "equalTo", "value": 1 },
-        "else": { "field": "bar", "is": "greaterThan", "value": 8000 }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value": 40 }},
+        "then": {"equalTo":{ "field": "bar", "value": 1 }},
+        "else": {"greaterThan":{ "field": "bar", "value": 8000}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -1845,10 +1893,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "greaterThanOrEqualTo", "value": 20 },
-        "then": { "field": "bar", "is": "equalTo", "value": 22 },
-        "else": { "field": "bar", "is": "equalTo", "value": 1 }
-      }
+       "condition": { "if": {"greaterThanOrEqualTo":{ "field": "foo", "value": 20 }},
+        "then": {"equalTo":{ "field": "bar", "value": 22 }},
+        "else": {"equalTo":{ "field": "bar", "value": 1}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -1875,10 +1923,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 20 },
-        "then": { "field": "bar", "is": "greaterThanOrEqualTo", "value": 22 },
-        "else": { "field": "bar", "is": "equalTo", "value": 1 }
-      }
+       "condition": { "if": {"equalTo" : { "field": "foo", "value": 20 }},
+        "then": {"greaterThanOrEqualTo":{ "field": "bar","value": 22 }},
+        "else": {"equalTo":{ "field": "bar", "value": 1}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar  |
@@ -1907,10 +1955,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 20 },
-        "then": { "field": "bar", "is": "equalTo", "value": 1 },
-        "else": { "field": "bar", "is": "greaterThanOrEqualTo", "value": 22 }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value": 20 }},
+        "then": {"equalTo":{ "field": "bar", "value": 1 }},
+        "else": {"greaterThanOrEqualTo":{ "field": "bar", "value": 22}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar  |
@@ -1943,10 +1991,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "greaterThanOrEqualTo", "value": 8000 },
-        "then": { "field": "bar", "is": "equalTo", "value": 22 },
-        "else": { "field": "bar", "is": "equalTo", "value": 1 }
-      }
+       "condition": { "if": { "greaterThanOrEqualTo": { "field": "foo", "value": 8000 }},
+        "then": {"equalTo":{ "field": "bar", "value": 22 }},
+        "else": {"equalTo":{ "field": "bar", "value": 1}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -1973,10 +2021,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 10 },
-        "then": { "field": "bar", "is": "greaterThanOrEqualTo", "value": 8000 },
-        "else": { "field": "bar", "is": "equalTo", "value": 333 }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value": 10 }},
+        "then": {"greaterThanOrEqualTo":{ "field": "bar",  "value": 8000 }},
+        "else": {"equalTo":{ "field": "bar", "value": 333}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -2002,10 +2050,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 10 },
-        "then": { "field": "bar", "is": "equalTo", "value": 4444 },
-        "else": { "field": "bar", "is": "greaterThanOrEqualTo", "value": 8000 }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value": 10 }},
+        "then": {"equalTo":{ "field": "bar", "value": 4444 }},
+        "else": {"greaterThanOrEqualTo":{ "field": "bar", "value": 8000}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar  |
@@ -2029,10 +2077,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "lessThan", "value": 20 },
-        "then": { "field": "bar", "is": "equalTo", "value": 4444 },
-        "else": { "field": "bar", "is": "equalTo", "value": 1 }
-      }
+       "condition": { "if": { "lessThan": { "field": "foo", "value": 20 }},
+        "then": {"equalTo":{ "field": "bar", "value": 4444 }},
+        "else": {"equalTo":{ "field": "bar", "value": 1}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar  |
@@ -2059,10 +2107,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 40 },
-        "then": { "field": "bar", "is": "lessThan", "value": 4400 },
-        "else": { "field": "bar", "is": "equalTo", "value": 1 }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value": 40 }},
+        "then": {"lessThan":{ "field": "bar", "value": 4400 }},
+        "else": {"equalTo":{ "field": "bar", "value": 1}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -2091,10 +2139,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 40 },
-        "then": { "field": "bar", "is": "equalTo", "value": 333 },
-        "else": { "field": "bar", "is": "lessThan", "value": 300 }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value": 40 }},
+        "then": {"equalTo":{ "field": "bar", "value": 333 }},
+        "else": {"lessThan":{ "field": "bar", "value": 300}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -2124,10 +2172,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "lessThan", "value": 1 },
-        "then": { "field": "bar", "is": "equalTo", "value": 333 },
-        "else": { "field": "bar", "is": "equalTo", "value": 22 }
-      }
+       "condition": { "if": { "lessThan": { "field": "foo", "value": 1 }},
+        "then": {"equalTo":{ "field": "bar", "value": 333 }},
+        "else": {"equalTo":{ "field": "bar", "value": 22}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -2154,10 +2202,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 10 },
-        "then": { "field": "bar", "is": "lessThan", "value": 1 },
-        "else": { "field": "bar", "is": "equalTo", "value": 333 }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value": 10 }},
+        "then": {"lessThan":{ "field": "bar",  "value": 1 }},
+        "else": {"equalTo":{ "field": "bar", "value": 333}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -2183,10 +2231,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 30 },
-        "then": { "field": "bar", "is": "equalTo", "value": 1 },
-        "else": { "field": "bar", "is": "lessThan", "value": 1 }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value": 30 }},
+        "then": {"equalTo":{ "field": "bar", "value": 1 }},
+        "else": {"lessThan":{ "field": "bar", "value": 1}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -2210,10 +2258,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "lessThanOrEqualTo", "value": 20 },
-        "then": { "field": "bar", "is": "equalTo", "value": 1 },
-        "else": { "field": "bar", "is": "equalTo", "value": 4444 }
-      }
+       "condition": { "if": { "lessThanOrEqualTo": { "field": "foo", "value": 20 }},
+        "then": {"equalTo":{ "field": "bar", "value": 1 }},
+        "else": {"equalTo":{ "field": "bar", "value": 4444}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar  |
@@ -2240,10 +2288,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 20 },
-        "then": { "field": "bar", "is": "lessThanOrEqualTo", "value": 333 },
-        "else": { "field": "bar", "is": "equalTo", "value": 4444 }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value": 20 }},
+        "then": {"lessThanOrEqualTo":{ "field": "bar",  "value": 333 }},
+        "else": {"equalTo":{ "field": "bar", "value": 4444}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar  |
@@ -2272,10 +2320,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 20 },
-        "then": { "field": "bar", "is": "equalTo", "value": 333 },
-        "else": { "field": "bar", "is": "lessThanOrEqualTo", "value": 4444 }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value": 20 }},
+        "then": {"equalTo":{ "field": "bar", "value": 333 }},
+        "else": {"lessThanOrEqualTo":{ "field": "bar", "value": 4444}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar  |
@@ -2311,10 +2359,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "lessThanOrEqualTo", "value": 1 },
-        "then": { "field": "bar", "is": "equalTo", "value": 333 },
-        "else": { "field": "bar", "is": "equalTo", "value": 4444 }
-      }
+       "condition": { "if": { "lessThanOrEqualTo": { "field": "foo", "value": 1 }},
+        "then": {"equalTo":{ "field": "bar", "value": 333 }},
+        "else": {"equalTo":{ "field": "bar", "value": 4444}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar  |
@@ -2341,10 +2389,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 10 },
-        "then": { "field": "bar", "is": "lessThanOrEqualTo", "value": 0 },
-        "else": { "field": "bar", "is": "equalTo", "value": 4444 }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value": 10 }},
+        "then": {"lessThanOrEqualTo":{ "field": "bar", "value": 0 }},
+        "else": {"equalTo":{ "field": "bar", "value": 4444}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar  |
@@ -2370,10 +2418,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 10 },
-        "then": { "field": "bar", "is": "equalTo", "value": 1 },
-        "else": { "field": "bar", "is": "lessThanOrEqualTo", "value": 0 }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value": 10 }},
+        "then": {"equalTo":{ "field": "bar", "value": 1 }},
+        "else": {"lessThanOrEqualTo":{ "field": "bar", "value": 0}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -2396,10 +2444,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 1 },
-        "then": { "field": "bar", "is": "equalTo", "value": 3.33 },
-        "else": { "field": "bar", "is": "granularTo", "value": 0.1 }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value": 1 }},
+        "then": {"equalTo":{ "field": "bar", "value": 3.33 }},
+        "else": {"granularTo":{ "field": "bar", "value": 0.1}}
+          }}
       """
     Then the following data should be generated:
       | foo   | bar  |
@@ -2425,10 +2473,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "granularTo", "value": 1 },
-        "then": { "field": "bar", "is": "equalTo", "value": 1 },
-        "else": { "field": "bar", "is": "equalTo", "value": 2.2 }
-      }
+       "condition": { "if": { "granularTo": { "field": "foo", "value": 1 }},
+        "then": {"equalTo":{ "field": "bar", "value": 1 }},
+        "else": {"equalTo":{ "field": "bar", "value": 2.2}}
+          }}
       """
     Then the following data should be generated:
       | foo   | bar |
@@ -2453,10 +2501,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 1 },
-        "then": { "field": "bar", "is": "granularTo", "value": 1 },
-        "else": { "field": "bar", "is": "equalTo", "value": 2.2 }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value": 1 }},
+        "then": {"granularTo":{ "field": "bar", "value": 1 }},
+        "else": {"equalTo":{ "field": "bar", "value": 2.2}}
+          }}
       """
     Then the following data should be generated:
       | foo   | bar |
@@ -2481,10 +2529,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": 1 },
-        "then": { "field": "bar", "is": "equalTo", "value": 3.33 },
-        "else": { "field": "bar", "is": "granularTo", "value": 1 }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value": 1 }},
+        "then": {"equalTo":{ "field": "bar", "value": 3.33 }},
+        "else": {"granularTo":{ "field": "bar", "value": 1}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar  |
@@ -2511,10 +2559,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "after", "value": { "date": "2018-01-02T00:00:00.000Z" } },
-        "then": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-01T00:00:00.000Z" } },
-        "else": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-05T00:00:00.000Z" } }
-      }
+       "condition": { "if": { "after": { "field": "foo","value":  "2018-01-02T00:00:00.000Z" } },
+        "then": {"equalTo":{ "field": "bar", "value":  "2010-01-01T00:00:00.000Z" } },
+        "else": {"equalTo":{ "field": "bar", "value":  "2010-01-05T00:00:00.000Z" }}
+          }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -2546,10 +2594,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": { "date": "2018-02-01T00:00:00.000Z" } },
-        "then": { "field": "bar", "is": "after", "value": { "date": "2010-01-04T00:00:00.000Z" } },
-        "else": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-01T00:00:00.000Z" } }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value": "2018-02-01T00:00:00.000Z"  }},
+        "then": {"after":{ "field": "bar", "value": "2010-01-04T00:00:00.000Z"  }},
+        "else": {"equalTo":{ "field": "bar", "value":  "2010-01-01T00:00:00.000Z" }}
+          }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -2581,10 +2629,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": { "date": "2018-01-01T00:00:00.000Z" } },
-        "then": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-01T00:00:00.000Z" } },
-        "else": { "field": "bar", "is": "after", "value": { "date": "2010-01-04T00:00:00.000Z" } }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value":  "2018-01-01T00:00:00.000Z" } },
+        "then": {"equalTo":{ "field": "bar", "value":  "2010-01-01T00:00:00.000Z" } },
+        "else": {"after":{ "field": "bar", "value":  "2010-01-04T00:00:00.000Z" }}
+          }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -2616,10 +2664,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "after", "value": { "date": "2020-01-01T00:00:00.000Z" } },
-        "then": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-01T00:00:00.000Z" } },
-        "else": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-04T00:00:00.000Z" } }
-      }
+       "condition": { "if": { "after": { "field": "foo", "value":  "2020-01-01T00:00:00.000Z" }},
+        "then": {"equalTo":{ "field": "bar", "value":  "2010-01-01T00:00:00.000Z" } },
+        "else": {"equalTo":{ "field": "bar", "value":  "2010-01-04T00:00:00.000Z" }}
+          }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -2651,10 +2699,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": { "date": "2018-01-01T00:00:00.000Z" } },
-        "then": { "field": "bar", "is": "after", "value": { "date": "2020-01-01T00:00:00.000Z" } },
-        "else": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-04T00:00:00.000Z" } }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value":  "2018-01-01T00:00:00.000Z" } },
+        "then": {"after":{ "field": "bar", "value":  "2020-01-01T00:00:00.000Z" } },
+        "else": {"equalTo":{ "field": "bar", "value":  "2010-01-04T00:00:00.000Z" }}
+          }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -2685,10 +2733,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": { "date": "2018-01-01T00:00:00.000Z" } },
-        "then": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-01T00:00:00.000Z" } },
-        "else": { "field": "bar", "is": "after", "value": { "date": "2020-01-01T00:00:00.000Z" } }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value":  "2018-01-01T00:00:00.000Z" } },
+        "then": {"equalTo":{ "field": "bar", "value":  "2010-01-01T00:00:00.000Z" } },
+        "else": {"after":{ "field": "bar","value":  "2020-01-01T00:00:00.000Z" }}
+          }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -2715,10 +2763,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "afterOrAt", "value": { "date": "2018-05-01T00:00:00.000Z" } },
-        "then": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-05T00:00:00.000Z" } },
-        "else": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-01T00:00:00.000Z" } }
-      }
+       "condition": { "if": { "afterOrAt": { "field": "foo","value":  "2018-05-01T00:00:00.000Z" } },
+        "then": {"equalTo":{ "field": "bar", "value":  "2010-01-05T00:00:00.000Z" } },
+        "else": {"equalTo":{ "field": "bar", "value":  "2010-01-01T00:00:00.000Z" }}
+          }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -2750,10 +2798,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": { "date": "2018-05-01T00:00:00.000Z" } },
-        "then": { "field": "bar", "is": "afterOrAt", "value": { "date": "2010-01-04T00:00:00.000Z" } },
-        "else": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-01T00:00:00.000Z" } }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value":  "2018-05-01T00:00:00.000Z" } },
+        "then": {"afterOrAt":{ "field": "bar","value":  "2010-01-04T00:00:00.000Z" }},
+        "else": {"equalTo":{ "field": "bar", "value":  "2010-01-01T00:00:00.000Z" }}
+          }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -2786,10 +2834,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": { "date": "2018-06-01T00:00:00.000Z" } },
-        "then": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-01T00:00:00.000Z" } },
-        "else": { "field": "bar", "is": "afterOrAt", "value": { "date": "2010-01-04T00:00:00.000Z" } }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value":  "2018-06-01T00:00:00.000Z" } },
+        "then": {"equalTo":{ "field": "bar", "value":  "2010-01-01T00:00:00.000Z" }},
+        "else": {"afterOrAt":{ "field": "bar", "value":  "2010-01-04T00:00:00.000Z" }}
+          }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -2826,10 +2874,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "afterOrAt", "value": { "date": "2020-01-01T00:00:00.000Z" } },
-        "then": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-01T00:00:00.000Z" } },
-        "else": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-05T00:00:00.000Z" } }
-      }
+       "condition": { "if": { "afterOrAt": { "field": "foo", "value":  "2020-01-01T00:00:00.000Z" } },
+        "then": {"equalTo":{ "field": "bar", "value":  "2010-01-01T00:00:00.000Z" } },
+        "else": {"equalTo":{ "field": "bar", "value":  "2010-01-05T00:00:00.000Z" }}
+          }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -2861,10 +2909,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": { "date": "2018-01-01T00:00:00.000Z" } },
-        "then": { "field": "bar", "is": "afterOrAt", "value": { "date": "2020-01-01T00:00:00.000Z" } },
-        "else": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-05T00:00:00.000Z" } }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value":  "2018-01-01T00:00:00.000Z" } },
+        "then": {"afterOrAt":{ "field": "bar", "value":  "2020-01-01T00:00:00.000Z" } },
+        "else": {"equalTo":{ "field": "bar", "value":  "2010-01-05T00:00:00.000Z" }}
+          }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -2895,10 +2943,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": { "date": "2018-01-01T00:00:00.000Z" } },
-        "then": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-01T00:00:00.000Z" } },
-        "else": { "field": "bar", "is": "afterOrAt", "value": { "date": "2020-01-05T00:00:00.000Z" } }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value":  "2018-01-01T00:00:00.000Z" } },
+        "then": {"equalTo":{ "field": "bar", "value":  "2010-01-01T00:00:00.000Z" } },
+        "else": {"afterOrAt":{ "field": "bar", "value":  "2020-01-05T00:00:00.000Z" }}
+          }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -2925,10 +2973,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "before", "value": { "date": "2018-02-01T00:00:00.000Z" } },
-        "then": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-01T00:00:00.000Z" } },
-        "else": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-05T00:00:00.000Z" } }
-      }
+       "condition": { "if": { "before": { "field": "foo", "value":  "2018-02-01T00:00:00.000Z" }},
+        "then": {"equalTo":{ "field": "bar", "value":  "2010-01-01T00:00:00.000Z" } },
+        "else": {"equalTo":{ "field": "bar", "value":  "2010-01-05T00:00:00.000Z" }}
+          }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -2960,10 +3008,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": { "date": "2018-01-01T00:00:00.000Z" } },
-        "then": { "field": "bar", "is": "before", "value": { "date": "2010-01-03T00:00:00.000Z" } },
-        "else": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-05T00:00:00.000Z" } }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value":  "2018-01-01T00:00:00.000Z" } },
+        "then": {"before":{ "field": "bar", "value":  "2010-01-03T00:00:00.000Z" } },
+        "else": {"equalTo":{ "field": "bar", "value":  "2010-01-05T00:00:00.000Z" }}
+          }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -2996,10 +3044,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": { "date": "2018-01-01T00:00:00.000Z" } },
-        "then": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-05T00:00:00.000Z" } },
-        "else": { "field": "bar", "is": "before", "value": { "date": "2010-01-03T00:00:00.000Z" } }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value":  "2018-01-01T00:00:00.000Z" } },
+        "then": {"equalTo":{ "field": "bar", "value":  "2010-01-05T00:00:00.000Z" } },
+        "else": {"before":{ "field": "bar", "value":  "2010-01-03T00:00:00.000Z" }}
+          }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -3036,10 +3084,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "before", "value": { "date": "2010-01-01T00:00:00.000Z" } },
-        "then": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-05T00:00:00.000Z" } },
-        "else": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-03T00:00:00.000Z" } }
-      }
+       "condition": { "if": { "before": { "field": "foo", "value":  "2010-01-01T00:00:00.000Z" } },
+        "then": {"equalTo":{ "field": "bar", "value":  "2010-01-05T00:00:00.000Z" } },
+        "else": {"equalTo":{ "field": "bar", "value":  "2010-01-03T00:00:00.000Z" }}
+          }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -3071,10 +3119,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": { "date": "2018-01-01T00:00:00.000Z" } },
-        "then": { "field": "bar", "is": "before", "value": { "date": "2010-01-01T00:00:00.000Z" } },
-        "else": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-03T00:00:00.000Z" } }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value":  "2018-01-01T00:00:00.000Z" } },
+        "then": {"before":{ "field": "bar",  "value":  "2010-01-01T00:00:00.000Z" } },
+        "else": {"equalTo":{ "field": "bar", "value":  "2010-01-03T00:00:00.000Z" }}
+          }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -3105,10 +3153,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": { "date": "2018-01-01T00:00:00.000Z" } },
-        "then": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-01T00:00:00.000Z" } },
-        "else": { "field": "bar", "is": "before", "value": { "date": "2010-01-01T00:00:00.000Z" } }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value":  "2018-01-01T00:00:00.000Z" } },
+        "then": {"equalTo":{ "field": "bar", "value":  "2010-01-01T00:00:00.000Z" } },
+        "else": {"before":{ "field": "bar", "value":  "2010-01-01T00:00:00.000Z" }}
+          }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -3135,10 +3183,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "beforeOrAt", "value": { "date": "2018-02-01T00:00:00.000Z" } },
-        "then": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-01T00:00:00.000Z" } },
-        "else": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-05T00:00:00.000Z" } }
-      }
+       "condition": { "if": { "beforeOrAt": { "field": "foo", "value":  "2018-02-01T00:00:00.000Z" } },
+        "then": {"equalTo":{ "field": "bar", "value":  "2010-01-01T00:00:00.000Z" } },
+        "else": {"equalTo":{ "field": "bar", "value":  "2010-01-05T00:00:00.000Z" }}
+          }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -3170,10 +3218,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": { "date": "2018-01-01T00:00:00.000Z" } },
-        "then": { "field": "bar", "is": "beforeOrAt", "value": { "date": "2010-01-03T00:00:00.000Z" } },
-        "else": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-05T00:00:00.000Z" } }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value":  "2018-01-01T00:00:00.000Z" } },
+        "then": {"beforeOrAt":{ "field": "bar", "value":  "2010-01-03T00:00:00.000Z" } },
+        "else": {"equalTo":{ "field": "bar", "value":  "2010-01-05T00:00:00.000Z" }}
+          }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -3207,10 +3255,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": { "date": "2018-01-01T00:00:00.000Z" } },
-        "then": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-05T00:00:00.000Z" } },
-        "else": { "field": "bar", "is": "beforeOrAt", "value": { "date": "2010-01-03T00:00:00.000Z" } }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value":  "2018-01-01T00:00:00.000Z" } },
+        "then": {"equalTo":{ "field": "bar", "value":  "2010-01-05T00:00:00.000Z" }},
+        "else": {"beforeOrAt":{ "field": "bar", "value":  "2010-01-03T00:00:00.000Z" }}
+          }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -3252,10 +3300,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "beforeOrAt", "value": { "date": "2009-01-01T00:00:00.000Z" } },
-        "then": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-05T00:00:00.000Z" } },
-        "else": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-03T00:00:00.000Z" } }
-      }
+       "condition": { "if": { "beforeOrAt": { "field": "foo", "value":  "2009-01-01T00:00:00.000Z" } },
+        "then": {"equalTo":{ "field": "bar", "value":  "2010-01-05T00:00:00.000Z" } },
+        "else": {"equalTo":{ "field": "bar", "value":  "2010-01-03T00:00:00.000Z" }}
+          }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -3287,10 +3335,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": { "date": "2018-01-01T00:00:00.000Z" } },
-        "then": { "field": "bar", "is": "beforeOrAt", "value": { "date": "2009-01-01T00:00:00.000Z" } },
-        "else": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-03T00:00:00.000Z" } }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value":  "2018-01-01T00:00:00.000Z" } },
+        "then": {"beforeOrAt":{ "field": "bar","value":  "2009-01-01T00:00:00.000Z" } },
+        "else": {"equalTo":{ "field": "bar", "value":  "2010-01-03T00:00:00.000Z" }}
+          }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -3321,10 +3369,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": { "date": "2018-01-01T00:00:00.000Z" } },
-        "then": { "field": "bar", "is": "equalTo", "value": { "date": "2010-01-01T00:00:00.000Z" } },
-        "else": { "field": "bar", "is": "beforeOrAt", "value": { "date": "2009-01-01T00:00:00.000Z" } }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value":  "2018-01-01T00:00:00.000Z" } },
+        "then": {"equalTo":{ "field": "bar", "value":  "2010-01-01T00:00:00.000Z" } },
+        "else": {"beforeOrAt":{ "field": "bar", "value":  "2009-01-01T00:00:00.000Z" }}
+          }}
       """
     Then the following data should be generated:
       | foo                      | bar                      |
@@ -3345,9 +3393,9 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "not": { "field": "foo", "is": "equalTo", "value": "a" } },
-        "then": { "field": "bar", "is": "equalTo", "value": 10 }
-      }
+       "condition": { "if": { "not": { "field": "foo", "value": "a" } }},
+        "then": {"equalTo":{ "field": "bar", "value": 10}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -3371,10 +3419,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "a" },
-        "then": { "not": { "field": "bar", "is": "equalTo", "value": 10 } },
-        "else": { "field": "bar", "is": "equalTo", "value": 10 }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value": "a" }},
+        "then": { "not": { "field": "bar", "value": 10 } }},
+        "else": {"equalTo":{ "field": "bar", "value": 10}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -3397,10 +3445,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "a" },
-        "then": { "field": "bar", "is": "equalTo", "value": 10 },
-        "else": { "not": { "field": "bar", "is": "equalTo", "value": 10 } }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value": "a" }},
+        "then": {"equalTo":{ "field": "bar", "value": 10 }},
+        "else": { "not": { "field": "bar", "value": 10 }}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -3422,10 +3470,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "not": { "field": "foo", "is": "equalTo", "value": "a" } },
-        "then": { "field": "bar", "is": "equalTo", "value": 10 },
-        "else": { "field": "bar", "is": "equalTo", "value": 30 }
-      }
+       "condition": { "if": { "not": { "field": "foo", "value": "a" } }},
+        "then": {"equalTo":{ "field": "bar", "value": 10 }},
+        "else": {"equalTo":{ "field": "bar", "value": 30}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -3444,9 +3492,9 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "a" },
-        "then": { "not": { "field": "bar", "is": "equalTo", "value": 10 } }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value": "a" }},
+        "then": { "not": { "field": "bar", "value": 10 }}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -3465,10 +3513,10 @@ Feature: Values can be specified by using if, then and else constraints
     And there is a constraint:
       """
       {
-        "if": { "field": "foo", "is": "equalTo", "value": "a" },
-        "then": { "field": "bar", "is": "equalTo", "value": 10 },
-        "else": { "not": { "field": "bar", "is": "equalTo", "value": 10 } }
-      }
+       "condition": { "if": { "equalTo": { "field": "foo", "value": "a" }},
+        "then": {"equalTo":{ "field": "bar", "value": 10 }},
+        "else": { "not": { "field": "bar", "value": 10 }}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -3493,15 +3541,15 @@ Feature: Values can be specified by using if, then and else constraints
     And bar has type "decimal"
     And there is a constraint:
       """
-      {
+      {"condition":{
         "if":
           { "anyOf": [
-            { "field": "foo", "is": "equalTo", "value": "a" },
-            { "field": "foo", "is": "equalTo", "value": "e" }
-          ]},
-        "then": { "field": "bar", "is": "equalTo", "value": 10 },
-        "else": { "field": "bar", "is": "equalTo", "value": 50 }
-      }
+            { "field": "foo", "value": "a" }},
+            { "field": "foo", "value": "e" }}
+          ]}},
+        "then": {"equalTo":{ "field": "bar", "value": 10 }},
+        "else": {"equalTo":{ "field": "bar", "value": 50}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -3530,15 +3578,15 @@ Feature: Values can be specified by using if, then and else constraints
     And bar has type "decimal"
     And there is a constraint:
       """
-      {
-        "if":  { "field": "foo", "is": "equalTo", "value": "a" },
+      {"condition":{
+        "if":  { "field": "foo", "value": "a" }},
         "then":
           { "anyOf": [
-            { "field": "bar", "is": "equalTo", "value": 20 },
-            { "field": "bar", "is": "equalTo", "value": 40 }
-          ]},
-        "else": { "field": "bar", "is": "equalTo", "value": 50 }
-      }
+            { "field": "bar", "value": 20 }},
+            { "field": "bar", "value": 40 }}
+          ]}},
+        "else": {"equalTo":{ "field": "bar", "value": 50}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -3568,15 +3616,15 @@ Feature: Values can be specified by using if, then and else constraints
     And bar has type "decimal"
     And there is a constraint:
       """
-      {
-        "if":  { "field": "foo", "is": "equalTo", "value": "a" },
-        "then": { "field": "bar", "is": "equalTo", "value": 10 },
+      {"condition":{
+        "if":  { "field": "foo", "value": "a" }},
+        "then": {"equalTo":{ "field": "bar", "value": 10 }},
         "else":
           { "anyOf": [
-            { "field": "bar", "is": "equalTo", "value": 20 },
-            { "field": "bar", "is": "equalTo", "value": 40 }
+            { "field": "bar", "value": 20 }},
+            { "field": "bar", "value": 40 }}
           ]}
-      }
+      }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -3609,15 +3657,15 @@ Feature: Values can be specified by using if, then and else constraints
     And bar has type "decimal"
     And there is a constraint:
       """
-      {
+      {"condition":{
         "if":
           { "anyOf": [
-            { "field": "foo", "is": "equalTo", "value": "Test1" },
-            { "field": "foo", "is": "equalTo", "value": "Test2" }
-          ]},
-        "then": { "field": "bar", "is": "equalTo", "value": 10 },
-        "else": { "field": "bar", "is": "equalTo", "value": 50 }
-      }
+            { "field": "foo", "value": "Test1" }},
+            { "field": "foo", "value": "Test2" }}
+          ]}},
+        "then": {"equalTo":{ "field": "bar", "value": 10 }},
+        "else": {"equalTo":{ "field": "bar", "value": 50}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -3647,15 +3695,15 @@ Feature: Values can be specified by using if, then and else constraints
     And bar has type "decimal"
     And there is a constraint:
       """
-      {
-        "if":  { "field": "foo", "is": "equalTo", "value": "a" },
+      {"condition":{
+        "if":  { "field": "foo", "value": "a" }},
         "then":
           { "anyOf": [
-            { "field": "bar", "is": "equalTo", "value": 1 },
-            { "field": "bar", "is": "equalTo", "value": 2 }
-          ]},
-        "else": { "field": "bar", "is": "equalTo", "value": 50 }
-      }
+            { "field": "bar", "value": 1 }},
+            { "field": "bar", "value": 2 }}
+          ]}},
+        "else": {"equalTo":{ "field": "bar", "value": 50}}
+          }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -3683,15 +3731,15 @@ Feature: Values can be specified by using if, then and else constraints
     And bar has type "decimal"
     And there is a constraint:
       """
-      {
-        "if":  { "field": "foo", "is": "equalTo", "value": "a" },
-        "then": { "field": "bar", "is": "equalTo", "value": 10 },
+      {"condition":{
+        "if":  { "field": "foo", "value": "a" }},
+        "then": {"equalTo":{ "field": "bar", "value": 10 }},
         "else": {
           "anyOf": [
-            { "field": "bar", "is": "equalTo", "value": 1 },
-            { "field": "bar", "is": "equalTo", "value": 2 }
+            { "field": "bar", "value": 1 }},
+            { "field": "bar", "value": 2 }}
           ]}
-      }
+      }}
       """
     Then the following data should be generated:
       | foo | bar |
@@ -3716,15 +3764,15 @@ Feature: Values can be specified by using if, then and else constraints
     And bar has type "decimal"
     And there is a constraint:
       """
-      {
+      {"condition":{
         "if":
           { "allOf": [
-            { "field": "foo", "is": "longerThan", "value": 0 },
-            { "field": "foo", "is": "shorterThan", "value": 2 }
-          ]},
-        "then": { "field": "bar", "is": "equalTo", "value": 1 },
-        "else": { "field": "bar", "is": "equalTo", "value": 55555 }
-      }
+            {"longerThan": { "field": "foo", "value": 0 }},
+            {"shorterThan": { "field": "foo", "value": 2 }}
+          ]}},
+        "then": {"equalTo":{ "field": "bar", "value": 1 }},
+        "else": {"equalTo":{ "field": "bar", "value": 55555}}
+          }}
       """
     Then the following data should be generated:
       | foo     | bar   |
@@ -3753,15 +3801,15 @@ Feature: Values can be specified by using if, then and else constraints
     And bar has type "decimal"
     And there is a constraint:
       """
-      {
-        "if":  { "field": "foo", "is": "equalTo", "value": "a" },
+      {"condition":{
+        "if":{ "equalTo" { "field": "foo", "value": "a" }},
         "then":
           { "allOf": [
-            { "field": "bar", "is": "greaterThan", "value": 20 },
-            { "field": "bar", "is": "lessThan", "value": 30 }
-          ]},
-        "else": { "field": "bar", "is": "equalTo", "value": 55555 }
-      }
+            { "greaterThan":{ "field": "bar", "value": 20 }},
+            { "lessThan":{"field": "bar", "value": 30 }}
+          ]}},
+        "else": {"equalTo":{ "field": "bar", "value": 55555}}
+          }}
       """
     Then the following data should be generated:
       | foo     | bar   |
@@ -3790,15 +3838,15 @@ Feature: Values can be specified by using if, then and else constraints
     And bar has type "decimal"
     And there is a constraint:
       """
-      {
-        "if":  { "field": "foo", "is": "equalTo", "value": "a" },
-        "then": { "field": "bar", "is": "equalTo", "value": 1 },
+      {"condition":{
+        "if":  {"equalTo":{ "field": "foo", "value": "a" }},
+        "then": {"equalTo":{ "field": "bar", "value": 1 }},
         "else":
           { "allOf": [
-            { "field": "bar", "is": "greaterThan", "value": 20 },
-            { "field": "bar", "is": "lessThan", "value": 30 }
+            { "greaterThan":{"field": "bar",  "value": 20 }},
+            { "lessThan":{"field": "bar", "value": 30 }}
           ]}
-      }
+      }}
       """
     Then the following data should be generated:
       | foo     | bar |
@@ -3827,15 +3875,15 @@ Feature: Values can be specified by using if, then and else constraints
     And bar has type "decimal"
     And there is a constraint:
       """
-      {
+      {"condition":{
         "if":
           { "allOf": [
-            { "field": "foo", "is": "longerThan", "value": 88 },
-            { "field": "foo", "is": "shorterThan", "value": 90 }
-          ]},
-        "then": { "field": "bar", "is": "equalTo", "value": 1 },
-        "else": { "field": "bar", "is": "equalTo", "value": 55555 }
-      }
+            { "longerThan":{"field": "foo", " "value": 88 }},
+            { "shorterThan":{"field": "foo", "value": 90 }}
+          ]}},
+        "then": {"equalTo":{ "field": "bar", "value": 1 }},
+        "else": {"equalTo":{ "field": "bar", "value": 55555}}
+          }}
       """
     Then the following data should be generated:
       | foo     | bar   |
@@ -3864,15 +3912,15 @@ Feature: Values can be specified by using if, then and else constraints
     And bar has type "decimal"
     And there is a constraint:
       """
-      {
-        "if":  { "field": "foo", "is": "equalTo", "value": "a" },
+      {"condition":{
+        "if":  { "field": "foo", "value": "a" }},
         "then":
           { "allOf": [
-            { "field": "bar", "is": "greaterThan", "value": 200 },
-            { "field": "bar", "is": "lessThan", "value": 300 }
-          ]},
-        "else": { "field": "bar", "is": "equalTo", "value": 55555 }
-      }
+            {"greaterThan":{ "field": "bar", "value": 200 }},
+            {"lessThan":{ "field": "bar", "value": 300 }}
+          ]}},
+        "else": {"equalTo":{ "field": "bar", "value": 55555}}
+          }}
       """
     Then the following data should be generated:
       | foo     | bar   |
@@ -3901,15 +3949,15 @@ Feature: Values can be specified by using if, then and else constraints
     And bar has type "decimal"
     And there is a constraint:
       """
-      {
-        "if":  { "field": "foo", "is": "equalTo", "value": "a" },
-        "then": { "field": "bar", "is": "equalTo", "value": 1 },
+      {"condition":{
+        "if":  { "field": "foo", "value": "a" }},
+        "then": {"equalTo":{ "field": "bar", "value": 1 }},
         "else":
           { "allOf": [
-            { "field": "bar", "is": "greaterThan", "value": 200 },
-            { "field": "bar", "is": "lessThan", "value": 300 }
+            { "greaterThan":{"field": "bar","value": 200 }},
+            {"lessThan":{ "field": "bar","value": 300 }}
           ]}
-      }
+      }}
       """
     Then the following data should be generated:
       | foo | bar |

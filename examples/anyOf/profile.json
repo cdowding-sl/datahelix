@@ -7,12 +7,14 @@
         {
           "anyOf": [
             {
-              "equalTo": {
+              "equalTo":
+              {
               "field": "field1",
               "value": "foo"}
             },
             {
-              "equalTo": {
+              "equalTo":
+              {
                 "field": "field1",
                 "value": "bar"
               }

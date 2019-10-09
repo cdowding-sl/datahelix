@@ -34,17 +34,17 @@ public enum DataType
     public static DataType fromName(String name){
         switch (name)
         {
-            case "decimal": return DataType.DECIMAL;
-            case "integer": return DataType.INTEGER;
-            case "ISIN": return DataType.ISIN;
-            case "SEDOL": return DataType.SEDOL;
-            case "CUSIP": return DataType.CUSIP;
-            case "RIC": return DataType.RIC;
-            case "firstname": return DataType.FIRST_NAME;
-            case "lastname": return DataType.LAST_NAME;
-            case "fullname": return DataType.FULL_NAME;
-            case "string": return DataType.STRING;
-            case "datetime": return DataType.DATE_TIME;
+            case "decimal": return DECIMAL;
+            case "integer": return INTEGER;
+            case "ISIN": return ISIN;
+            case "SEDOL": return SEDOL;
+            case "CUSIP": return CUSIP;
+            case "RIC": return RIC;
+            case "firstname": return FIRST_NAME;
+            case "lastname": return LAST_NAME;
+            case "fullname": return FULL_NAME;
+            case "string": return STRING;
+            case "datetime": return DATE_TIME;
             default:
                 throw new IllegalStateException("No data types with name " + name);
         }
