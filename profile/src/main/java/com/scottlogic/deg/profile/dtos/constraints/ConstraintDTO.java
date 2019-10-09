@@ -16,14 +16,17 @@
 
 package com.scottlogic.deg.profile.dtos.constraints;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.scottlogic.deg.common.profile.ConstraintType;
-import com.scottlogic.deg.profile.dtos.constraints.grammatical.*;
+import com.scottlogic.deg.profile.InvalidProfileException;
+import com.scottlogic.deg.profile.dtos.constraints.grammatical.AllOfConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.grammatical.AnyOfConstraintDTO;
+import com.scottlogic.deg.profile.dtos.constraints.grammatical.ConditionalConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.grammatical.NotConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.chronological.AfterConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.chronological.AfterOrAtConstraintDTO;
@@ -35,10 +38,10 @@ import com.scottlogic.deg.profile.dtos.constraints.predicate.numerical.GreaterTh
 import com.scottlogic.deg.profile.dtos.constraints.predicate.numerical.LessThanConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.numerical.LessThanOrEqualToConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.textual.*;
-import com.scottlogic.deg.profile.InvalidProfileException;
 
 import java.io.IOException;
 
+@JsonSerialize(using = ConstraintDTO.ConstraintSerializer.class)
 @JsonDeserialize(using = ConstraintDTO.ConstraintDeserializer.class)
 public abstract class ConstraintDTO
 {
@@ -54,6 +57,29 @@ public abstract class ConstraintDTO
         return type;
     }
 
+    static class ConstraintSerializer extends JsonSerializer<ConstraintDTO>
+    {
+        @Override
+        public void serialize(ConstraintDTO value, JsonGenerator gen, SerializerProvider serializers) throws IOException
+        {
+            gen.writeStartObject(value);
+            switch (value.getType())
+            {
+                case NOT:
+                    gen.writeObjectField(value.getType().getName(), ((NotConstraintDTO)value).constraint);
+                    break;
+                case ANY_OF:
+                    gen.writeObjectField(value.getType().getName(), ((AnyOfConstraintDTO)value).constraints);
+                    break;
+                case ALL_OF:
+                    gen.writeObjectField(value.getType().getName(), ((AllOfConstraintDTO)value).constraints);
+                    break;
+                default:
+                    gen.writeObjectField(value.getType().getName(), value);
+            }
+            gen.writeEndObject();
+        }
+    }
     static class ConstraintDeserializer extends JsonDeserializer<ConstraintDTO>
     {
         @Override

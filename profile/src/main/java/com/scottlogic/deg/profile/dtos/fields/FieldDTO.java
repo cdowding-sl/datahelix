@@ -16,17 +16,18 @@
 
 package com.scottlogic.deg.profile.dtos.fields;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.scottlogic.deg.common.profile.DataType;
 import com.scottlogic.deg.profile.InvalidProfileException;
 
 import java.io.IOException;
 
+@JsonSerialize(using = FieldDTO.FieldSerializer.class)
 @JsonDeserialize(using = FieldDTO.FieldDeserializer.class)
 public class FieldDTO
 {
@@ -44,6 +45,17 @@ public class FieldDTO
     public DataType getDataType()
     {
         return dataType;
+    }
+
+    static class FieldSerializer extends JsonSerializer<FieldDTO>
+    {
+        @Override
+        public void serialize(FieldDTO value, JsonGenerator gen, SerializerProvider serializers) throws IOException
+        {
+            gen.writeStartObject(value);
+            gen.writeStringField("type", value.getDataType().getName());
+            gen.writeEndObject();
+        }
     }
 
     static class FieldDeserializer extends JsonDeserializer<FieldDTO>
