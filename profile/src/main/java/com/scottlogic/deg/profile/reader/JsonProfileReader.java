@@ -30,6 +30,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -80,9 +81,19 @@ public class JsonProfileReader implements ProfileReader
                 .map(fieldDTO -> constraintReader.read(new NullConstraintDTO(), profileFields).negate())
                 .collect(Collectors.toList());
 
+        Collection<Constraint> typeConstraints = profileFields.stream()
+                .map(constraintReader::readType)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
+
         if (!nullableConstraints.isEmpty())
         {
             rules.add(new Rule(new RuleInformation("nullable-rules"), nullableConstraints));
+        }
+        if (!typeConstraints.isEmpty())
+        {
+            rules.add(new Rule(new RuleInformation("type-rules"), typeConstraints));
         }
         return new Profile(profileFields, rules, profileDTO.description);
     }

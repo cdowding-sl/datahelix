@@ -45,8 +45,8 @@ import com.scottlogic.deg.profile.dtos.constraints.predicate.numerical.GreaterTh
 import com.scottlogic.deg.profile.dtos.constraints.predicate.numerical.LessThanConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.numerical.LessThanOrEqualToConstraintDTO;
 import com.scottlogic.deg.profile.dtos.constraints.predicate.textual.*;
-import com.scottlogic.deg.profile.reader.atomic.FileReader;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -58,6 +58,7 @@ import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAccessor;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -186,6 +187,29 @@ public class ConstraintReader
         throw new InvalidProfileException("Constraint type not found: " + dto);
     }
 
+    public Optional<Constraint> readType(Field field)
+    {
+        switch (field.type) {
+            case INTEGER:
+                return Optional.of(new IsGranularToNumericConstraint(field, new ParsedGranularity(BigDecimal.ONE)));
+            case ISIN:
+                return Optional.of(new MatchesStandardConstraint(field, StandardConstraintTypes.ISIN));
+            case SEDOL:
+                return Optional.of(new MatchesStandardConstraint(field, StandardConstraintTypes.SEDOL));
+            case CUSIP:
+                return Optional.of(new MatchesStandardConstraint(field, StandardConstraintTypes.CUSIP));
+            case RIC:
+                return Optional.of(new MatchesStandardConstraint(field, StandardConstraintTypes.RIC));
+            case FIRST_NAME:
+                return Optional.of(new IsInSetConstraint(field, NameRetriever.loadNamesFromFile(NameConstraintTypes.FIRST)));
+            case LAST_NAME:
+                return Optional.of(new IsInSetConstraint(field, NameRetriever.loadNamesFromFile(NameConstraintTypes.LAST)));
+            case FULL_NAME:
+                return Optional.of(new IsInSetConstraint(field, NameRetriever.loadNamesFromFile(NameConstraintTypes.FULL)));
+            default:
+                return Optional.empty();
+        }
+    }
 
     private TemporalAdjusterGenerator getOffsetUnit(EqualToConstraintDTO dto)
     {
