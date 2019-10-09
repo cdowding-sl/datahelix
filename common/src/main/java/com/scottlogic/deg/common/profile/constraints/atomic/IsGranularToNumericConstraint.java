@@ -16,19 +16,21 @@
 
 package com.scottlogic.deg.common.profile.constraints.atomic;
 
-import com.scottlogic.deg.common.profile.constraintdetail.ParsedGranularity;
+import com.scottlogic.deg.common.ValidationException;
 import com.scottlogic.deg.common.profile.Field;
+import com.scottlogic.deg.common.profile.constraintdetail.NumericGranularity;
 
-import com.scottlogic.deg.common.profile.RuleInformation;
 
 import java.util.Objects;
-import java.util.Set;
+
+import static com.scottlogic.deg.common.util.Defaults.NUMERIC_MAX;
+import static com.scottlogic.deg.common.util.Defaults.NUMERIC_MIN;
 
 public class IsGranularToNumericConstraint implements AtomicConstraint {
     public final Field field;
-    public final ParsedGranularity granularity;
+    public final NumericGranularity granularity;
 
-    public IsGranularToNumericConstraint(Field field, ParsedGranularity granularity) {
+    public IsGranularToNumericConstraint(Field field, NumericGranularity granularity) {
         if(field == null)
             throw new IllegalArgumentException("field must not be null");
         if(granularity == null)
@@ -44,6 +46,16 @@ public class IsGranularToNumericConstraint implements AtomicConstraint {
     }
 
     @Override
+    public AtomicConstraint negate() {
+        throw new ValidationException("Numeric Granularity cannot be negated or used in if statements");
+    }
+
+    @Override
+    public FieldSpec toFieldSpec() {
+        return FieldSpec.fromRestriction(new LinearRestrictions(NUMERIC_MIN, NUMERIC_MAX, granularity));
+    }
+
+    @Override
     public boolean equals(Object o){
         if (this == o) return true;
         if (o instanceof ViolatedAtomicConstraint) {
@@ -51,16 +63,16 @@ public class IsGranularToNumericConstraint implements AtomicConstraint {
         }
         if (o == null || getClass() != o.getClass()) return false;
         IsGranularToNumericConstraint constraint = (IsGranularToNumericConstraint) o;
-        return Objects.equals(field, constraint.field) && Objects.equals(granularity.getNumericGranularity(), constraint.granularity.getNumericGranularity());
+        return Objects.equals(field, constraint.field) && Objects.equals(granularity, constraint.granularity);
     }
 
     @Override
     public int hashCode(){
-        return Objects.hash(field, granularity.getNumericGranularity());
+        return Objects.hash(field, granularity);
     }
 
     @Override
     public String toString() {
-        return String.format("%s granular to %s", field.name, granularity.getNumericGranularity());
+        return String.format("%s granular to %s", field.name, granularity);
     }
 }

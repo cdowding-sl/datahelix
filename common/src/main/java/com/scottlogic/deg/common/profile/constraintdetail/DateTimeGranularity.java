@@ -83,7 +83,7 @@ public class DateTimeGranularity implements Granularity<OffsetDateTime> {
         if (o == null || getClass() != o.getClass()) return false;
         DateTimeGranularity that = (DateTimeGranularity) o;
         return workingDay == that.workingDay &&
-                chronoUnit == that.chronoUnit;
+            chronoUnit == that.chronoUnit;
     }
 
     @Override

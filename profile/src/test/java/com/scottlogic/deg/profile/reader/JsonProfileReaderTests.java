@@ -28,6 +28,8 @@ import com.scottlogic.deg.common.profile.constraints.grammatical.ConditionalCons
 import com.scottlogic.deg.common.profile.constraints.grammatical.OrConstraint;
 import com.scottlogic.deg.generator.fieldspecs.whitelist.DistributedList;
 import com.scottlogic.deg.profile.InvalidProfileException;
+import com.scottlogic.deg.common.profile.constraintdetail.NumericGranularity;
+
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -255,14 +257,15 @@ public class JsonProfileReaderTests {
                 "    \"rules\": []" +
                 "}");
 
+
         expectRules(
             ruleWithConstraints(
                 typedConstraint(
                     IsGranularToNumericConstraint.class,
                     c -> {
                         Assert.assertThat(
-                            c.granularity.getNumericGranularity(),
-                            equalTo(new BigDecimal(1)));
+                            c.granularity,
+                            equalTo(new NumericGranularity(0)));
                     })));
     }
 
@@ -355,11 +358,11 @@ public class JsonProfileReaderTests {
         expectRules(
                 ruleWithConstraints(
                         typedConstraint(
-                                NotConstraint.class,
+                                NotEqualToConstraint.class,
                                 c -> {
                                     Assert.assertThat(
-                                            c.negatedConstraint,
-                                            instanceOf(EqualToConstraint.class));
+                                            c.value,
+                                            equalTo("string"));
                                 })));
     }
 
@@ -517,8 +520,8 @@ public class JsonProfileReaderTests {
                     IsGranularToNumericConstraint.class,
                     c -> {
                         Assert.assertThat(
-                            c.granularity.getNumericGranularity(),
-                            equalTo(new BigDecimal(1)));
+                            c.granularity,
+                            equalTo(new NumericGranularity(0)));
                     })));
     }
 
@@ -543,8 +546,8 @@ public class JsonProfileReaderTests {
                     IsGranularToNumericConstraint.class,
                     c -> {
                         Assert.assertThat(
-                            c.granularity.getNumericGranularity(),
-                            equalTo(BigDecimal.valueOf(0.1)));
+                            c.granularity,
+                            equalTo(new NumericGranularity(1)));
                     })));
     }
 
@@ -569,8 +572,8 @@ public class JsonProfileReaderTests {
                     IsGranularToNumericConstraint.class,
                     c -> {
                         Assert.assertThat(
-                            c.granularity.getNumericGranularity(),
-                            equalTo(BigDecimal.valueOf(0.1)));
+                            c.granularity,
+                            equalTo(new NumericGranularity(1)));
                     })));
     }
 
@@ -583,8 +586,8 @@ public class JsonProfileReaderTests {
                 "    \"rules\": [" +
                 "      {" +
                 "        \"constraints\": [" +
-                "        { \"field\": \"foo\", \"is\": \"afterOrAt\", \"value\": { \"date\": \"2019-01-01T00:00:00.000\" } }," +
-                "        { \"field\": \"foo\", \"is\": \"before\", \"value\": { \"date\": \"2019-01-03T00:00:00.000\" } }" +
+                "        { \"field\": \"foo\", \"is\": \"afterOrAt\", \"value\": \"2019-01-01T00:00:00.000\" }," +
+                "        { \"field\": \"foo\", \"is\": \"before\", \"value\": \"2019-01-03T00:00:00.000\" }" +
                 "        ]" +
                 "      }" +
                 "    ]" +
@@ -658,7 +661,7 @@ public class JsonProfileReaderTests {
                 "    ]" +
                 "}");
 
-        expectInvalidProfileException("Field [foo]: Dates should be expressed in object format e.g. { \"date\": \"yyyy-MM-ddTHH:mm:ss.SSS[Z]\" }");
+        expectInvalidProfileException("Field [foo]: Date string '2018-01-12' must be in ISO-8601 format: yyyy-MM-ddTHH:mm:ss.SSS[Z] between (inclusive) 0001-01-01T00:00:00.000Z and 9999-12-31T23:59:59.999Z");
     }
 
     @Test
@@ -897,13 +900,10 @@ public class JsonProfileReaderTests {
         expectRules(
             ruleWithConstraints(
                 typedConstraint(
-                    NotConstraint.class,
+                    NotNullConstraint.class,
                     c -> {
-                        Assert.assertThat(
-                            c.negatedConstraint,
-                            instanceOf(IsNullConstraint.class));
                         Assert.assertEquals(
-                            c.negatedConstraint.getField().name,
+                            c.getField().name,
                             "foo");
                     }
                 )
@@ -963,24 +963,18 @@ public class JsonProfileReaderTests {
         expectRules(
             ruleWithConstraints(
                 typedConstraint(
-                    NotConstraint.class,
+                    NotNullConstraint.class,
                     c -> {
-                        Assert.assertThat(
-                            c.negatedConstraint,
-                            instanceOf(IsNullConstraint.class));
                         Assert.assertEquals(
-                            c.negatedConstraint.getField().name,
+                            c.getField().name,
                             "foo");
                     }
                 ),
                 typedConstraint(
-                    NotConstraint.class,
+                    NotNullConstraint.class,
                     c -> {
-                        Assert.assertThat(
-                            c.negatedConstraint,
-                            instanceOf(IsNullConstraint.class));
                         Assert.assertEquals(
-                            c.negatedConstraint.getField().name,
+                            c.getField().name,
                             "bar");
                     }
                 )
@@ -1009,13 +1003,10 @@ public class JsonProfileReaderTests {
         expectRules(
             ruleWithConstraints(
                 typedConstraint(
-                    NotConstraint.class,
+                    NotNullConstraint.class,
                     c -> {
-                        Assert.assertThat(
-                            c.negatedConstraint,
-                            instanceOf(IsNullConstraint.class));
                         Assert.assertEquals(
-                            c.negatedConstraint.getField().name,
+                            c.getField().name,
                             "bar");
                     }
                 )
@@ -1041,10 +1032,10 @@ public class JsonProfileReaderTests {
 
         expectFields(
             field -> {
-                Assert.assertThat(field.type.getGenericDataType(), equalTo(GenericDataType.NUMERIC));
+                Assert.assertThat(field.type, equalTo(Types.NUMERIC));
             },
             field -> {
-                Assert.assertThat(field.type.getGenericDataType(), equalTo(GenericDataType.STRING));
+                Assert.assertThat(field.type, equalTo(Types.STRING));
             }
         );
         expectRules();
@@ -1071,10 +1062,10 @@ public class JsonProfileReaderTests {
 
         expectFields(
             field -> {
-                Assert.assertThat(field.type.getGenericDataType(), equalTo(GenericDataType.NUMERIC));
+                Assert.assertThat(field.type, equalTo(Types.NUMERIC));
             },
             field -> {
-                Assert.assertThat(field.type.getGenericDataType(), equalTo(GenericDataType.STRING));
+                Assert.assertThat(field.type, equalTo(Types.STRING));
             }
         );
     }
@@ -1105,10 +1096,10 @@ public class JsonProfileReaderTests {
 
         expectFields(
             field -> {
-                Assert.assertThat(field.type.getGenericDataType(), equalTo(GenericDataType.NUMERIC));
+                Assert.assertThat(field.type, equalTo(Types.NUMERIC));
             },
             field -> {
-                Assert.assertThat(field.type.getGenericDataType(), equalTo(GenericDataType.STRING));
+                Assert.assertThat(field.type, equalTo(Types.STRING));
             }
         );
     }
@@ -1137,10 +1128,10 @@ public class JsonProfileReaderTests {
 
         expectFields(
             field -> {
-                Assert.assertThat(field.type.getGenericDataType(), equalTo(GenericDataType.NUMERIC));
+                Assert.assertThat(field.type, equalTo(Types.NUMERIC));
             },
             field -> {
-                Assert.assertThat(field.type.getGenericDataType(), equalTo(GenericDataType.STRING));
+                Assert.assertThat(field.type, equalTo(Types.STRING));
             }
         );
     }
@@ -1234,7 +1225,7 @@ public class JsonProfileReaderTests {
             field -> {
                 Assert.assertEquals("foobar.csv", field.name);
                 Assert.assertTrue(field.isInternal());
-                Assert.assertEquals(GenericDataType.NUMERIC, field.type);
+                Assert.assertEquals(Types.NUMERIC, field.type);
             }
         );
     }

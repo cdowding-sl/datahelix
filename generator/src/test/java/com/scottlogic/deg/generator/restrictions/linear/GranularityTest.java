@@ -16,6 +16,8 @@
 
 
 package com.scottlogic.deg.generator.restrictions.linear;
+import com.scottlogic.deg.common.profile.constraintdetail.DateTimeGranularity;
+import com.scottlogic.deg.common.profile.constraintdetail.NumericGranularity;
 
 import com.scottlogic.deg.common.profile.constraintdetail.Timescale;
 import org.junit.jupiter.api.Test;

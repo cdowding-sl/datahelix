@@ -19,6 +19,9 @@ package com.scottlogic.deg.profile;
 import com.scottlogic.deg.profile.services.SupportedVersionsGetter;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.*;
 import org.leadpony.justify.api.JsonSchema;
 import org.leadpony.justify.api.JsonValidationService;
 
@@ -30,6 +33,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -82,8 +86,14 @@ public class ProfileSchemaImmutabilityTests {
             "0.8",
             "a92498b428e5866eab85a011c5c071afd11ebd76520714e2a301968e06b1997e"));
         versionToHash.add(new VersionHash(
-                "0.10",
-                "b77152e6c87628b145608559c21e4aa7bf7ca9b0f40c3c68cd4f3a99197f9b27"));
+            "0.9",
+            "3e84866fba173ce6528da8994acf7a60fd879ae472246482b0e29ec2b7906321"));
+        versionToHash.add(new VersionHash(
+            "0.10",
+            "30c46ec7e1a17ba2dd7a7069394bc4b2d6b0661adac27f378801d7006edecaf8"));
+        versionToHash.add(new VersionHash(
+            "0.11",
+            "eed1d1faaf4c8bb50144f3e72c2f14d56295c7d5da09a0dd6ed6266daee4a559"));
         return versionToHash;
     }
 

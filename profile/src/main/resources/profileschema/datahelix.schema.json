@@ -617,46 +617,16 @@
         "afterOrAt"
       ],
       "properties": {
-        "afterOrAt": {
-          "oneOf": [
-            {
-              "type": "object",
-              "required": [
-                "field",
-                "value"
-              ],
-              "additionalProperties": false,
-              "properties": {
-                "field": {
-                  "type": "string"
-                },
-                "value": {
-                  "$ref": "#/definitions/datetime"
-                }
-              }
-            },
-            {
-              "type": "object",
-              "required": [
-                "field",
-                "otherField"
-              ],
-              "additionalProperties": true,
-              "properties": {
-                "field": {
-                  "type": "string"
-                },
-                "otherField": {
-                  "$ref": "#/definitions/string"
-                },
-                "offset": {
-                  "$ref": "#/definitions/integer"
-                },
-                "offsetUnit": {
-                  "type": "string"
-                }
-              }
-            }
+        "field": {
+          "type": "string"
+        },
+        "is": {
+          "enum": [
+            "after",
+            "afterOrAt",
+            "before",
+            "beforeOrAt",
+            "equalTo"
           ]
         }
       }
