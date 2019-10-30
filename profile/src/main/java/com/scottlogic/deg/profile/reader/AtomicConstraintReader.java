@@ -38,8 +38,8 @@ public class AtomicConstraintReader {
         this.fileReader = fileReader;
     }
 
-    public Constraint readAtomicConstraintDto(AtomicConstraintDTO dto, ProfileFields profileFields) {
-        Field field = profileFields.getByName(dto.field);
+    public Constraint readAtomicConstraintDto(AtomicConstraintDTO dto, Fields fields) {
+        Field field = fields.getByName(dto.field);
         switch (dto.getType()) {
             case EQUAL_TO:
                 return new EqualToConstraint(field, readAnyType(field, ((EqualToConstraintDTO) dto).value));
@@ -48,7 +48,7 @@ public class AtomicConstraintReader {
                 return new IsInSetConstraint(field, prepareValuesForSet(inSetConstraintDTO, field));
             case IN_MAP:
                 InMapConstraintDTO inMapConstraintDTO = (InMapConstraintDTO) dto;
-                return new InMapRelation(field, profileFields.getByName(inMapConstraintDTO.file),
+                return new InMapRelation(field, fields.getByName(inMapConstraintDTO.file),
                     DistributedList.uniform(fileReader.listFromMapFile(inMapConstraintDTO.file, inMapConstraintDTO.key).stream()
                         .map(value -> readAnyType(field, value))
                         .collect(Collectors.toList())));
@@ -84,7 +84,7 @@ public class AtomicConstraintReader {
                     ? new IsGranularToNumericConstraint(field, NumericGranularity.create(granularToConstraintDTO.value))
                     : new IsGranularToDateConstraint(field, DateTimeGranularity.create((String) granularToConstraintDTO.value));
             case IS_NULL:
-                IsNullConstraint isNullConstraint = new IsNullConstraint(profileFields.getByName(((NullConstraintDTO) dto).field));
+                IsNullConstraint isNullConstraint = new IsNullConstraint(fields.getByName(((NullConstraintDTO) dto).field));
                 return ((NullConstraintDTO)dto).isNull
                     ? isNullConstraint
                     : isNullConstraint.negate();
