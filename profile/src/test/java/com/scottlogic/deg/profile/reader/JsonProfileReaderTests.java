@@ -115,7 +115,7 @@ public class JsonProfileReaderTests {
     }
 
     private Consumer<Field> fieldWithName(String expectedName) {
-        return field -> Assert.assertThat(field.name, equalTo(expectedName));
+        return field -> Assert.assertThat(field.getName(), equalTo(expectedName));
     }
 
     private void expectFields(Consumer<Field>... fieldAssertions) throws IOException {
@@ -190,7 +190,7 @@ public class JsonProfileReaderTests {
             ruleWithDescription("Unnamed rule"));
         expectFields(
             field -> {
-                Assert.assertThat(field.name, equalTo("foo"));
+                Assert.assertThat(field.getName(), equalTo("foo"));
                 Assert.assertEquals(field.getType(), FieldType.STRING);
             });
     }
@@ -267,7 +267,7 @@ public class JsonProfileReaderTests {
         expectRules();
         expectFields(
             field -> {
-                Assert.assertThat(field.name, equalTo("foo"));
+                Assert.assertThat(field.getName(), equalTo("foo"));
                 Assert.assertEquals(field.getType(), FieldType.STRING);
             });
     }
@@ -335,7 +335,7 @@ public class JsonProfileReaderTests {
 
         expectFields(
             field -> {
-                Assert.assertThat(field.name, equalTo("foo"));
+                Assert.assertThat(field.getName(), equalTo("foo"));
                 Assert.assertThat(field.getFormatting(), equalTo("%.5s"));
             }
         );
@@ -775,7 +775,7 @@ public class JsonProfileReaderTests {
 
         expectFields(
             field -> {
-                Assert.assertThat(field.name, equalTo("foo"));
+                Assert.assertThat(field.getName(), equalTo("foo"));
                 Assert.assertTrue(field.isUnique());
             }
         );
@@ -794,7 +794,7 @@ public class JsonProfileReaderTests {
                 "}");
         expectFields(
             field -> {
-                Assert.assertThat(field.name, equalTo("foo"));
+                Assert.assertThat(field.getName(), equalTo("foo"));
                 Assert.assertFalse(field.isUnique());
             }
         );
@@ -815,7 +815,7 @@ public class JsonProfileReaderTests {
 
         expectFields(
             field -> {
-                Assert.assertThat(field.name, equalTo("foo"));
+                Assert.assertThat(field.getName(), equalTo("foo"));
                 Assert.assertFalse(field.isUnique());
             }
         );
@@ -840,7 +840,7 @@ public class JsonProfileReaderTests {
                     NotNullConstraint.class,
                     c -> {
                         Assert.assertEquals(
-                            c.getField().name,
+                            c.getField().getName(),
                             "foo");
                     }
                 )
@@ -888,7 +888,7 @@ public class JsonProfileReaderTests {
                     NotNullConstraint.class,
                     c -> {
                         Assert.assertEquals(
-                            c.getField().name,
+                            c.getField().getName(),
                             "foo");
                     }
                 ),
@@ -896,7 +896,7 @@ public class JsonProfileReaderTests {
                     NotNullConstraint.class,
                     c -> {
                         Assert.assertEquals(
-                            c.getField().name,
+                            c.getField().getName(),
                             "bar");
                     }
                 )
@@ -928,7 +928,7 @@ public class JsonProfileReaderTests {
                     NotNullConstraint.class,
                     c -> {
                         Assert.assertEquals(
-                            c.getField().name,
+                            c.getField().getName(),
                             "bar");
                     }
                 )
@@ -990,15 +990,15 @@ public class JsonProfileReaderTests {
 
          expectFields(
             field -> {
-                Assert.assertEquals("foo", field.name);
+                Assert.assertEquals("foo", field.getName());
                 Assert.assertFalse(field.isInternal());
             },
             field -> {
-                Assert.assertEquals("bar", field.name);
+                Assert.assertEquals("bar", field.getName());
                 Assert.assertFalse(field.isInternal());
             },
             field -> {
-                Assert.assertEquals("foobar.csv", field.name);
+                Assert.assertEquals("foobar.csv", field.getName());
                 Assert.assertTrue(field.isInternal());
             }
         );
@@ -1040,19 +1040,19 @@ public class JsonProfileReaderTests {
 
         expectFields(
             field -> {
-                Assert.assertEquals("foo", field.name);
+                Assert.assertEquals("foo", field.getName());
                 Assert.assertFalse(field.isInternal());
             },
             field -> {
-                Assert.assertEquals("bar", field.name);
+                Assert.assertEquals("bar", field.getName());
                 Assert.assertFalse(field.isInternal());
             },
             field -> {
-                Assert.assertEquals("other", field.name);
+                Assert.assertEquals("other", field.getName());
                 Assert.assertFalse(field.isInternal());
             },
             field -> {
-                Assert.assertEquals("foobar.csv", field.name);
+                Assert.assertEquals("foobar.csv", field.getName());
                 Assert.assertTrue(field.isInternal());
                 Assert.assertEquals(FieldType.NUMERIC, field.getType());
             }
